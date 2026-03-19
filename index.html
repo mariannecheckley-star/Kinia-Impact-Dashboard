@@ -1,0 +1,587 @@
+  h+=`<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:10px">Qualitative data</h3><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinia — Board Impact Dashboard 2026–2030</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ocean:#262262;--ocean-light:#3d3899;
+    --orange:#f37021;--orange-light:#f8a06a;--orange-pale:#fde8d8;
+    --sky:#9dceef;--sky-dark:#1a7ab5;
+    --zest:#b9f24c;--zest-dark:#5a8a1a;
+    --forest:#005129;--forest-light:#007a3d;
+    --lemon:#f7efca;--lemon-dark:#b89a00;
+    --pink:#fad4d6;--candy:#ef4d41;
+    --sunflower:#ffcf01;
+    --text:#1a1a2e;--muted:#5a5a7a;--border:#e2e0f0;
+    --bg:#f8f7fc;--white:#ffffff;
+  }
+  html{font-family:'Roboto',sans-serif;font-size:14px;color:var(--text);background:var(--bg)}
+  h1{font-size:26px;font-weight:300;letter-spacing:-0.3px}
+  h2{font-size:18px;font-weight:500}
+  h3{font-size:14px;font-weight:500}
+  nav{background:var(--ocean);padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+  .nav-brand{display:flex;align-items:center;gap:10px;padding:12px 0;margin-right:24px}
+  .kinia-k{width:34px;height:34px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:white;font-family:'Roboto',sans-serif}
+  .nav-brand span{color:white;font-size:17px;font-weight:300;letter-spacing:1px}
+  .nav-tabs{display:flex;gap:0;flex:1;flex-wrap:wrap}
+  .nav-tab{padding:16px 14px;color:rgba(255,255,255,0.65);font-size:12px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.2s;font-family:'Roboto',sans-serif;white-space:nowrap}
+  .nav-tab:hover{color:white}
+  .nav-tab.active{color:white;border-bottom-color:var(--orange)}
+  .nav-right{display:flex;align-items:center;gap:8px;padding:8px 0}
+  .year-pill{padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;cursor:pointer;background:none;font-family:'Roboto',sans-serif}
+  .year-pill.active{background:var(--orange);border-color:var(--orange);color:white}
+  .page{display:none;padding:20px;max-width:1180px;margin:0 auto}
+  .page.active{display:block}
+  .page-header{background:var(--ocean);border-radius:12px;padding:24px 28px;margin-bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .page-header h1{color:white}
+  .page-header p{color:rgba(255,255,255,0.7);font-size:12px;margin-top:3px}
+  .header-badge{background:var(--orange);color:white;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500}
+  .card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px}
+  .card-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:12px}
+  .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .mcard{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
+  .mcard .mlabel{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
+  .mcard .mval{font-size:24px;font-weight:300;color:var(--ocean)}
+  .mcard .msub{font-size:11px;color:var(--muted);margin-top:3px}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  .insight{background:var(--orange-pale);border-left:4px solid var(--orange);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:16px}
+  .insight .ititle{font-size:10px;font-weight:500;color:var(--orange);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px}
+  .insight p{font-size:13px;color:var(--text);line-height:1.6}
+  .kpi-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;font-size:12px}
+  .kpi-label{width:155px;color:var(--muted);flex-shrink:0;font-size:11px}
+  .kpi-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;position:relative}
+  .kpi-bar-tgt{position:absolute;left:0;top:0;height:100%;background:var(--sky);opacity:0.4;width:100%;border-radius:3px}
+  .kpi-bar-act{position:absolute;left:0;top:0;height:100%;border-radius:3px}
+  .kpi-vals{min-width:95px;text-align:right;font-size:11px;color:var(--text)}
+  .rag{font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500;min-width:36px;text-align:center}
+  .rag-g{background:#d4edda;color:#155724}
+  .rag-a{background:#fff3cd;color:#856404}
+  .rag-r{background:#f8d7da;color:#721c24}
+  .rag-n{background:var(--border);color:var(--muted)}
+  .trend-table{width:100%;border-collapse:collapse;font-size:11px}
+  .trend-table th{text-align:left;padding:5px 8px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:0.05em}
+  .trend-table td{padding:7px 8px;border-bottom:0.5px solid var(--border);color:var(--text)}
+  .trend-table tr:last-child td{border-bottom:none}
+  .tgt-txt{color:var(--muted)}
+  .act-txt{color:var(--ocean);font-weight:500}
+  .pie-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .pie-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+  .pie-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+  .story-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;border-top:4px solid var(--ocean)}
+  .story-org{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--orange);margin-bottom:5px}
+  .story-quote{font-size:13px;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:8px}
+  .story-attr{font-size:11px;color:var(--muted)}
+  .partner-chip{background:var(--lemon);border:1px solid var(--lemon-dark);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--ocean);font-weight:500;display:inline-block;margin:3px}
+  .stat-chip{background:var(--ocean);color:white;border-radius:8px;padding:10px 14px;text-align:center}
+  .stat-chip .sc-val{font-size:22px;font-weight:300}
+  .stat-chip .sc-label{font-size:10px;opacity:0.75;margin-top:2px}
+  .pol-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--sky-dark)}
+  .fund-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--forest)}
+  .btn-orange{background:var(--orange);color:white;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif;text-decoration:none;display:inline-block}
+  .btn-ocean{background:var(--ocean);color:white;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+  .sec-div{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
+  .sec-div-line{flex:1;height:1px;background:var(--border)}
+  .sec-div-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);white-space:nowrap}
+  .dl-btn{display:inline-flex;align-items:center;gap:5px;background:var(--forest);color:white;border:none;border-radius:8px;padding:7px 15px;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif}
+  footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:32px}
+  input[type=password],input[type=number],input[type=text],textarea{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:'Roboto',sans-serif;color:var(--text)}
+  input:focus,textarea:focus{outline:none;border-color:var(--ocean)}
+  .field-group{margin-bottom:12px}
+  .field-group label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);display:block;margin-bottom:3px}
+  .field-tgt{font-size:10px;color:var(--muted);margin-bottom:3px}
+  @media(max-width:680px){.metric-grid,.g2,.g3,.g4{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}.nav-tab{font-size:11px;padding:12px 9px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">
+    <div class="kinia-k">k</div>
+    <span>kinia</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('overview',this)">Overview</button>
+    <button class="nav-tab" onclick="showPage('pillar1',this)">Pillar 1</button>
+    <button class="nav-tab" onclick="showPage('pillar2',this)">Pillar 2</button>
+    <button class="nav-tab" onclick="showPage('pillar3',this)">Pillar 3</button>
+    <button class="nav-tab" onclick="showPage('influence',this)">Reach &amp; Influence</button>
+    <button class="nav-tab" onclick="showPage('stories',this)">Impact Stories</button>
+    <button class="nav-tab" onclick="showPage('risks',this)">Risks</button>
+  </div>
+  <div class="nav-right">
+    <div id="year-pills" style="display:flex;gap:5px;flex-wrap:wrap">
+      <button class="year-pill active" onclick="setYear(2024,this)">2024</button>
+      <button class="year-pill" onclick="setYear(2025,this)">2025</button>
+      <button class="year-pill" onclick="setYear(2026,this)">2026</button>
+      <button class="year-pill" onclick="setYear(2027,this)">2027</button>
+      <button class="year-pill" onclick="setYear(2028,this)">2028</button>
+      <button class="year-pill" onclick="setYear(2029,this)">2029</button>
+      <button class="year-pill" onclick="setYear(2030,this)">2030</button>
+    </div>
+    <button class="btn-orange" onclick="showAdmin()" style="font-size:11px;padding:5px 12px;margin-left:6px">Admin</button>
+  </div>
+</nav>
+
+<!-- ADMIN OVERLAY -->
+<div id="admin-overlay" style="display:none;position:fixed;inset:0;background:rgba(38,34,98,0.88);z-index:200;overflow-y:auto;padding:32px 16px">
+  <div id="admin-login" style="background:white;border-radius:14px;padding:32px;max-width:360px;margin:0 auto;text-align:center">
+    <div class="kinia-k" style="margin:0 auto 12px;width:46px;height:46px;font-size:22px">k</div>
+    <h2 style="color:var(--ocean);margin-bottom:5px">Admin access</h2>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:20px">Enter PIN to update data</p>
+    <input type="password" id="pin-input" placeholder="PIN" style="margin-bottom:12px;text-align:center;font-size:18px;letter-spacing:6px">
+    <br><br>
+    <button class="btn-ocean" onclick="checkPin()">Unlock</button>
+    <button onclick="hideAdmin()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;margin-left:12px">Cancel</button>
+    <p id="pin-err" style="color:#c0392b;font-size:12px;margin-top:8px;display:none">Incorrect PIN</p>
+  </div>
+  <div id="admin-panel" style="display:none;background:white;border-radius:14px;padding:32px;max-width:900px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h2 style="color:var(--ocean)">Enter actuals &amp; qualitative data</h2>
+      <div style="display:flex;gap:8px">
+        <button class="btn-ocean" onclick="saveAll()">Save all</button>
+        <button onclick="hideAdmin()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px">Close</button>
+      </div>
+    </div>
+    <div id="admin-content"></div>
+    <div id="save-msg" style="display:none;background:#d4edda;color:#155724;border-radius:8px;padding:10px;text-align:center;margin-top:14px;font-size:13px">Saved successfully.</div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div id="page-overview" class="page active">
+  <div class="page-header">
+    <div><h1>Performance &amp; impact dashboard</h1><p>Strategic plan 2026–2030 · Board of Directors · <span id="today"></span></p></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <div class="header-badge">Year: <span id="ov-year">2026</span></div>
+      <button class="dl-btn" onclick="downloadApp()">Download app</button>
+    </div>
+  </div>
+  <div class="metric-grid" id="ov-metrics"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Revenue mix 2024–2030</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Grants</span>
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>Social enterprise</span>
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#9dceef;display:inline-block"></span>Other</span>
+      </div>
+      <div style="position:relative;height:190px"><canvas id="revChart"></canvas></div>
+    </div>
+    <div class="card"><div class="card-title">Grant dependency &amp; SE share</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Grant dep. %</span>
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>SE share %</span>
+      </div>
+      <div style="position:relative;height:190px"><canvas id="depChart"></canvas></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:18px"><div class="card-title">Mission reach — educators &amp; young people 2024–2030</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
+      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Educators upskilled</span>
+      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>Young people ÷10</span>
+    </div>
+    <div style="position:relative;height:190px"><canvas id="reachChart"></canvas></div>
+  </div>
+</div>
+
+<!-- PILLAR 1 -->
+<div id="page-pillar1" class="page">
+  <div class="page-header"><div><h1>Pillar 1 — deepening educator expertise</h1><p>Best-in-class bilingual professional development in AI, creative technology and green skills.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
+  <div id="p1-insight-box" class="insight" style="border-left-color:var(--border);background:var(--bg)"><div class="ititle" style="color:var(--muted)">Insight snapshot</div><p id="p1-insight-text" style="color:var(--muted);font-style:italic">Insight will appear here once data is entered for this year.</p></div>
+  <div class="metric-grid" id="p1-metrics"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">KPI progress vs target</div><div id="p1-bars"></div></div>
+    <div class="card"><div class="card-title">Trend 2024–2030</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Educators</span>
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#9dceef;display:inline-block"></span>Platform users</span>
+      </div>
+      <div style="position:relative;height:210px"><canvas id="p1Chart"></canvas></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:18px"><div class="card-title">Annual targets &amp; actuals — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p1-table"></table></div></div>
+</div>
+
+<!-- PILLAR 2 -->
+<div id="page-pillar2" class="page">
+  <div class="page-header"><div><h1>Pillar 2 — driving system-wide educational change</h1><p>Embedding recognised credentials and scalable digital tools across the education system.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
+  <div id="p2-insight-box" class="insight" style="border-left-color:var(--border);background:var(--bg)"><div class="ititle" style="color:var(--muted)">Insight snapshot</div><p id="p2-insight-text" style="color:var(--muted);font-style:italic">Insight will appear here once data is entered for this year.</p></div>
+  <div class="metric-grid" id="p2-metrics"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">KPI progress vs target</div><div id="p2-bars"></div></div>
+    <div class="card"><div class="card-title">Trend 2024–2030</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Credentials</span>
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>Youth badges</span>
+      </div>
+      <div style="position:relative;height:210px"><canvas id="p2Chart"></canvas></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:18px"><div class="card-title">Annual targets &amp; actuals — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Community profile</div><div class="sec-div-line"></div></div>
+  <div class="g3">
+    <div class="card"><div class="card-title">Who our educators work with</div><div style="position:relative;height:170px"><canvas id="pie1"></canvas></div><div class="pie-legend" id="pie1-leg"></div></div>
+    <div class="card"><div class="card-title">Formal vs non-formal education</div><div style="position:relative;height:170px"><canvas id="pie2"></canvas></div><div class="pie-legend" id="pie2-leg"></div></div>
+    <div class="card"><div class="card-title">Language of delivery</div><div style="position:relative;height:170px"><canvas id="pie3"></canvas></div><div class="pie-legend" id="pie3-leg"></div></div>
+  </div>
+</div>
+
+<!-- PILLAR 3 -->
+<div id="page-pillar3" class="page">
+  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1><p>Targeting 23–25% social enterprise revenue share by 2030, with a path to 30% by 2032.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
+  <div id="p3-insight-box" class="insight" style="border-left-color:var(--border);background:var(--bg)"><div class="ititle" style="color:var(--muted)">Insight snapshot</div><p id="p3-insight-text" style="color:var(--muted);font-style:italic">Insight will appear here once data is entered for this year.</p></div>
+  <div class="metric-grid" id="p3-metrics"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Revenue streams — target vs actual</div><div style="overflow-x:auto" id="p3-rev-table"></div></div>
+    <div class="card"><div class="card-title">Social enterprise revenue 2024–2030</div><div style="position:relative;height:210px"><canvas id="p3Chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:18px"><div class="card-title">Annual targets &amp; actuals — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p3-table"></table></div></div>
+</div>
+
+<!-- REACH & INFLUENCE -->
+<div id="page-influence" class="page">
+  <div class="page-header"><div><h1>Reach &amp; influence</h1><p>Media, political engagement, partnerships and social media impact.</p></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Media reach</div><div class="sec-div-line"></div></div>
+  <div class="g3" id="media-stats"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Political influence &amp; government engagement</div><div class="sec-div-line"></div></div>
+  <div class="card" style="margin-bottom:18px"><div id="political-items"></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Fundraising &amp; strategic partnerships</div><div class="sec-div-line"></div></div>
+  <div class="card" style="margin-bottom:18px">
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px">Strategic partners &amp; funders</p>
+    <div id="partner-chips" style="margin-bottom:18px"></div>
+    <div class="card-title">Highlights</div>
+    <div id="fundraising-items"></div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Social media reach</div><div class="sec-div-line"></div></div>
+  <div class="g4" id="social-stats"></div>
+</div>
+
+<!-- IMPACT STORIES -->
+<div id="page-stories" class="page">
+  <div class="page-header"><div><h1>Impact stories</h1><p>Voices from our network — educators and young people transformed by Kinia programmes.</p></div></div>
+  <div class="g2" id="stories-grid"></div>
+</div>
+
+<!-- RISKS -->
+<div id="page-risks" class="page">
+  <div class="page-header"><div><h1>Risk register &amp; strategic questions</h1><p>Board oversight — likelihood, impact and mitigation actions.</p></div></div>
+  <div class="card" style="margin-bottom:18px;padding:0 0 4px">
+    <table class="trend-table" style="width:100%">
+      <thead><tr><th style="padding-left:18px">Risk</th><th>Likelihood</th><th>Impact</th><th style="padding-right:18px">Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td style="padding-left:18px">Credential uptake remains low</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">3rd-level partnerships; AI tool; monthly tracking</td></tr>
+        <tr><td style="padding-left:18px">AI PBL Tool development delays</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Phased rollout; NTT Data &amp; AWS; manual backup</td></tr>
+        <tr><td style="padding-left:18px">Social enterprise doesn't scale</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Quarterly targets; Growth Lead; retail partnerships</td></tr>
+        <tr><td style="padding-left:18px">Key person dependency</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">CPD pathways; succession planning; documentation</td></tr>
+        <tr><td style="padding-left:18px">Corporate funding decreases</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-a">Medium</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Diversify via social enterprise; deepen statutory</td></tr>
+        <tr><td style="padding-left:18px">Competition increases</td><td><span class="rag rag-g">Low</span></td><td><span class="rag rag-a">Medium</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Leverage bilingual USP; innovation-led content</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Strategic questions for board discussion</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px">
+      <div class="insight" style="margin:0"><div class="ititle">Social enterprise structure</div><p>Maintain integrated model, or explore a spin-out entity?</p></div>
+      <div class="insight" style="margin:0"><div class="ititle">Credentialing strategy</div><p>Pursue proprietary and 3rd-level credentials in parallel, or prioritise one?</p></div>
+      <div class="insight" style="margin:0"><div class="ititle">Geographic focus</div><p>Regional depth (stronger evidence) vs national breadth (accelerated reach)?</p></div>
+      <div class="insight" style="margin:0"><div class="ititle">Resource investment priorities</div><p>Outsource webshop, invest in impact measurement, or fund external comms support?</p></div>
+    </div>
+  </div>
+</div>
+
+<footer>Kinia &nbsp;·&nbsp; Learning is Life &nbsp;·&nbsp; Ní thagann saol gan foghalaim &nbsp;·&nbsp; Strategic Plan 2026–2030 &nbsp;·&nbsp; Board Confidential</footer>
+
+<script>
+const YEARS_ALL=[2024,2025,2026,2027,2028,2029,2030];
+const PLAN_START=2026;
+const T={
+  educators:      [26000,29000,32000,36000,41000,46000,50000],
+  eduSupported:   [null,null,null,null,null,null,null],
+  youngPeople:    [380000,430000,490000,560000,650000,730000,800000],
+  orgsEngaged:    [null,null,null,null,null,null,null],
+  revenue:        [1.85,2.05,2.35,2.55,2.72,2.88,3.00],
+  seRevenue:      [0.20,0.27,0.38,0.44,0.52,0.59,0.65],
+  grantRevenue:   [1.35,1.48,1.60,1.72,1.82,1.92,2.00],
+  otherRevenue:   [0.30,0.30,0.37,0.39,0.38,0.37,0.35],
+  grantPct:       [92,90,85,82,80,79,78],
+  sePct:          [11,13,16,17,19,21,23],
+  eduCredentials: [200,350,600,1000,1600,2400,3000],
+  youthBadges:    [100,200,400,800,3000,7000,10000],
+  platformUsers:  [1800,2400,4000,5500,7000,8500,10000],
+  irishMedSchools:[8,14,20,40,65,85,100],
+};
+
+// Annual (incremental) targets — derived from cumulative where applicable, or standalone for financial/ratio metrics
+// Keys with null use the cumulative value directly (ratios, revenue already annual-ish)
+const ANNUAL_KEYS = {
+  educators:      true,
+  youngPeople:    true,
+  eduCredentials: true,
+  youthBadges:    true,
+  platformUsers:  true,
+  irishMedSchools:true,
+  revenue:        false,
+  seRevenue:      false,
+  grantRevenue:   false,
+  sePct:          false,
+};
+
+function annualTarget(k, i) {
+  if (!ANNUAL_KEYS[k]) return null;
+  if (i === 0) return T[k][0];
+  if (T[k][i] === null) return null;
+  return T[k][i] - T[k][i-1];
+}
+
+function annualActual(k, y) {
+  const i = yi(y);
+  if (!ANNUAL_KEYS[k]) return "";
+  const act = getA(k, y);
+  if (act === "") return "";
+  if (i === 0) return act;
+  const prevAct = getA(k, YEARS_ALL[i-1]);
+  if (prevAct === "") return "";
+  return (parseFloat(act) - parseFloat(prevAct)).toFixed(k==="revenue"||k==="seRevenue"||k==="grantRevenue"?2:0);
+}
+let A={};
+let QD={
+  insights:{p1:{},p2:{},p3:{}},
+  mediaStats:[{val:"2.4M",label:"Total media reach"},{val:"18",label:"Press mentions"},{val:"6",label:"Broadcast appearances"}],
+  politicalItems:["Invited to present to the Joint Oireachtas Committee on Education — March 2025","Formal engagement with Dept. of Education on AI in Schools framework — ongoing","Cited in Dept. of Children & Youth Affairs annual report 2024","Participant in European Commission AI Literacy working group"],
+  partners:["Google","Salesforce","NTT Data","AWS","Dept. of Education","Dept. of Gaeltacht","SOLAS","ETBs","QQI","IUA"],
+  fundraisingItems:["Multi-annual funding secured from Dept. of Education 2024–2026 — €1.05M","Google.org partnership renewed — supporting AI CPD track development","Salesforce Social Impact grant awarded — €75K for platform development","Exploring IUA MicroCreds partnership with two third-level institutions"],
+  socialStats:[{val:"12.4K",label:"LinkedIn followers"},{val:"8.2K",label:"X / Twitter"},{val:"6.1K",label:"Instagram"},{val:"48K",label:"Monthly web visits"}],
+  stories:[
+    {org:"Primary school, Co. Galway",quote:"The Kinia programme transformed how I approach STEM. I now run a coding club with 40 pupils — something I never would have had the confidence to do before.",attr:"5th class teacher, DEIS school"},
+    {org:"Youth service, Dublin 17",quote:"Our young people — many of whom have never seen themselves as 'tech people' — are now designing apps, building robots and talking about careers in engineering. Kinia made that possible.",attr:"Youth worker, community organisation"},
+  ],
+  pie1:{labels:["Socio-econ. disadvantage","Rural communities","Girls in STEM","Irish language","Traveller / ethnic minority"],data:[38,24,18,12,8],colors:["#262262","#f37021","#9dceef","#b9f24c","#fad4d6"]},
+  pie2:{labels:["Formal (schools)","Non-formal (youth work)"],data:[62,38],colors:["#262262","#f37021"]},
+  pie3:{labels:["English medium","Irish medium"],data:[78,22],colors:["#262262","#b9f24c"]},
+};
+
+function yi(y){return YEARS_ALL.indexOf(y);}
+function getA(k,y){return A[k+"_"+y]??"";}
+function ragC(a,t){
+  if(a===""||a===null||t===null||t===undefined)return"n";
+  const r=parseFloat(a)/parseFloat(t);
+  return isNaN(r)?"n":r>=0.95?"g":r>=0.8?"a":"r";
+}
+function fmtN(v,dec){
+  if(v===null||v===undefined||v==="")return"—";
+  const n=parseFloat(v);if(isNaN(n))return"—";
+  if(dec)return"€"+n.toFixed(2)+"M";
+  if(n>=1000000)return(n/1000000).toFixed(1)+"M";
+  if(n>=1000)return Math.round(n/1000)+"K";
+  return n.toLocaleString();
+}
+function fmtT(t,dec){return(t===null||t===undefined)?"—":fmtN(t,dec);}
+
+let selectedYear=2026;
+let charts={};
+
+function setYear(y){
+  selectedYear=y;
+  document.querySelectorAll('.year-pill').forEach(b=>b.classList.toggle('active',parseInt(b.textContent)===y));
+  document.querySelectorAll('.yr-badge').forEach(el=>el.textContent=y);
+  document.getElementById('ov-year').textContent=y;
+  renderAll();
+}
+
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+function renderMCard(label,key,dec,suffix){
+  const i=yi(selectedYear);
+  const tgt=T[key][i];const act=getA(key,selectedYear);
+  const rc=ragC(act,tgt);
+  const ann=annualTarget(key,i);
+  const td=(tgt===null)?"TBD":(dec?"€"+tgt+"M":fmtN(tgt,false))+(suffix||"");
+  const annD=ann!==null?(dec?"€"+parseFloat(ann).toFixed(2)+"M":fmtN(ann,false))+(suffix||""):null;
+  const ad=act!==""?(dec?"€"+parseFloat(act).toFixed(2)+"M":fmtN(act,false))+(suffix||""):null;
+  const annAct=annualActual(key,selectedYear);
+  const annActD=annAct!==""?(dec?"€"+parseFloat(annAct).toFixed(2)+"M":fmtN(annAct,false))+(suffix||""):null;
+  return`<div class="mcard">
+    <div class="mlabel">${label}</div>
+    <div class="mval">${td}</div>
+    ${annD?`<div style="font-size:10px;color:var(--muted);margin-top:3px">Annual target: <strong style="color:var(--ocean)">${annD}</strong></div>`:""}
+    ${ad?`<div style="margin-top:5px;display:flex;gap:5px;align-items:center;flex-wrap:wrap"><span class="rag rag-${rc}" style="font-size:11px">Cumulative: ${ad}</span>${annActD?`<span style="font-size:10px;color:var(--muted)">Annual: ${annActD}</span>`:""}</div>`:`<div class="msub">No actual entered</div>`}
+  </div>`;
+}
+
+function renderBars(keys,color){
+  const i=yi(selectedYear);
+  return keys.map(({k,l,dec})=>{
+    const tgt=T[k][i];const act=getA(k,selectedYear);
+    const bp=tgt?Math.min(100,Math.round(parseFloat(act||0)/tgt*100)):0;
+    const rc=ragC(act,tgt);
+    return`<div class="kpi-row"><span class="kpi-label">${l}</span><div class="kpi-bar-wrap"><div class="kpi-bar-tgt"></div>${act!==""?`<div class="kpi-bar-act" style="width:${bp}%;background:${color}"></div>`:""}</div><span class="kpi-vals">${act!==""?fmtN(act,dec)+" / ":""}<span class="tgt-txt">${fmtT(tgt,dec)}</span></span><span class="rag rag-${rc}">${rc==="n"?"—":rc.toUpperCase()}</span></div>`;
+  }).join('');
+}
+
+function renderTrendTable(id,rows){
+  const el=document.getElementById(id);
+  el.innerHTML=`<thead><tr><th>Metric</th>${YEARS_ALL.map(y=>`<th>${y}</th>`).join('')}</tr></thead><tbody>${rows.map(({k,l,dec,suffix})=>`<tr><td>${l}</td>${YEARS_ALL.map((y,i)=>{
+    const tgt=T[k][i];const act=getA(k,y);const rc=ragC(act,tgt);
+    const ann=annualTarget(k,i);
+    const td=(tgt===null)?"—":(dec?"€"+tgt+"M":fmtN(tgt,false))+(suffix||"");
+    const annD=ann!==null?(dec?"€"+parseFloat(ann).toFixed(2)+"M":fmtN(ann,false))+(suffix||""):null;
+    const ad=act!==""?(dec?"€"+parseFloat(act).toFixed(2)+"M":fmtN(act,false))+(suffix||""):"";
+    return`<td>
+      <div class="tgt-txt" style="font-size:10px">${td}</div>
+      ${annD?`<div style="font-size:10px;color:var(--sky-dark)">+${annD} pa</div>`:""}
+      ${ad?`<div><span class="rag rag-${rc}" style="font-size:10px">${ad}</span></div>`:""}
+    </td>`;
+  }).join('')}</tr>`).join('')}</tbody>`;
+}
+
+function renderAll(){
+  const i=yi(selectedYear);
+  document.getElementById('ov-metrics').innerHTML=[
+    {l:"Educators upskilled",k:"educators",dec:false},{l:"Young people reached",k:"youngPeople",dec:false},
+    {l:"Total revenue",k:"revenue",dec:true},{l:"SE revenue share",k:"sePct",dec:false,s:"%"},
+  ].map(m=>renderMCard(m.l,m.k,m.dec,m.s||"")).join('');
+
+  ['p1','p2','p3'].forEach(p=>{
+    const txt={'p1':insightP1(selectedYear),'p2':insightP2(selectedYear),'p3':insightP3(selectedYear)}[p];
+    const box=document.getElementById(p+'-insight-box');
+    const el=document.getElementById(p+'-insight-text');
+    if(txt){
+      box.style.borderLeftColor='var(--orange)';box.style.background='var(--orange-pale)';
+      el.style.color='var(--text)';el.style.fontStyle='normal';
+      el.textContent=txt;
+    } else {
+      box.style.borderLeftColor='var(--border)';box.style.background='var(--bg)';
+      el.style.color='var(--muted)';el.style.fontStyle='italic';
+      el.textContent='Insight will appear here once data is entered for this year.';
+    }
+  });[
+    {l:"Educators upskilled",k:"educators"},{l:"Educators supported",k:"eduSupported"},{l:"Platform users",k:"platformUsers"},{l:"Credentials issued",k:"eduCredentials"},
+  ].map(m=>renderMCard(m.l,m.k,false,"")).join('');
+  document.getElementById('p1-bars').innerHTML=renderBars([{k:"educators",l:"Educators upskilled",dec:false},{k:"eduSupported",l:"Educators supported",dec:false},{k:"platformUsers",l:"Platform users",dec:false},{k:"eduCredentials",l:"Credentials issued",dec:false}],"var(--ocean)");
+  renderTrendTable('p1-table',[{k:"educators",l:"Educators upskilled",dec:false,suffix:""},{k:"eduSupported",l:"Educators supported",dec:false,suffix:""},{k:"platformUsers",l:"Platform users",dec:false,suffix:""},{k:"eduCredentials",l:"Credentials issued",dec:false,suffix:""}]);
+
+  document.getElementById('p2-insight-text').textContent=insightP2(selectedYear);
+  document.getElementById('p2-metrics').innerHTML=[
+    {l:"Youth badges",k:"youthBadges"},{l:"Irish-med. schools",k:"irishMedSchools"},{l:"Young people reached",k:"youngPeople"},{l:"Organisations engaged",k:"orgsEngaged"},
+  ].map(m=>renderMCard(m.l,m.k,false,"")).join('');
+  document.getElementById('p2-bars').innerHTML=renderBars([{k:"youthBadges",l:"Youth badges",dec:false},{k:"irishMedSchools",l:"Irish-med. schools",dec:false},{k:"youngPeople",l:"Young people reached",dec:false},{k:"orgsEngaged",l:"Organisations engaged",dec:false}],"var(--orange)");
+  renderTrendTable('p2-table',[{k:"youthBadges",l:"Youth badges",dec:false,suffix:""},{k:"irishMedSchools",l:"Irish-med. schools",dec:false,suffix:""},{k:"youngPeople",l:"Young people reached",dec:false,suffix:""},{k:"orgsEngaged",l:"Organisations engaged",dec:false,suffix:""}]);
+
+  document.getElementById('p3-insight-text').textContent=insightP3(selectedYear);
+  document.getElementById('p3-metrics').innerHTML=[
+    {l:"Total revenue",k:"revenue",dec:true},{l:"SE revenue",k:"seRevenue",dec:true},{l:"Grant revenue",k:"grantRevenue",dec:true},{l:"SE share %",k:"sePct",dec:false,s:"%"},
+  ].map(m=>renderMCard(m.l,m.k,m.dec,m.s||"")).join('');
+  document.getElementById('p3-rev-table').innerHTML=`<table class="trend-table" style="width:100%"><thead><tr><th>Stream</th><th>Target</th><th>Actual</th><th>Variance</th><th>Status</th></tr></thead><tbody>${[{l:"Statutory grants",k:"grantRevenue"},{l:"Social enterprise",k:"seRevenue"},{l:"Corporate & other",k:"otherRevenue"},{l:"Total",k:"revenue"}].map(r=>{const tgt=T[r.k][i];const act=getA(r.k,selectedYear);const rc=ragC(act,tgt);const v=act!==""&&!isNaN(parseFloat(act))?(parseFloat(act)-tgt).toFixed(2):null;return`<tr><td>${r.l}</td><td class="tgt-txt">€${tgt}M</td><td class="act-txt">${act!==""?"€"+parseFloat(act).toFixed(2)+"M":"—"}</td><td style="color:${v!==null?(parseFloat(v)>=0?"var(--forest)":"var(--candy)"):"var(--muted)"}">${v!==null?(parseFloat(v)>=0?"+":"")+"€"+v+"M":"—"}</td><td><span class="rag rag-${rc}">${rc==="n"?"—":rc.toUpperCase()}</span></td></tr>`;}).join('')}</tbody></table>`;
+  renderTrendTable('p3-table',[{k:"revenue",l:"Total revenue",dec:true,suffix:""},{k:"seRevenue",l:"SE revenue",dec:true,suffix:""},{k:"grantRevenue",l:"Grant revenue",dec:true,suffix:""},{k:"sePct",l:"SE share %",dec:false,suffix:"%"}]);
+
+  renderInfluence();renderStories();buildCharts();buildPieCharts();
+}
+
+function insightP1(y){return QD.insights.p1[y]||"";}
+function insightP2(y){return QD.insights.p2[y]||"";}
+function insightP3(y){return QD.insights.p3[y]||"";}
+
+function renderInfluence(){
+  document.getElementById('media-stats').innerHTML=QD.mediaStats.map(s=>`<div class="card" style="text-align:center"><div class="mval" style="font-size:30px;font-weight:300;color:var(--ocean)">${s.val}</div><div class="mlabel" style="margin-top:5px">${s.label}</div></div>`).join('');
+  document.getElementById('political-items').innerHTML=QD.politicalItems.map(p=>`<div class="pol-item">${p}</div>`).join('');
+  document.getElementById('partner-chips').innerHTML=QD.partners.map(p=>`<span class="partner-chip">${p}</span>`).join('');
+  document.getElementById('fundraising-items').innerHTML=QD.fundraisingItems.map(f=>`<div class="fund-item">${f}</div>`).join('');
+  document.getElementById('social-stats').innerHTML=QD.socialStats.map(s=>`<div class="mcard" style="text-align:center"><div class="mval" style="color:var(--ocean)">${s.val}</div><div class="mlabel" style="margin-top:3px">${s.label}</div></div>`).join('');
+}
+function renderStories(){
+  document.getElementById('stories-grid').innerHTML=QD.stories.map(s=>`<div class="story-card"><div class="story-org">${s.org}</div><div class="story-quote">"${s.quote}"</div><div class="story-attr">— ${s.attr}</div></div>`).join('');
+}
+
+function mkChart(id,type,labels,datasets,opts){
+  if(charts[id]){charts[id].destroy();delete charts[id];}
+  const el=document.getElementById(id);if(!el)return;
+  charts[id]=new Chart(el,{type,data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},...opts}});
+}
+function buildCharts(){
+  const L=YEARS_ALL.map(String);
+  const gOpts={scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}}}};
+  mkChart('revChart','bar',L,[{label:'Grants',data:T.grantRevenue,backgroundColor:'#262262',stack:'a'},{label:'SE',data:T.seRevenue,backgroundColor:'#f37021',stack:'a'},{label:'Other',data:T.otherRevenue,backgroundColor:'#9dceef',stack:'a'}],{scales:{x:{stacked:true,ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{stacked:true,ticks:{color:'#888',font:{size:10},callback:v=>'€'+v.toFixed(1)+'M'},grid:{color:'rgba(0,0,0,0.05)'}}}});
+  mkChart('depChart','line',L,[{label:'Grant%',data:T.grantPct,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'SE%',data:T.sePct,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{min:0,max:100,ticks:{color:'#888',font:{size:10},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,0.05)'}}}});
+  mkChart('reachChart','line',L,[{label:'Educators',data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'YP÷10',data:T.youngPeople.map(v=>Math.round(v/10)),borderColor:'#f37021',backgroundColor:'rgba(243,112,33,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>v>=1000?Math.round(v/1000)+'K':v},grid:{color:'rgba(0,0,0,0.05)'}}}});
+  mkChart('p1Chart','line',L,[{label:'Educators',data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'Platform',data:T.platformUsers,borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#9dceef',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>v>=1000?Math.round(v/1000)+'K':v},grid:{color:'rgba(0,0,0,0.05)'}}}});
+  mkChart('p2Chart','line',L,[{label:'Credentials',data:T.eduCredentials,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'Badges',data:T.youthBadges,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>v>=1000?Math.round(v/1000)+'K':v},grid:{color:'rgba(0,0,0,0.05)'}}}});
+  mkChart('p3Chart','bar',L,[{label:'SE Revenue',data:T.seRevenue,backgroundColor:YEARS_ALL.map(y=>y<PLAN_START?'#f8a06a':'#f37021')}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>'€'+v.toFixed(2)+'M'},grid:{color:'rgba(0,0,0,0.05)'}}}});
+}
+function buildPieCharts(){
+  ['pie1','pie2','pie3'].forEach(id=>{
+    if(charts[id]){charts[id].destroy();delete charts[id];}
+    const d=QD[id];const el=document.getElementById(id);if(!el)return;
+    charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});
+    document.getElementById(id+'-leg').innerHTML=d.labels.map((l,i)=>`<span class="pie-leg-item"><span class="pie-dot" style="background:${d.colors[i]}"></span>${l} ${d.data[i]}%</span>`).join('');
+  });
+}
+
+const PIN="kinia2026";
+function showAdmin(){document.getElementById('admin-overlay').style.display='block';document.getElementById('pin-input').value='';document.getElementById('pin-err').style.display='none';document.getElementById('admin-login').style.display='block';document.getElementById('admin-panel').style.display='none';}
+function hideAdmin(){document.getElementById('admin-overlay').style.display='none';}
+function checkPin(){
+  if(document.getElementById('pin-input').value===PIN){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';buildAdminPanel();}
+  else{document.getElementById('pin-err').style.display='block';}
+}
+function buildAdminPanel(){
+  const fields=[{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'youngPeople',l:'Young people reached',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false},{k:'eduCredentials',l:'Educator credentials',dec:false},{k:'youthBadges',l:'Youth badges',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'irishMedSchools',l:'Irish-medium schools',dec:false},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)',dec:false}];
+  let h=`<h3 style="color:var(--ocean);margin-bottom:4px">Quantitative actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:16px">Enter actuals by year. RAG status updates automatically on save.</p>`;
+  YEARS_ALL.forEach((y,yi_)=>{
+    h+=`<div style="margin-bottom:16px"><div style="font-weight:500;color:var(--ocean);font-size:13px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)">${y}${y<PLAN_START?' (historical)':''}</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">`;
+    fields.forEach(f=>{h+=`<div class="field-group"><label>${f.l}</label><div class="field-tgt">Target: ${fmtT(T[f.k][yi_],f.dec)}</div><input type="number" id="inp_${f.k}_${y}" value="${A[f.k+'_'+y]??''}" step="${f.dec?'0.01':'1'}" placeholder="—"></div>`;});
+    h+=`</div></div>`;
+  });
+  h+=`<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:12px">Qualitative data</h3>
+  <div class="field-group"><label>Media stats (JSON: [{val,label}])</label><textarea id="qd_mediaStats" rows="2">${JSON.stringify(QD.mediaStats)}</textarea></div>
+  <div class="field-group"><label>Political & government items (one per line)</label><textarea id="qd_politicalItems" rows="4">${QD.politicalItems.join('\n')}</textarea></div>
+  <div class="field-group"><label>Partners & funders (comma separated)</label><textarea id="qd_partners" rows="2">${QD.partners.join(', ')}</textarea></div>
+  <div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems" rows="4">${QD.fundraisingItems.join('\n')}</textarea></div>
+  <div class="field-group"><label>Social media stats (JSON: [{val,label}])</label><textarea id="qd_socialStats" rows="2">${JSON.stringify(QD.socialStats)}</textarea></div></div>
+  <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:10px">Impact stories</h3>`;
+  [0,1].forEach(n=>{const s=QD.stories[n]||{org:'',quote:'',attr:''};h+=`<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid var(--border)"><div style="font-size:11px;font-weight:500;color:var(--muted);margin-bottom:7px">Story ${n+1}</div><div class="field-group"><label>Organisation</label><input type="text" id="st_org_${n}" value="${s.org}"></div><div class="field-group"><label>Quote</label><textarea id="st_quote_${n}" rows="3">${s.quote}</textarea></div><div class="field-group"><label>Attribution</label><input type="text" id="st_attr_${n}" value="${s.attr}"></div></div>`;});
+  h+=`</div><div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:10px">Pie chart percentages</h3>`;
+  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(p=>{
+    h+=`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:500;color:var(--muted);margin-bottom:6px">${p.label}</div><div style="display:grid;grid-template-columns:repeat(${QD[p.id].labels.length},1fr);gap:8px">`;
+    QD[p.id].labels.forEach((l,li)=>{h+=`<div class="field-group"><label>${l}</label><input type="number" id="${p.id}_${li}" value="${QD[p.id].data[li]}" min="0" max="100"></div>`;});
+    h+=`</div></div>`;
+  });
+  h+=`</div>`;
+  document.getElementById('admin-content').innerHTML=h;
+}
+function saveAll(){
+  const fields=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct'];
+  YEARS_ALL.forEach(y=>fields.forEach(k=>{const el=document.getElementById(`inp_${k}_${y}`);if(el)A[k+'_'+y]=el.value;}));
+  YEARS_ALL.forEach(y=>{
+    ['p1','p2','p3'].forEach(p=>{
+      const el=document.getElementById(`ins_${p}_${y}`);
+      if(el)QD.insights[p][y]=el.value.trim();
+    });
+  });
+  QD.politicalItems=document.getElementById('qd_politicalItems').value.split('\n').filter(Boolean);
+  QD.partners=document.getElementById('qd_partners').value.split(',').map(s=>s.trim()).filter(Boolean);
+  QD.fundraisingItems=document.getElementById('qd_fundraisingItems').value.split('\n').filter(Boolean);
+  try{QD.socialStats=JSON.parse(document.getElementById('qd_socialStats').value);}catch(e){}
+  [0,1].forEach(n=>{QD.stories[n]={org:document.getElementById(`st_org_${n}`).value,quote:document.getElementById(`st_quote_${n}`).value,attr:document.getElementById(`st_attr_${n}`).value};});
+  ['pie1','pie2','pie3'].forEach(pid=>{QD[pid].data=QD[pid].labels.map((_,li)=>parseInt(document.getElementById(`${pid}_${li}`).value)||0);});
+  const msg=document.getElementById('save-msg');msg.style.display='block';setTimeout(()=>msg.style.display='none',2500);
+  renderAll();
+}
+function downloadApp(){
+  const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kinia-board-dashboard.html';a.click();
+}
+document.getElementById('today').textContent=new Date().toLocaleDateString('en-IE',{year:'numeric',month:'long',day:'numeric'});
+renderAll();
+</script>
+</body>
+</html>
