@@ -1,4 +1,4 @@
-  h+=`<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:10px">Qualitative data</h3><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,141 +6,157 @@
 <title>Kinia — Board Impact Dashboard 2026–2030</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --ocean:#262262;--ocean-light:#3d3899;
-    --orange:#f37021;--orange-light:#f8a06a;--orange-pale:#fde8d8;
-    --sky:#9dceef;--sky-dark:#1a7ab5;
-    --zest:#b9f24c;--zest-dark:#5a8a1a;
-    --forest:#005129;--forest-light:#007a3d;
-    --lemon:#f7efca;--lemon-dark:#b89a00;
-    --pink:#fad4d6;--candy:#ef4d41;
-    --sunflower:#ffcf01;
-    --text:#1a1a2e;--muted:#5a5a7a;--border:#e2e0f0;
-    --bg:#f8f7fc;--white:#ffffff;
-  }
-  html{font-family:'Roboto',sans-serif;font-size:14px;color:var(--text);background:var(--bg)}
-  h1{font-size:26px;font-weight:300;letter-spacing:-0.3px}
-  h2{font-size:18px;font-weight:500}
-  h3{font-size:14px;font-weight:500}
-  nav{background:var(--ocean);padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;flex-wrap:wrap}
-  .nav-brand{display:flex;align-items:center;gap:10px;padding:12px 0;margin-right:24px}
-  .kinia-k{width:34px;height:34px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:white;font-family:'Roboto',sans-serif}
-  .nav-brand span{color:white;font-size:17px;font-weight:300;letter-spacing:1px}
-  .nav-tabs{display:flex;gap:0;flex:1;flex-wrap:wrap}
-  .nav-tab{padding:16px 14px;color:rgba(255,255,255,0.65);font-size:12px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.2s;font-family:'Roboto',sans-serif;white-space:nowrap}
-  .nav-tab:hover{color:white}
-  .nav-tab.active{color:white;border-bottom-color:var(--orange)}
-  .nav-right{display:flex;align-items:center;gap:8px;padding:8px 0}
-  .year-pill{padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;cursor:pointer;background:none;font-family:'Roboto',sans-serif}
-  .year-pill.active{background:var(--orange);border-color:var(--orange);color:white}
-  .page{display:none;padding:20px;max-width:1180px;margin:0 auto}
-  .page.active{display:block}
-  .page-header{background:var(--ocean);border-radius:12px;padding:24px 28px;margin-bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
-  .page-header h1{color:white}
-  .page-header p{color:rgba(255,255,255,0.7);font-size:12px;margin-top:3px}
-  .header-badge{background:var(--orange);color:white;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500}
-  .card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px}
-  .card-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:12px}
-  .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-  .mcard{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
-  .mcard .mlabel{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
-  .mcard .mval{font-size:24px;font-weight:300;color:var(--ocean)}
-  .mcard .msub{font-size:11px;color:var(--muted);margin-top:3px}
-  .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
-  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-  .insight{background:var(--orange-pale);border-left:4px solid var(--orange);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:16px}
-  .insight .ititle{font-size:10px;font-weight:500;color:var(--orange);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px}
-  .insight p{font-size:13px;color:var(--text);line-height:1.6}
-  .kpi-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;font-size:12px}
-  .kpi-label{width:155px;color:var(--muted);flex-shrink:0;font-size:11px}
-  .kpi-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;position:relative}
-  .kpi-bar-tgt{position:absolute;left:0;top:0;height:100%;background:var(--sky);opacity:0.4;width:100%;border-radius:3px}
-  .kpi-bar-act{position:absolute;left:0;top:0;height:100%;border-radius:3px}
-  .kpi-vals{min-width:95px;text-align:right;font-size:11px;color:var(--text)}
-  .rag{font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500;min-width:36px;text-align:center}
-  .rag-g{background:#d4edda;color:#155724}
-  .rag-a{background:#fff3cd;color:#856404}
-  .rag-r{background:#f8d7da;color:#721c24}
-  .rag-n{background:var(--border);color:var(--muted)}
-  .trend-table{width:100%;border-collapse:collapse;font-size:11px}
-  .trend-table th{text-align:left;padding:5px 8px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:0.05em}
-  .trend-table td{padding:7px 8px;border-bottom:0.5px solid var(--border);color:var(--text)}
-  .trend-table tr:last-child td{border-bottom:none}
-  .tgt-txt{color:var(--muted)}
-  .act-txt{color:var(--ocean);font-weight:500}
-  .pie-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-  .pie-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
-  .pie-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
-  .story-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;border-top:4px solid var(--ocean)}
-  .story-org{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--orange);margin-bottom:5px}
-  .story-quote{font-size:13px;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:8px}
-  .story-attr{font-size:11px;color:var(--muted)}
-  .partner-chip{background:var(--lemon);border:1px solid var(--lemon-dark);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--ocean);font-weight:500;display:inline-block;margin:3px}
-  .stat-chip{background:var(--ocean);color:white;border-radius:8px;padding:10px 14px;text-align:center}
-  .stat-chip .sc-val{font-size:22px;font-weight:300}
-  .stat-chip .sc-label{font-size:10px;opacity:0.75;margin-top:2px}
-  .pol-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--sky-dark)}
-  .fund-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--forest)}
-  .btn-orange{background:var(--orange);color:white;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif;text-decoration:none;display:inline-block}
-  .btn-ocean{background:var(--ocean);color:white;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
-  .sec-div{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
-  .sec-div-line{flex:1;height:1px;background:var(--border)}
-  .sec-div-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);white-space:nowrap}
-  .dl-btn{display:inline-flex;align-items:center;gap:5px;background:var(--forest);color:white;border:none;border-radius:8px;padding:7px 15px;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif}
-  footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:32px}
-  input[type=password],input[type=number],input[type=text],textarea{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:'Roboto',sans-serif;color:var(--text)}
-  input:focus,textarea:focus{outline:none;border-color:var(--ocean)}
-  .field-group{margin-bottom:12px}
-  .field-group label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);display:block;margin-bottom:3px}
-  .field-tgt{font-size:10px;color:var(--muted);margin-bottom:3px}
-  @media(max-width:680px){.metric-grid,.g2,.g3,.g4{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}.nav-tab{font-size:11px;padding:12px 9px}}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ocean:#262262;--ocean-light:#3d3899;--orange:#f37021;--orange-pale:#fde8d8;
+  --sky:#9dceef;--sky-dark:#1a7ab5;--zest:#b9f24c;--forest:#005129;--forest-light:#007a3d;
+  --lemon:#f7efca;--lemon-dark:#b89a00;--pink:#fad4d6;--candy:#ef4d41;
+  --text:#1a1a2e;--muted:#5a5a7a;--border:#e2e0f0;--bg:#f8f7fc;--white:#ffffff;
+}
+html{font-family:'Roboto',sans-serif;font-size:14px;color:var(--text);background:var(--bg)}
+h1{font-size:26px;font-weight:300;letter-spacing:-0.3px}
+h2{font-size:18px;font-weight:500}
+h3{font-size:14px;font-weight:500}
+
+#viewer-gate{position:fixed;inset:0;background:var(--ocean);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.gate-box{background:white;border-radius:16px;padding:40px;max-width:380px;width:100%;text-align:center}
+
+nav{background:var(--ocean);padding:0 20px;display:flex;align-items:center;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+.nav-brand{display:flex;align-items:center;gap:10px;padding:12px 0;margin-right:24px}
+.kinia-k{width:34px;height:34px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:white}
+.nav-brand span{color:white;font-size:17px;font-weight:300;letter-spacing:1px}
+.nav-tabs{display:flex;flex:1;flex-wrap:wrap}
+.nav-tab{padding:16px 12px;color:rgba(255,255,255,0.65);font-size:12px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.2s;font-family:'Roboto',sans-serif;white-space:nowrap}
+.nav-tab:hover{color:white}
+.nav-tab.active{color:white;border-bottom-color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:8px;padding:8px 0}
+.year-pill{padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;cursor:pointer;background:none;font-family:'Roboto',sans-serif}
+.year-pill.active{background:var(--orange);border-color:var(--orange);color:white}
+
+.page{display:none;padding:20px;max-width:1180px;margin:0 auto}
+.page.active{display:block}
+.page-header{background:var(--ocean);border-radius:12px;padding:24px 28px;margin-bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.page-header h1{color:white}
+.page-header p{color:rgba(255,255,255,0.7);font-size:12px;margin-top:3px}
+.header-badge{background:var(--orange);color:white;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px}
+.card-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:12px}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.mcard{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
+.mcard .mlabel{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
+.mcard .mval{font-size:24px;font-weight:300;color:var(--ocean)}
+.mcard .msub{font-size:11px;color:var(--muted);margin-top:3px}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+
+.insight-box{border-left:4px solid var(--border);background:var(--bg);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:16px}
+.insight-box.live{border-left-color:var(--orange);background:var(--orange-pale)}
+.insight-box .ititle{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px}
+.insight-box.live .ititle{color:var(--orange)}
+.insight-box p{font-size:13px;color:var(--muted);font-style:italic;line-height:1.6}
+.insight-box.live p{color:var(--text);font-style:normal}
+
+.smart-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.si-card{border-radius:10px;padding:14px 16px;border:1px solid var(--border);background:var(--white)}
+.si-card .si-icon{font-size:20px;margin-bottom:6px}
+.si-card .si-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px}
+.si-card .si-val{font-size:18px;font-weight:500;color:var(--ocean);margin-bottom:3px}
+.si-card .si-sub{font-size:11px;color:var(--muted);line-height:1.5}
+.si-green{background:#f0faf4;border-color:#a8d5b5}.si-green .si-val{color:var(--forest)}
+.si-amber{background:#fffbf0;border-color:#f5d78e}.si-amber .si-val{color:#854f0b}
+.si-ocean{background:#eef0fc;border-color:#b0aee8}.si-ocean .si-val{color:var(--ocean)}
+.si-orange{background:var(--orange-pale);border-color:#f8a06a}.si-orange .si-val{color:var(--orange)}
+
+.kpi-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.kpi-label{width:155px;color:var(--muted);flex-shrink:0;font-size:11px}
+.kpi-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;position:relative}
+.kpi-bar-tgt{position:absolute;left:0;top:0;height:100%;background:var(--sky);opacity:0.4;width:100%;border-radius:3px}
+.kpi-bar-act{position:absolute;left:0;top:0;height:100%;border-radius:3px}
+.kpi-vals{min-width:95px;text-align:right;font-size:11px}
+.rag{font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500;min-width:36px;text-align:center;display:inline-block}
+.rag-g{background:#d4edda;color:#155724}
+.rag-a{background:#fff3cd;color:#856404}
+.rag-r{background:#f8d7da;color:#721c24}
+.rag-n{background:var(--border);color:var(--muted)}
+
+.trend-table{width:100%;border-collapse:collapse;font-size:11px}
+.trend-table th{text-align:left;padding:5px 8px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:0.05em}
+.trend-table td{padding:7px 8px;border-bottom:0.5px solid var(--border);color:var(--text)}
+.trend-table tr:last-child td{border-bottom:none}
+.tgt-txt{color:var(--muted)}
+
+.pie-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pie-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.pie-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+.story-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;border-top:4px solid var(--ocean)}
+.story-media{width:100%;height:200px;object-fit:cover;display:block}
+.story-media-ph{width:100%;height:160px;background:var(--ocean);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+.story-media-ph span{color:rgba(255,255,255,0.45);font-size:11px}
+.story-body{padding:16px}
+.story-org{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--orange);margin-bottom:4px}
+.story-title{font-size:14px;font-weight:500;color:var(--ocean);margin-bottom:7px;line-height:1.4}
+.story-quote{font-size:13px;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:8px}
+.story-attr{font-size:11px;color:var(--muted)}
+.story-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.story-tag{background:var(--lemon);color:var(--ocean);font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+.story-video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden}
+.story-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+
+.partner-chip{background:var(--lemon);border:1px solid var(--lemon-dark);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--ocean);font-weight:500;display:inline-block;margin:3px}
+.pol-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--sky-dark)}
+.fund-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--forest)}
+
+.btn-orange{background:var(--orange);color:white;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+.btn-ocean{background:var(--ocean);color:white;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+.dl-btn{display:inline-flex;align-items:center;gap:5px;background:var(--forest);color:white;border:none;border-radius:8px;padding:7px 15px;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif}
+.sec-div{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
+.sec-div-line{flex:1;height:1px;background:var(--border)}
+.sec-div-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);white-space:nowrap}
+
+input[type=password],input[type=number],input[type=text],input[type=url],textarea,select{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:'Roboto',sans-serif;color:var(--text);background:white}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ocean)}
+.field-group{margin-bottom:12px}
+.field-group label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);display:block;margin-bottom:3px}
+.field-tgt{font-size:10px;color:var(--muted);margin-bottom:3px}
+
+footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:32px}
+@media(max-width:680px){.metric-grid,.g2,.g3,.g4,.smart-insights{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}}
 </style>
 </head>
 <body>
-<nav>
-  <div class="nav-brand">
-    <div class="kinia-k">k</div>
-    <span>kinia</span>
+
+<!-- VIEWER GATE -->
+<div id="viewer-gate">
+  <div class="gate-box">
+    <div class="kinia-k" style="width:52px;height:52px;font-size:26px;margin:0 auto 14px">k</div>
+    <h2 style="color:var(--ocean);margin-bottom:4px">Kinia Board Dashboard</h2>
+    <p style="color:var(--orange);font-size:12px;font-style:italic;margin-bottom:12px">Learning is Life · Ní thagann saol gan foghalaim</p>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Strategic Plan 2026–2030<br>Enter your board PIN to continue.</p>
+    <input type="password" id="viewer-pin" placeholder="Board PIN" style="margin-bottom:14px;text-align:center;font-size:18px;letter-spacing:6px;max-width:220px">
+    <br>
+    <button class="btn-ocean" onclick="checkViewerPin()" style="margin-top:10px;min-width:180px">Enter dashboard</button>
+    <p id="viewer-err" style="color:#c0392b;font-size:12px;margin-top:10px;display:none">Incorrect PIN — please try again</p>
   </div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('overview',this)">Overview</button>
-    <button class="nav-tab" onclick="showPage('pillar1',this)">Pillar 1</button>
-    <button class="nav-tab" onclick="showPage('pillar2',this)">Pillar 2</button>
-    <button class="nav-tab" onclick="showPage('pillar3',this)">Pillar 3</button>
-    <button class="nav-tab" onclick="showPage('influence',this)">Reach &amp; Influence</button>
-    <button class="nav-tab" onclick="showPage('stories',this)">Impact Stories</button>
-    <button class="nav-tab" onclick="showPage('risks',this)">Risks</button>
-  </div>
-  <div class="nav-right">
-    <div id="year-pills" style="display:flex;gap:5px;flex-wrap:wrap">
-      <button class="year-pill active" onclick="setYear(2024,this)">2024</button>
-      <button class="year-pill" onclick="setYear(2025,this)">2025</button>
-      <button class="year-pill" onclick="setYear(2026,this)">2026</button>
-      <button class="year-pill" onclick="setYear(2027,this)">2027</button>
-      <button class="year-pill" onclick="setYear(2028,this)">2028</button>
-      <button class="year-pill" onclick="setYear(2029,this)">2029</button>
-      <button class="year-pill" onclick="setYear(2030,this)">2030</button>
-    </div>
-    <button class="btn-orange" onclick="showAdmin()" style="font-size:11px;padding:5px 12px;margin-left:6px">Admin</button>
-  </div>
-</nav>
+</div>
 
 <!-- ADMIN OVERLAY -->
 <div id="admin-overlay" style="display:none;position:fixed;inset:0;background:rgba(38,34,98,0.88);z-index:200;overflow-y:auto;padding:32px 16px">
   <div id="admin-login" style="background:white;border-radius:14px;padding:32px;max-width:360px;margin:0 auto;text-align:center">
     <div class="kinia-k" style="margin:0 auto 12px;width:46px;height:46px;font-size:22px">k</div>
     <h2 style="color:var(--ocean);margin-bottom:5px">Admin access</h2>
-    <p style="color:var(--muted);font-size:12px;margin-bottom:20px">Enter PIN to update data</p>
-    <input type="password" id="pin-input" placeholder="PIN" style="margin-bottom:12px;text-align:center;font-size:18px;letter-spacing:6px">
+    <p style="color:var(--muted);font-size:12px;margin-bottom:20px">Enter admin PIN to update data</p>
+    <input type="password" id="admin-pin-input" placeholder="PIN" style="margin-bottom:12px;text-align:center;font-size:18px;letter-spacing:6px">
     <br><br>
-    <button class="btn-ocean" onclick="checkPin()">Unlock</button>
+    <button class="btn-ocean" onclick="checkAdminPin()">Unlock</button>
     <button onclick="hideAdmin()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;margin-left:12px">Cancel</button>
-    <p id="pin-err" style="color:#c0392b;font-size:12px;margin-top:8px;display:none">Incorrect PIN</p>
+    <p id="admin-pin-err" style="color:#c0392b;font-size:12px;margin-top:8px;display:none">Incorrect PIN</p>
   </div>
-  <div id="admin-panel" style="display:none;background:white;border-radius:14px;padding:32px;max-width:900px;margin:0 auto">
+  <div id="admin-panel" style="display:none;background:white;border-radius:14px;padding:32px;max-width:960px;margin:0 auto">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
       <h2 style="color:var(--ocean)">Enter actuals &amp; qualitative data</h2>
       <div style="display:flex;gap:8px">
@@ -152,6 +168,34 @@
     <div id="save-msg" style="display:none;background:#d4edda;color:#155724;border-radius:8px;padding:10px;text-align:center;margin-top:14px;font-size:13px">Saved successfully.</div>
   </div>
 </div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand"><div class="kinia-k">k</div><span>kinia</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('overview',this)">Overview</button>
+    <button class="nav-tab" onclick="showPage('quarterly',this)">Quarterly</button>
+    <button class="nav-tab" onclick="showPage('insights',this)">Insights</button>
+    <button class="nav-tab" onclick="showPage('pillar1',this)">Pillar 1</button>
+    <button class="nav-tab" onclick="showPage('pillar2',this)">Pillar 2</button>
+    <button class="nav-tab" onclick="showPage('pillar3',this)">Pillar 3</button>
+    <button class="nav-tab" onclick="showPage('influence',this)">Reach &amp; Influence</button>
+    <button class="nav-tab" onclick="showPage('stories',this)">Impact Stories</button>
+    <button class="nav-tab" onclick="showPage('risks',this)">Risks</button>
+  </div>
+  <div class="nav-right">
+    <div style="display:flex;gap:5px;flex-wrap:wrap">
+      <button class="year-pill active" onclick="setYear(2024,this)">2024</button>
+      <button class="year-pill" onclick="setYear(2025,this)">2025</button>
+      <button class="year-pill" onclick="setYear(2026,this)">2026</button>
+      <button class="year-pill" onclick="setYear(2027,this)">2027</button>
+      <button class="year-pill" onclick="setYear(2028,this)">2028</button>
+      <button class="year-pill" onclick="setYear(2029,this)">2029</button>
+      <button class="year-pill" onclick="setYear(2030,this)">2030</button>
+    </div>
+    <button class="btn-orange" onclick="showAdmin()" style="font-size:11px;padding:5px 12px;margin-left:6px">Admin</button>
+  </div>
+</nav>
 
 <!-- OVERVIEW -->
 <div id="page-overview" class="page active">
@@ -180,7 +224,7 @@
       <div style="position:relative;height:190px"><canvas id="depChart"></canvas></div>
     </div>
   </div>
-  <div class="card" style="margin-bottom:18px"><div class="card-title">Mission reach — educators &amp; young people 2024–2030</div>
+  <div class="card" style="margin-bottom:18px"><div class="card-title">Mission reach 2024–2030</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
       <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Educators upskilled</span>
       <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>Young people ÷10</span>
@@ -189,10 +233,79 @@
   </div>
 </div>
 
+<!-- QUARTERLY -->
+<div id="page-quarterly" class="page">
+  <div class="page-header">
+    <div><h1>Quarterly tracker</h1><p>In-year progress on key KPIs — cumulative totals per quarter.</p></div>
+    <div class="header-badge">Select year below</div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap" id="q-year-row">
+    <button class="year-pill active" onclick="setQYear(2024,this)">2024</button>
+    <button class="year-pill" onclick="setQYear(2025,this)">2025</button>
+    <button class="year-pill" onclick="setQYear(2026,this)">2026</button>
+    <button class="year-pill" onclick="setQYear(2027,this)">2027</button>
+    <button class="year-pill" onclick="setQYear(2028,this)">2028</button>
+    <button class="year-pill" onclick="setQYear(2029,this)">2029</button>
+    <button class="year-pill" onclick="setQYear(2030,this)">2030</button>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">In-year KPI progress</div><div class="sec-div-line"></div></div>
+  <div id="q-kpi-cards" class="g2" style="margin-bottom:18px"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Quarterly trend charts</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Educators upskilled — quarterly cumulative</div><div style="position:relative;height:200px"><canvas id="q-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached — quarterly cumulative</div><div style="position:relative;height:200px"><canvas id="q-yp-chart"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Youth badges awarded — quarterly cumulative</div><div style="position:relative;height:200px"><canvas id="q-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">SE revenue — quarterly cumulative (€M)</div><div style="position:relative;height:200px"><canvas id="q-se-chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-title">Summary table — <span id="q-table-year">2026</span></div>
+    <div style="overflow-x:auto"><table class="trend-table" id="q-summary-table"></table></div>
+  </div>
+</div>
+
+<!-- SMART INSIGHTS -->
+<div id="page-insights" class="page">
+  <div class="page-header">
+    <div><h1>Smart insights</h1><p>Auto-generated analysis — updated as actuals are entered.</p></div>
+    <div class="header-badge">Year: <span class="yr-badge">2026</span></div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Performance at a glance</div><div class="sec-div-line"></div></div>
+  <div class="smart-insights" id="si-cards"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Mission efficiency</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Cost per young person reached (€)</div><div style="position:relative;height:200px"><canvas id="si-cpy-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Revenue vs reach growth (2024 = 100)</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>Revenue</span>
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Young people</span>
+        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#9dceef;display:inline-block"></span>Educators</span>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="si-index-chart"></canvas></div>
+    </div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Credentialing momentum</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Credentials per active platform user (%)</div><div style="position:relative;height:200px"><canvas id="si-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badge trajectory to 2030</div><div style="position:relative;height:200px"><canvas id="si-badge-chart"></canvas></div></div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Financial independence</div><div class="sec-div-line"></div></div>
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-title">Grant dependency vs SE share — progress toward 23% target</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
+      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Grant dependency</span>
+      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>SE share</span>
+      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#b9f24c;display:inline-block"></span>23% target</span>
+    </div>
+    <div style="position:relative;height:200px"><canvas id="si-fin-chart"></canvas></div>
+  </div>
+</div>
+
 <!-- PILLAR 1 -->
 <div id="page-pillar1" class="page">
   <div class="page-header"><div><h1>Pillar 1 — deepening educator expertise</h1><p>Best-in-class bilingual professional development in AI, creative technology and green skills.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
-  <div id="p1-insight-box" class="insight" style="border-left-color:var(--border);background:var(--bg)"><div class="ititle" style="color:var(--muted)">Insight snapshot</div><p id="p1-insight-text" style="color:var(--muted);font-style:italic">Insight will appear here once data is entered for this year.</p></div>
+  <div id="p1-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p1-insight-text">Insight will appear here once data is entered for this year.</p></div>
   <div class="metric-grid" id="p1-metrics"></div>
   <div class="g2">
     <div class="card"><div class="card-title">KPI progress vs target</div><div id="p1-bars"></div></div>
@@ -210,7 +323,7 @@
 <!-- PILLAR 2 -->
 <div id="page-pillar2" class="page">
   <div class="page-header"><div><h1>Pillar 2 — driving system-wide educational change</h1><p>Embedding recognised credentials and scalable digital tools across the education system.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
-  <div id="p2-insight-box" class="insight" style="border-left-color:var(--border);background:var(--bg)"><div class="ititle" style="color:var(--muted)">Insight snapshot</div><p id="p2-insight-text" style="color:var(--muted);font-style:italic">Insight will appear here once data is entered for this year.</p></div>
+  <div id="p2-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p2-insight-text">Insight will appear here once data is entered for this year.</p></div>
   <div class="metric-grid" id="p2-metrics"></div>
   <div class="g2">
     <div class="card"><div class="card-title">KPI progress vs target</div><div id="p2-bars"></div></div>
@@ -233,8 +346,8 @@
 
 <!-- PILLAR 3 -->
 <div id="page-pillar3" class="page">
-  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1><p>Targeting 23–25% social enterprise revenue share by 2030, with a path to 30% by 2032.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
-  <div id="p3-insight-box" class="insight" style="border-left-color:var(--border);background:var(--bg)"><div class="ititle" style="color:var(--muted)">Insight snapshot</div><p id="p3-insight-text" style="color:var(--muted);font-style:italic">Insight will appear here once data is entered for this year.</p></div>
+  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1><p>Targeting 23–25% SE revenue share by 2030, with a path to 30% by 2032.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
+  <div id="p3-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p3-insight-text">Insight will appear here once data is entered for this year.</p></div>
   <div class="metric-grid" id="p3-metrics"></div>
   <div class="g2">
     <div class="card"><div class="card-title">Revenue streams — target vs actual</div><div style="overflow-x:auto" id="p3-rev-table"></div></div>
@@ -286,10 +399,10 @@
   <div class="card">
     <div class="card-title">Strategic questions for board discussion</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px">
-      <div class="insight" style="margin:0"><div class="ititle">Social enterprise structure</div><p>Maintain integrated model, or explore a spin-out entity?</p></div>
-      <div class="insight" style="margin:0"><div class="ititle">Credentialing strategy</div><p>Pursue proprietary and 3rd-level credentials in parallel, or prioritise one?</p></div>
-      <div class="insight" style="margin:0"><div class="ititle">Geographic focus</div><p>Regional depth (stronger evidence) vs national breadth (accelerated reach)?</p></div>
-      <div class="insight" style="margin:0"><div class="ititle">Resource investment priorities</div><p>Outsource webshop, invest in impact measurement, or fund external comms support?</p></div>
+      <div class="insight-box live" style="margin:0"><div class="ititle">Social enterprise structure</div><p>Maintain integrated model, or explore a spin-out entity?</p></div>
+      <div class="insight-box live" style="margin:0"><div class="ititle">Credentialing strategy</div><p>Pursue proprietary and 3rd-level credentials in parallel, or prioritise one?</p></div>
+      <div class="insight-box live" style="margin:0"><div class="ititle">Geographic focus</div><p>Regional depth (stronger evidence) vs national breadth (accelerated reach)?</p></div>
+      <div class="insight-box live" style="margin:0"><div class="ititle">Resource investment priorities</div><p>Outsource webshop, invest in impact measurement, or fund external comms support?</p></div>
     </div>
   </div>
 </div>
@@ -297,9 +410,25 @@
 <footer>Kinia &nbsp;·&nbsp; Learning is Life &nbsp;·&nbsp; Ní thagann saol gan foghalaim &nbsp;·&nbsp; Strategic Plan 2026–2030 &nbsp;·&nbsp; Board Confidential</footer>
 
 <script>
-const YEARS_ALL=[2024,2025,2026,2027,2028,2029,2030];
-const PLAN_START=2026;
-const T={
+var VIEWER_PIN = "board2026";
+var ADMIN_PIN  = "kinia2026";
+
+function checkViewerPin() {
+  if (document.getElementById('viewer-pin').value === VIEWER_PIN) {
+    document.getElementById('viewer-gate').style.display = 'none';
+  } else {
+    document.getElementById('viewer-err').style.display = 'block';
+  }
+}
+document.getElementById('viewer-pin').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkViewerPin();
+});
+
+var YEARS_ALL = [2024,2025,2026,2027,2028,2029,2030];
+var PLAN_START = 2026;
+var QUARTERS = ['Q1','Q2','Q3','Q4'];
+
+var T = {
   educators:      [26000,29000,32000,36000,41000,46000,50000],
   eduSupported:   [null,null,null,null,null,null,null],
   youngPeople:    [380000,430000,490000,560000,650000,730000,800000],
@@ -313,273 +442,558 @@ const T={
   eduCredentials: [200,350,600,1000,1600,2400,3000],
   youthBadges:    [100,200,400,800,3000,7000,10000],
   platformUsers:  [1800,2400,4000,5500,7000,8500,10000],
-  irishMedSchools:[8,14,20,40,65,85,100],
+  irishMedSchools:[8,14,20,40,65,85,100]
 };
 
-// Annual (incremental) targets — derived from cumulative where applicable, or standalone for financial/ratio metrics
-// Keys with null use the cumulative value directly (ratios, revenue already annual-ish)
-const ANNUAL_KEYS = {
-  educators:      true,
-  youngPeople:    true,
-  eduCredentials: true,
-  youthBadges:    true,
-  platformUsers:  true,
-  irishMedSchools:true,
-  revenue:        false,
-  seRevenue:      false,
-  grantRevenue:   false,
-  sePct:          false,
-};
+var ANNUAL_KEYS = {educators:true,youngPeople:true,eduCredentials:true,youthBadges:true,platformUsers:true,irishMedSchools:true,revenue:false,seRevenue:false,grantRevenue:false,sePct:false};
 
-function annualTarget(k, i) {
-  if (!ANNUAL_KEYS[k]) return null;
-  if (i === 0) return T[k][0];
-  if (T[k][i] === null) return null;
-  return T[k][i] - T[k][i-1];
-}
+var Q_KEYS = [
+  {k:'educators',     l:'Educators upskilled', dec:false, color:'#262262'},
+  {k:'youngPeople',   l:'Young people reached', dec:false, color:'#f37021'},
+  {k:'youthBadges',   l:'Youth badges awarded', dec:false, color:'#005129'},
+  {k:'seRevenue',     l:'SE revenue (€M)',       dec:true,  color:'#9dceef'},
+  {k:'eduCredentials',l:'Educator credentials', dec:false, color:'#3d3899'},
+  {k:'platformUsers', l:'Platform users',        dec:false, color:'#1a7ab5'}
+];
 
-function annualActual(k, y) {
-  const i = yi(y);
-  if (!ANNUAL_KEYS[k]) return "";
-  const act = getA(k, y);
-  if (act === "") return "";
-  if (i === 0) return act;
-  const prevAct = getA(k, YEARS_ALL[i-1]);
-  if (prevAct === "") return "";
-  return (parseFloat(act) - parseFloat(prevAct)).toFixed(k==="revenue"||k==="seRevenue"||k==="grantRevenue"?2:0);
-}
-let A={};
-let QD={
-  insights:{p1:{},p2:{},p3:{}},
-  mediaStats:[{val:"2.4M",label:"Total media reach"},{val:"18",label:"Press mentions"},{val:"6",label:"Broadcast appearances"}],
-  politicalItems:["Invited to present to the Joint Oireachtas Committee on Education — March 2025","Formal engagement with Dept. of Education on AI in Schools framework — ongoing","Cited in Dept. of Children & Youth Affairs annual report 2024","Participant in European Commission AI Literacy working group"],
-  partners:["Google","Salesforce","NTT Data","AWS","Dept. of Education","Dept. of Gaeltacht","SOLAS","ETBs","QQI","IUA"],
-  fundraisingItems:["Multi-annual funding secured from Dept. of Education 2024–2026 — €1.05M","Google.org partnership renewed — supporting AI CPD track development","Salesforce Social Impact grant awarded — €75K for platform development","Exploring IUA MicroCreds partnership with two third-level institutions"],
-  socialStats:[{val:"12.4K",label:"LinkedIn followers"},{val:"8.2K",label:"X / Twitter"},{val:"6.1K",label:"Instagram"},{val:"48K",label:"Monthly web visits"}],
-  stories:[
-    {org:"Primary school, Co. Galway",quote:"The Kinia programme transformed how I approach STEM. I now run a coding club with 40 pupils — something I never would have had the confidence to do before.",attr:"5th class teacher, DEIS school"},
-    {org:"Youth service, Dublin 17",quote:"Our young people — many of whom have never seen themselves as 'tech people' — are now designing apps, building robots and talking about careers in engineering. Kinia made that possible.",attr:"Youth worker, community organisation"},
+var A  = {};
+var QQ = {};
+var selectedYear  = 2026;
+var selectedQYear = 2026;
+
+var QD = {
+  insights: {p1:{}, p2:{}, p3:{}},
+  mediaStats: [{val:"2.4M",label:"Total media reach"},{val:"18",label:"Press mentions"},{val:"6",label:"Broadcast appearances"}],
+  politicalItems: ["Invited to present to the Joint Oireachtas Committee on Education — March 2025","Formal engagement with Dept. of Education on AI in Schools framework — ongoing","Cited in Dept. of Children & Youth Affairs annual report 2024","Participant in European Commission AI Literacy working group"],
+  partners: ["Google","Salesforce","NTT Data","AWS","Dept. of Education","Dept. of Gaeltacht","SOLAS","ETBs","QQI","IUA"],
+  fundraisingItems: ["Multi-annual funding secured from Dept. of Education 2024–2026 — €1.05M","Google.org partnership renewed — supporting AI CPD track development","Salesforce Social Impact grant awarded — €75K for platform development","Exploring IUA MicroCreds partnership with two third-level institutions"],
+  socialStats: [{val:"12.4K",label:"LinkedIn followers"},{val:"8.2K",label:"X / Twitter"},{val:"6.1K",label:"Instagram"},{val:"48K",label:"Monthly web visits"}],
+  stories: [
+    {title:"A teacher finds her STEM confidence",org:"Primary school, Co. Galway",quote:"The Kinia programme transformed how I approach STEM. I now run a coding club with 40 pupils — something I never would have had the confidence to do before.",attr:"5th class teacher, DEIS school",mediaType:"none",mediaUrl:"",tags:["Pillar 1","DEIS","Educator"]},
+    {title:"Young people leading the future",org:"Youth service, Dublin 17",quote:"Our young people — many of whom have never seen themselves as 'tech people' — are now designing apps, building robots and talking about careers in engineering. Kinia made that possible.",attr:"Youth worker, community organisation",mediaType:"none",mediaUrl:"",tags:["Pillar 2","Youth","Community"]}
   ],
   pie1:{labels:["Socio-econ. disadvantage","Rural communities","Girls in STEM","Irish language","Traveller / ethnic minority"],data:[38,24,18,12,8],colors:["#262262","#f37021","#9dceef","#b9f24c","#fad4d6"]},
   pie2:{labels:["Formal (schools)","Non-formal (youth work)"],data:[62,38],colors:["#262262","#f37021"]},
-  pie3:{labels:["English medium","Irish medium"],data:[78,22],colors:["#262262","#b9f24c"]},
+  pie3:{labels:["English medium","Irish medium"],data:[78,22],colors:["#262262","#b9f24c"]}
 };
 
-function yi(y){return YEARS_ALL.indexOf(y);}
-function getA(k,y){return A[k+"_"+y]??"";}
-function ragC(a,t){
-  if(a===""||a===null||t===null||t===undefined)return"n";
-  const r=parseFloat(a)/parseFloat(t);
-  return isNaN(r)?"n":r>=0.95?"g":r>=0.8?"a":"r";
+var charts = {};
+
+function yi(y) { return YEARS_ALL.indexOf(y); }
+function getA(k,y) { return A[k+'_'+y] !== undefined ? A[k+'_'+y] : ''; }
+function getQA(k,y,q) { var key = k+'_'+y+'_'+q; return QQ[key] !== undefined ? QQ[key] : ''; }
+
+function ragC(a,t) {
+  if (a===''||a===null||t===null||t===undefined) return 'n';
+  var r = parseFloat(a)/parseFloat(t);
+  if (isNaN(r)) return 'n';
+  return r>=0.95?'g':r>=0.8?'a':'r';
 }
-function fmtN(v,dec){
-  if(v===null||v===undefined||v==="")return"—";
-  const n=parseFloat(v);if(isNaN(n))return"—";
-  if(dec)return"€"+n.toFixed(2)+"M";
-  if(n>=1000000)return(n/1000000).toFixed(1)+"M";
-  if(n>=1000)return Math.round(n/1000)+"K";
+function fmtN(v,dec) {
+  if (v===null||v===undefined||v==='') return '—';
+  var n = parseFloat(v); if (isNaN(n)) return '—';
+  if (dec) return '€'+n.toFixed(2)+'M';
+  if (n>=1000000) return (n/1000000).toFixed(1)+'M';
+  if (n>=1000) return Math.round(n/1000)+'K';
   return n.toLocaleString();
 }
-function fmtT(t,dec){return(t===null||t===undefined)?"—":fmtN(t,dec);}
+function fmtT(t,dec) { return (t===null||t===undefined)?'—':fmtN(t,dec); }
+function annualTarget(k,i) {
+  if (!ANNUAL_KEYS[k]) return null;
+  if (T[k][i]===null) return null;
+  if (i===0) return T[k][0];
+  return T[k][i]-T[k][i-1];
+}
+function annualActual(k,y) {
+  var i=yi(y); if (!ANNUAL_KEYS[k]) return '';
+  var act=getA(k,y); if (act==='') return '';
+  if (i===0) return act;
+  var prev=getA(k,YEARS_ALL[i-1]); if (prev==='') return '';
+  return (parseFloat(act)-parseFloat(prev)).toFixed(0);
+}
 
-let selectedYear=2026;
-let charts={};
-
-function setYear(y){
-  selectedYear=y;
-  document.querySelectorAll('.year-pill').forEach(b=>b.classList.toggle('active',parseInt(b.textContent)===y));
-  document.querySelectorAll('.yr-badge').forEach(el=>el.textContent=y);
-  document.getElementById('ov-year').textContent=y;
+function setYear(y,btn) {
+  selectedYear = y;
+  document.querySelectorAll('.year-pill').forEach(function(b){ b.classList.toggle('active', parseInt(b.textContent)===y); });
+  document.querySelectorAll('.yr-badge').forEach(function(el){ el.textContent=y; });
+  document.getElementById('ov-year').textContent = y;
   renderAll();
 }
-
-function showPage(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+function setQYear(y,btn) {
+  selectedQYear = y;
+  document.querySelectorAll('#q-year-row .year-pill').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  document.getElementById('q-table-year').textContent = y;
+  renderQuarterly();
+}
+function showPage(id,btn) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
   document.getElementById('page-'+id).classList.add('active');
-  if(btn)btn.classList.add('active');
+  if (btn) btn.classList.add('active');
 }
 
-function renderMCard(label,key,dec,suffix){
-  const i=yi(selectedYear);
-  const tgt=T[key][i];const act=getA(key,selectedYear);
-  const rc=ragC(act,tgt);
-  const ann=annualTarget(key,i);
-  const td=(tgt===null)?"TBD":(dec?"€"+tgt+"M":fmtN(tgt,false))+(suffix||"");
-  const annD=ann!==null?(dec?"€"+parseFloat(ann).toFixed(2)+"M":fmtN(ann,false))+(suffix||""):null;
-  const ad=act!==""?(dec?"€"+parseFloat(act).toFixed(2)+"M":fmtN(act,false))+(suffix||""):null;
-  const annAct=annualActual(key,selectedYear);
-  const annActD=annAct!==""?(dec?"€"+parseFloat(annAct).toFixed(2)+"M":fmtN(annAct,false))+(suffix||""):null;
-  return`<div class="mcard">
-    <div class="mlabel">${label}</div>
-    <div class="mval">${td}</div>
-    ${annD?`<div style="font-size:10px;color:var(--muted);margin-top:3px">Annual target: <strong style="color:var(--ocean)">${annD}</strong></div>`:""}
-    ${ad?`<div style="margin-top:5px;display:flex;gap:5px;align-items:center;flex-wrap:wrap"><span class="rag rag-${rc}" style="font-size:11px">Cumulative: ${ad}</span>${annActD?`<span style="font-size:10px;color:var(--muted)">Annual: ${annActD}</span>`:""}</div>`:`<div class="msub">No actual entered</div>`}
-  </div>`;
+function renderMCard(label,key,dec,suffix) {
+  var i=yi(selectedYear), tgt=T[key][i], act=getA(key,selectedYear);
+  var rc=ragC(act,tgt), ann=annualTarget(key,i);
+  var sf=suffix||'';
+  var td=(tgt===null)?'TBD':(dec?'€'+tgt+'M':fmtN(tgt,false))+sf;
+  var annD=ann!==null?(dec?'€'+parseFloat(ann).toFixed(2)+'M':fmtN(ann,false))+sf:null;
+  var ad=act!==''?(dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:null;
+  var annAct=annualActual(key,selectedYear);
+  var annActD=annAct!==''?fmtN(annAct,dec)+sf:null;
+  return '<div class="mcard"><div class="mlabel">'+label+'</div><div class="mval">'+td+'</div>'+
+    (annD?'<div style="font-size:10px;color:var(--muted);margin-top:3px">Annual target: <strong style="color:var(--ocean)">'+annD+'</strong></div>':'')+
+    (ad?'<div style="margin-top:5px;display:flex;gap:5px;align-items:center;flex-wrap:wrap"><span class="rag rag-'+rc+'" style="font-size:11px">Cumulative: '+ad+'</span>'+(annActD?'<span style="font-size:10px;color:var(--muted)">Annual: '+annActD+'</span>':'')+'</div>':'<div class="msub">No actual entered</div>')+
+    '</div>';
 }
 
-function renderBars(keys,color){
-  const i=yi(selectedYear);
-  return keys.map(({k,l,dec})=>{
-    const tgt=T[k][i];const act=getA(k,selectedYear);
-    const bp=tgt?Math.min(100,Math.round(parseFloat(act||0)/tgt*100)):0;
-    const rc=ragC(act,tgt);
-    return`<div class="kpi-row"><span class="kpi-label">${l}</span><div class="kpi-bar-wrap"><div class="kpi-bar-tgt"></div>${act!==""?`<div class="kpi-bar-act" style="width:${bp}%;background:${color}"></div>`:""}</div><span class="kpi-vals">${act!==""?fmtN(act,dec)+" / ":""}<span class="tgt-txt">${fmtT(tgt,dec)}</span></span><span class="rag rag-${rc}">${rc==="n"?"—":rc.toUpperCase()}</span></div>`;
+function renderBars(keys,color) {
+  var i=yi(selectedYear);
+  return keys.map(function(m) {
+    var tgt=T[m.k][i], act=getA(m.k,selectedYear);
+    var bp=tgt?Math.min(100,Math.round(parseFloat(act||0)/tgt*100)):0;
+    var rc=ragC(act,tgt);
+    return '<div class="kpi-row"><span class="kpi-label">'+m.l+'</span><div class="kpi-bar-wrap"><div class="kpi-bar-tgt"></div>'+(act!==''?'<div class="kpi-bar-act" style="width:'+bp+'%;background:'+color+'"></div>':'')+'</div><span class="kpi-vals">'+(act!==''?fmtN(act,m.dec)+' / ':'')+' <span class="tgt-txt">'+fmtT(tgt,m.dec)+'</span></span><span class="rag rag-'+rc+'">'+(rc==='n'?'—':rc.toUpperCase())+'</span></div>';
   }).join('');
 }
 
-function renderTrendTable(id,rows){
-  const el=document.getElementById(id);
-  el.innerHTML=`<thead><tr><th>Metric</th>${YEARS_ALL.map(y=>`<th>${y}</th>`).join('')}</tr></thead><tbody>${rows.map(({k,l,dec,suffix})=>`<tr><td>${l}</td>${YEARS_ALL.map((y,i)=>{
-    const tgt=T[k][i];const act=getA(k,y);const rc=ragC(act,tgt);
-    const ann=annualTarget(k,i);
-    const td=(tgt===null)?"—":(dec?"€"+tgt+"M":fmtN(tgt,false))+(suffix||"");
-    const annD=ann!==null?(dec?"€"+parseFloat(ann).toFixed(2)+"M":fmtN(ann,false))+(suffix||""):null;
-    const ad=act!==""?(dec?"€"+parseFloat(act).toFixed(2)+"M":fmtN(act,false))+(suffix||""):"";
-    return`<td>
-      <div class="tgt-txt" style="font-size:10px">${td}</div>
-      ${annD?`<div style="font-size:10px;color:var(--sky-dark)">+${annD} pa</div>`:""}
-      ${ad?`<div><span class="rag rag-${rc}" style="font-size:10px">${ad}</span></div>`:""}
-    </td>`;
-  }).join('')}</tr>`).join('')}</tbody>`;
+function renderTrendTable(id,rows) {
+  var el=document.getElementById(id);
+  var html='<thead><tr><th>Metric</th>'+YEARS_ALL.map(function(y){return '<th>'+y+'</th>';}).join('')+'</tr></thead><tbody>';
+  rows.forEach(function(r) {
+    html+='<tr><td>'+r.l+'</td>';
+    YEARS_ALL.forEach(function(y,i) {
+      var tgt=T[r.k][i], act=getA(r.k,y), rc=ragC(act,tgt);
+      var ann=annualTarget(r.k,i), sf=r.suffix||'';
+      var td=(tgt===null)?'—':(r.dec?'€'+tgt+'M':fmtN(tgt,false))+sf;
+      var annD=ann!==null?fmtN(ann,r.dec)+sf:null;
+      var ad=act!==''?(r.dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:'';
+      html+='<td><div class="tgt-txt" style="font-size:10px">'+td+'</div>'+(annD?'<div style="font-size:10px;color:var(--sky-dark)">+'+annD+' pa</div>':'')+(ad?'<div><span class="rag rag-'+rc+'" style="font-size:10px">'+ad+'</span></div>':'')+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  el.innerHTML=html;
 }
 
-function renderAll(){
-  const i=yi(selectedYear);
-  document.getElementById('ov-metrics').innerHTML=[
-    {l:"Educators upskilled",k:"educators",dec:false},{l:"Young people reached",k:"youngPeople",dec:false},
-    {l:"Total revenue",k:"revenue",dec:true},{l:"SE revenue share",k:"sePct",dec:false,s:"%"},
-  ].map(m=>renderMCard(m.l,m.k,m.dec,m.s||"")).join('');
+function renderQuarterly() {
+  var i=yi(selectedQYear);
+  var html='';
+  Q_KEYS.forEach(function(m) {
+    var tgt=T[m.k][i];
+    var qVals=QUARTERS.map(function(q){return getQA(m.k,selectedQYear,q);});
+    var latest=null;
+    qVals.forEach(function(v,qi){if(v!=='')latest={val:parseFloat(v),q:QUARTERS[qi]};});
+    var pct=latest&&tgt?Math.min(100,Math.round(latest.val/tgt*100)):0;
+    var rc=latest?ragC(latest.val,tgt):'n';
+    var qRow=QUARTERS.map(function(q){var v=getQA(m.k,selectedQYear,q);return '<span style="margin-right:6px;color:'+(v!==''?'var(--text)':'var(--border)')+'">'+q+(v!==''?': '+fmtN(v,m.dec):'')+'</span>';}).join('');
+    html+='<div class="mcard">'+
+      '<div class="mlabel">'+m.l+'</div>'+
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px">'+
+        '<div class="mval" style="font-size:20px">'+(latest?fmtN(latest.val,m.dec):'—')+'</div>'+
+        '<div style="font-size:11px;color:var(--muted)">'+(latest?'at '+latest.q:'no data yet')+'</div>'+
+      '</div>'+
+      '<div style="font-size:10px;color:var(--muted);margin-top:3px">Annual target: <strong style="color:var(--ocean)">'+fmtT(tgt,m.dec)+'</strong></div>'+
+      '<div style="margin-top:8px;height:5px;background:var(--border);border-radius:3px;overflow:hidden">'+
+        (latest?'<div style="width:'+pct+'%;height:100%;background:'+m.color+';border-radius:3px"></div>':'')+
+      '</div>'+
+      '<div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--muted)">'+
+        '<span>'+qRow+'</span>'+(latest?'<span class="rag rag-'+rc+'">'+pct+'%</span>':'')+
+      '</div>'+
+    '</div>';
+  });
+  document.getElementById('q-kpi-cards').innerHTML=html;
 
-  ['p1','p2','p3'].forEach(p=>{
-    const txt={'p1':insightP1(selectedYear),'p2':insightP2(selectedYear),'p3':insightP3(selectedYear)}[p];
-    const box=document.getElementById(p+'-insight-box');
-    const el=document.getElementById(p+'-insight-text');
-    if(txt){
-      box.style.borderLeftColor='var(--orange)';box.style.background='var(--orange-pale)';
-      el.style.color='var(--text)';el.style.fontStyle='normal';
-      el.textContent=txt;
+  var tblHtml='<thead><tr><th>KPI</th><th>Annual target</th>'+QUARTERS.map(function(q){return '<th>'+q+'</th>';}).join('')+'<th>Latest vs target</th></tr></thead><tbody>';
+  Q_KEYS.forEach(function(m) {
+    var tgt=T[m.k][i];
+    tblHtml+='<tr><td style="font-weight:500">'+m.l+'</td><td class="tgt-txt">'+fmtT(tgt,m.dec)+'</td>';
+    QUARTERS.forEach(function(q){
+      var v=getQA(m.k,selectedQYear,q);
+      tblHtml+='<td>'+(v!==''?'<span style="color:var(--ocean);font-weight:500">'+fmtN(v,m.dec)+'</span>':'<span style="color:var(--border)">—</span>')+'</td>';
+    });
+    var latest2=null;
+    QUARTERS.forEach(function(q){var v=getQA(m.k,selectedQYear,q);if(v!=='')latest2=parseFloat(v);});
+    if (latest2===null) {
+      tblHtml+='<td><span style="color:var(--muted);font-size:11px">Awaiting data</span></td>';
     } else {
-      box.style.borderLeftColor='var(--border)';box.style.background='var(--bg)';
-      el.style.color='var(--muted)';el.style.fontStyle='italic';
-      el.textContent='Insight will appear here once data is entered for this year.';
+      var rc2=ragC(latest2,tgt), pct2=tgt?Math.round(latest2/tgt*100):0;
+      tblHtml+='<td><span class="rag rag-'+rc2+'">'+pct2+'%</span></td>';
     }
-  });[
-    {l:"Educators upskilled",k:"educators"},{l:"Educators supported",k:"eduSupported"},{l:"Platform users",k:"platformUsers"},{l:"Credentials issued",k:"eduCredentials"},
-  ].map(m=>renderMCard(m.l,m.k,false,"")).join('');
-  document.getElementById('p1-bars').innerHTML=renderBars([{k:"educators",l:"Educators upskilled",dec:false},{k:"eduSupported",l:"Educators supported",dec:false},{k:"platformUsers",l:"Platform users",dec:false},{k:"eduCredentials",l:"Credentials issued",dec:false}],"var(--ocean)");
-  renderTrendTable('p1-table',[{k:"educators",l:"Educators upskilled",dec:false,suffix:""},{k:"eduSupported",l:"Educators supported",dec:false,suffix:""},{k:"platformUsers",l:"Platform users",dec:false,suffix:""},{k:"eduCredentials",l:"Credentials issued",dec:false,suffix:""}]);
-
-  document.getElementById('p2-insight-text').textContent=insightP2(selectedYear);
-  document.getElementById('p2-metrics').innerHTML=[
-    {l:"Youth badges",k:"youthBadges"},{l:"Irish-med. schools",k:"irishMedSchools"},{l:"Young people reached",k:"youngPeople"},{l:"Organisations engaged",k:"orgsEngaged"},
-  ].map(m=>renderMCard(m.l,m.k,false,"")).join('');
-  document.getElementById('p2-bars').innerHTML=renderBars([{k:"youthBadges",l:"Youth badges",dec:false},{k:"irishMedSchools",l:"Irish-med. schools",dec:false},{k:"youngPeople",l:"Young people reached",dec:false},{k:"orgsEngaged",l:"Organisations engaged",dec:false}],"var(--orange)");
-  renderTrendTable('p2-table',[{k:"youthBadges",l:"Youth badges",dec:false,suffix:""},{k:"irishMedSchools",l:"Irish-med. schools",dec:false,suffix:""},{k:"youngPeople",l:"Young people reached",dec:false,suffix:""},{k:"orgsEngaged",l:"Organisations engaged",dec:false,suffix:""}]);
-
-  document.getElementById('p3-insight-text').textContent=insightP3(selectedYear);
-  document.getElementById('p3-metrics').innerHTML=[
-    {l:"Total revenue",k:"revenue",dec:true},{l:"SE revenue",k:"seRevenue",dec:true},{l:"Grant revenue",k:"grantRevenue",dec:true},{l:"SE share %",k:"sePct",dec:false,s:"%"},
-  ].map(m=>renderMCard(m.l,m.k,m.dec,m.s||"")).join('');
-  document.getElementById('p3-rev-table').innerHTML=`<table class="trend-table" style="width:100%"><thead><tr><th>Stream</th><th>Target</th><th>Actual</th><th>Variance</th><th>Status</th></tr></thead><tbody>${[{l:"Statutory grants",k:"grantRevenue"},{l:"Social enterprise",k:"seRevenue"},{l:"Corporate & other",k:"otherRevenue"},{l:"Total",k:"revenue"}].map(r=>{const tgt=T[r.k][i];const act=getA(r.k,selectedYear);const rc=ragC(act,tgt);const v=act!==""&&!isNaN(parseFloat(act))?(parseFloat(act)-tgt).toFixed(2):null;return`<tr><td>${r.l}</td><td class="tgt-txt">€${tgt}M</td><td class="act-txt">${act!==""?"€"+parseFloat(act).toFixed(2)+"M":"—"}</td><td style="color:${v!==null?(parseFloat(v)>=0?"var(--forest)":"var(--candy)"):"var(--muted)"}">${v!==null?(parseFloat(v)>=0?"+":"")+"€"+v+"M":"—"}</td><td><span class="rag rag-${rc}">${rc==="n"?"—":rc.toUpperCase()}</span></td></tr>`;}).join('')}</tbody></table>`;
-  renderTrendTable('p3-table',[{k:"revenue",l:"Total revenue",dec:true,suffix:""},{k:"seRevenue",l:"SE revenue",dec:true,suffix:""},{k:"grantRevenue",l:"Grant revenue",dec:true,suffix:""},{k:"sePct",l:"SE share %",dec:false,suffix:"%"}]);
-
-  renderInfluence();renderStories();buildCharts();buildPieCharts();
-}
-
-function insightP1(y){return QD.insights.p1[y]||"";}
-function insightP2(y){return QD.insights.p2[y]||"";}
-function insightP3(y){return QD.insights.p3[y]||"";}
-
-function renderInfluence(){
-  document.getElementById('media-stats').innerHTML=QD.mediaStats.map(s=>`<div class="card" style="text-align:center"><div class="mval" style="font-size:30px;font-weight:300;color:var(--ocean)">${s.val}</div><div class="mlabel" style="margin-top:5px">${s.label}</div></div>`).join('');
-  document.getElementById('political-items').innerHTML=QD.politicalItems.map(p=>`<div class="pol-item">${p}</div>`).join('');
-  document.getElementById('partner-chips').innerHTML=QD.partners.map(p=>`<span class="partner-chip">${p}</span>`).join('');
-  document.getElementById('fundraising-items').innerHTML=QD.fundraisingItems.map(f=>`<div class="fund-item">${f}</div>`).join('');
-  document.getElementById('social-stats').innerHTML=QD.socialStats.map(s=>`<div class="mcard" style="text-align:center"><div class="mval" style="color:var(--ocean)">${s.val}</div><div class="mlabel" style="margin-top:3px">${s.label}</div></div>`).join('');
-}
-function renderStories(){
-  document.getElementById('stories-grid').innerHTML=QD.stories.map(s=>`<div class="story-card"><div class="story-org">${s.org}</div><div class="story-quote">"${s.quote}"</div><div class="story-attr">— ${s.attr}</div></div>`).join('');
-}
-
-function mkChart(id,type,labels,datasets,opts){
-  if(charts[id]){charts[id].destroy();delete charts[id];}
-  const el=document.getElementById(id);if(!el)return;
-  charts[id]=new Chart(el,{type,data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},...opts}});
-}
-function buildCharts(){
-  const L=YEARS_ALL.map(String);
-  const gOpts={scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}}}};
-  mkChart('revChart','bar',L,[{label:'Grants',data:T.grantRevenue,backgroundColor:'#262262',stack:'a'},{label:'SE',data:T.seRevenue,backgroundColor:'#f37021',stack:'a'},{label:'Other',data:T.otherRevenue,backgroundColor:'#9dceef',stack:'a'}],{scales:{x:{stacked:true,ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{stacked:true,ticks:{color:'#888',font:{size:10},callback:v=>'€'+v.toFixed(1)+'M'},grid:{color:'rgba(0,0,0,0.05)'}}}});
-  mkChart('depChart','line',L,[{label:'Grant%',data:T.grantPct,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'SE%',data:T.sePct,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{min:0,max:100,ticks:{color:'#888',font:{size:10},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,0.05)'}}}});
-  mkChart('reachChart','line',L,[{label:'Educators',data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'YP÷10',data:T.youngPeople.map(v=>Math.round(v/10)),borderColor:'#f37021',backgroundColor:'rgba(243,112,33,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>v>=1000?Math.round(v/1000)+'K':v},grid:{color:'rgba(0,0,0,0.05)'}}}});
-  mkChart('p1Chart','line',L,[{label:'Educators',data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'Platform',data:T.platformUsers,borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#9dceef',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>v>=1000?Math.round(v/1000)+'K':v},grid:{color:'rgba(0,0,0,0.05)'}}}});
-  mkChart('p2Chart','line',L,[{label:'Credentials',data:T.eduCredentials,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},{label:'Badges',data:T.youthBadges,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>v>=1000?Math.round(v/1000)+'K':v},grid:{color:'rgba(0,0,0,0.05)'}}}});
-  mkChart('p3Chart','bar',L,[{label:'SE Revenue',data:T.seRevenue,backgroundColor:YEARS_ALL.map(y=>y<PLAN_START?'#f8a06a':'#f37021')}],{scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:10},callback:v=>'€'+v.toFixed(2)+'M'},grid:{color:'rgba(0,0,0,0.05)'}}}});
-}
-function buildPieCharts(){
-  ['pie1','pie2','pie3'].forEach(id=>{
-    if(charts[id]){charts[id].destroy();delete charts[id];}
-    const d=QD[id];const el=document.getElementById(id);if(!el)return;
-    charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});
-    document.getElementById(id+'-leg').innerHTML=d.labels.map((l,i)=>`<span class="pie-leg-item"><span class="pie-dot" style="background:${d.colors[i]}"></span>${l} ${d.data[i]}%</span>`).join('');
+    tblHtml+='</tr>';
   });
+  tblHtml+='</tbody>';
+  document.getElementById('q-summary-table').innerHTML=tblHtml;
+
+  buildQCharts();
 }
 
-const PIN="kinia2026";
-function showAdmin(){document.getElementById('admin-overlay').style.display='block';document.getElementById('pin-input').value='';document.getElementById('pin-err').style.display='none';document.getElementById('admin-login').style.display='block';document.getElementById('admin-panel').style.display='none';}
-function hideAdmin(){document.getElementById('admin-overlay').style.display='none';}
-function checkPin(){
-  if(document.getElementById('pin-input').value===PIN){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';buildAdminPanel();}
-  else{document.getElementById('pin-err').style.display='block';}
-}
-function buildAdminPanel(){
-  const fields=[{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'youngPeople',l:'Young people reached',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false},{k:'eduCredentials',l:'Educator credentials',dec:false},{k:'youthBadges',l:'Youth badges',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'irishMedSchools',l:'Irish-medium schools',dec:false},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)',dec:false}];
-  let h=`<h3 style="color:var(--ocean);margin-bottom:4px">Quantitative actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:16px">Enter actuals by year. RAG status updates automatically on save.</p>`;
-  YEARS_ALL.forEach((y,yi_)=>{
-    h+=`<div style="margin-bottom:16px"><div style="font-weight:500;color:var(--ocean);font-size:13px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)">${y}${y<PLAN_START?' (historical)':''}</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">`;
-    fields.forEach(f=>{h+=`<div class="field-group"><label>${f.l}</label><div class="field-tgt">Target: ${fmtT(T[f.k][yi_],f.dec)}</div><input type="number" id="inp_${f.k}_${y}" value="${A[f.k+'_'+y]??''}" step="${f.dec?'0.01':'1'}" placeholder="—"></div>`;});
-    h+=`</div></div>`;
-  });
-  h+=`<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:12px">Qualitative data</h3>
-  <div class="field-group"><label>Media stats (JSON: [{val,label}])</label><textarea id="qd_mediaStats" rows="2">${JSON.stringify(QD.mediaStats)}</textarea></div>
-  <div class="field-group"><label>Political & government items (one per line)</label><textarea id="qd_politicalItems" rows="4">${QD.politicalItems.join('\n')}</textarea></div>
-  <div class="field-group"><label>Partners & funders (comma separated)</label><textarea id="qd_partners" rows="2">${QD.partners.join(', ')}</textarea></div>
-  <div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems" rows="4">${QD.fundraisingItems.join('\n')}</textarea></div>
-  <div class="field-group"><label>Social media stats (JSON: [{val,label}])</label><textarea id="qd_socialStats" rows="2">${JSON.stringify(QD.socialStats)}</textarea></div></div>
-  <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:10px">Impact stories</h3>`;
-  [0,1].forEach(n=>{const s=QD.stories[n]||{org:'',quote:'',attr:''};h+=`<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid var(--border)"><div style="font-size:11px;font-weight:500;color:var(--muted);margin-bottom:7px">Story ${n+1}</div><div class="field-group"><label>Organisation</label><input type="text" id="st_org_${n}" value="${s.org}"></div><div class="field-group"><label>Quote</label><textarea id="st_quote_${n}" rows="3">${s.quote}</textarea></div><div class="field-group"><label>Attribution</label><input type="text" id="st_attr_${n}" value="${s.attr}"></div></div>`;});
-  h+=`</div><div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:10px">Pie chart percentages</h3>`;
-  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(p=>{
-    h+=`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:500;color:var(--muted);margin-bottom:6px">${p.label}</div><div style="display:grid;grid-template-columns:repeat(${QD[p.id].labels.length},1fr);gap:8px">`;
-    QD[p.id].labels.forEach((l,li)=>{h+=`<div class="field-group"><label>${l}</label><input type="number" id="${p.id}_${li}" value="${QD[p.id].data[li]}" min="0" max="100"></div>`;});
-    h+=`</div></div>`;
-  });
-  h+=`</div>`;
-  document.getElementById('admin-content').innerHTML=h;
-}
-function saveAll(){
-  const fields=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct'];
-  YEARS_ALL.forEach(y=>fields.forEach(k=>{const el=document.getElementById(`inp_${k}_${y}`);if(el)A[k+'_'+y]=el.value;}));
-  YEARS_ALL.forEach(y=>{
-    ['p1','p2','p3'].forEach(p=>{
-      const el=document.getElementById(`ins_${p}_${y}`);
-      if(el)QD.insights[p][y]=el.value.trim();
+function buildQCharts() {
+  var i=yi(selectedQYear);
+  var defs=[
+    {id:'q-edu-chart',  k:'educators',   color:'#262262', dec:false},
+    {id:'q-yp-chart',   k:'youngPeople',  color:'#f37021', dec:false},
+    {id:'q-badge-chart',k:'youthBadges',  color:'#005129', dec:false},
+    {id:'q-se-chart',   k:'seRevenue',    color:'#9dceef', dec:true}
+  ];
+  defs.forEach(function(cd) {
+    if (charts[cd.id]) { charts[cd.id].destroy(); delete charts[cd.id]; }
+    var el=document.getElementById(cd.id); if(!el) return;
+    var actData=QUARTERS.map(function(q){var v=getQA(cd.k,selectedQYear,q);return v!==''?parseFloat(v):null;});
+    var annTgt=T[cd.k][i];
+    var tgtLine=QUARTERS.map(function(_,qi){return parseFloat((annTgt*(qi+1)/4).toFixed(cd.dec?2:0));});
+    charts[cd.id]=new Chart(el,{
+      type:'bar',
+      data:{labels:QUARTERS,datasets:[
+        {label:'Target pace',data:tgtLine,type:'line',borderColor:'#cccccc',backgroundColor:'transparent',borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#cccccc',tension:0.1,order:1},
+        {label:'Actual',data:actData,backgroundColor:QUARTERS.map(function(_,qi){return actData[qi]!==null?cd.color:'rgba(0,0,0,0.05)';}),borderRadius:4,order:2}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{
+          x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},
+          y:{ticks:{color:'#888',font:{size:10},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.05)'}}
+        }}
     });
   });
+}
+
+function renderSmartInsights() {
+  var i=yi(selectedYear);
+  var cards=[];
+  var rev=T.revenue[i]*1000000, yp=T.youngPeople[i];
+  var cpp=(rev/yp).toFixed(2);
+  cards.push({icon:'👥',label:'Cost per young person reached',val:'€'+cpp,sub:'Target cost efficiency for '+selectedYear,cls:'si-ocean'});
+  var conv=Math.round(T.eduCredentials[i]/T.platformUsers[i]*100);
+  cards.push({icon:'🎓',label:'Credential conversion rate',val:conv+'%',sub:'Of active platform users expected to earn a credential in '+selectedYear,cls:'si-green'});
+  var seNow=T.seRevenue[i], sePrev=i>0?T.seRevenue[i-1]:T.seRevenue[0];
+  var seG=i>0?Math.round((seNow-sePrev)/sePrev*100):0;
+  cards.push({icon:'📈',label:'SE revenue growth (YoY target)',val:'+'+seG+'%',sub:'Social enterprise revenue target growth for '+selectedYear,cls:'si-orange'});
+  var bNow=T.youthBadges[i], bPrev=i>0?T.youthBadges[i-1]:T.youthBadges[0];
+  var bG=i>0?Math.round((bNow-bPrev)/bPrev*100):0;
+  cards.push({icon:'⭐',label:'Youth badge growth (YoY target)',val:'+'+bG+'%',sub:selectedYear>=2027?'PBL Tool launch drives step-change from 2027':'Foundational growth ahead of PBL Tool launch',cls:bG>100?'si-green':'si-ocean'});
+  var gdDrop=T.grantPct[0]-T.grantPct[i];
+  cards.push({icon:'🔓',label:'Grant dependency reduction',val:'-'+gdDrop+'pp',sub:'From '+T.grantPct[0]+'% in 2024 to '+T.grantPct[i]+'% target by '+selectedYear,cls:gdDrop>=10?'si-green':'si-amber'});
+  var im=T.irishMedSchools[i], imAnn=annualTarget('irishMedSchools',i);
+  cards.push({icon:'🇮🇪',label:'Irish-medium schools',val:''+im,sub:'Cumulative target by '+selectedYear+(imAnn?'. Adding '+imAnn+' new schools this year':''),cls:'si-ocean'});
+  document.getElementById('si-cards').innerHTML=cards.map(function(c){
+    return '<div class="si-card '+c.cls+'"><div class="si-icon">'+c.icon+'</div><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';
+  }).join('');
+}
+
+function renderAll() {
+  var i=yi(selectedYear);
+  document.getElementById('ov-metrics').innerHTML=[
+    {l:'Educators upskilled',k:'educators',dec:false},{l:'Young people reached',k:'youngPeople',dec:false},
+    {l:'Total revenue',k:'revenue',dec:true},{l:'SE revenue share',k:'sePct',dec:false,s:'%'}
+  ].map(function(m){return renderMCard(m.l,m.k,m.dec,m.s||'');}).join('');
+
+  renderSmartInsights();
+
+  ['p1','p2','p3'].forEach(function(p) {
+    var txt=QD.insights[p][selectedYear]||'';
+    var box=document.getElementById(p+'-insight-box');
+    var el=document.getElementById(p+'-insight-text');
+    if (txt.trim()) { box.classList.add('live'); el.textContent=txt; }
+    else { box.classList.remove('live'); el.textContent='Insight will appear here once data is entered for this year.'; }
+  });
+
+  document.getElementById('p1-metrics').innerHTML=[
+    {l:'Educators upskilled',k:'educators'},{l:'Educators supported',k:'eduSupported'},{l:'Platform users',k:'platformUsers'},{l:'Credentials issued',k:'eduCredentials'}
+  ].map(function(m){return renderMCard(m.l,m.k,false,'');}).join('');
+  document.getElementById('p1-bars').innerHTML=renderBars([{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'eduCredentials',l:'Credentials issued',dec:false}],'var(--ocean)');
+  renderTrendTable('p1-table',[{k:'educators',l:'Educators upskilled',dec:false,suffix:''},{k:'eduSupported',l:'Educators supported',dec:false,suffix:''},{k:'platformUsers',l:'Platform users',dec:false,suffix:''},{k:'eduCredentials',l:'Credentials issued',dec:false,suffix:''}]);
+
+  document.getElementById('p2-metrics').innerHTML=[
+    {l:'Youth badges',k:'youthBadges'},{l:'Irish-med. schools',k:'irishMedSchools'},{l:'Young people reached',k:'youngPeople'},{l:'Organisations engaged',k:'orgsEngaged'}
+  ].map(function(m){return renderMCard(m.l,m.k,false,'');}).join('');
+  document.getElementById('p2-bars').innerHTML=renderBars([{k:'youthBadges',l:'Youth badges',dec:false},{k:'irishMedSchools',l:'Irish-med. schools',dec:false},{k:'youngPeople',l:'Young people reached',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false}],'var(--orange)');
+  renderTrendTable('p2-table',[{k:'youthBadges',l:'Youth badges',dec:false,suffix:''},{k:'irishMedSchools',l:'Irish-med. schools',dec:false,suffix:''},{k:'youngPeople',l:'Young people reached',dec:false,suffix:''},{k:'orgsEngaged',l:'Organisations engaged',dec:false,suffix:''}]);
+
+  document.getElementById('p3-metrics').innerHTML=[
+    {l:'Total revenue',k:'revenue',dec:true},{l:'SE revenue',k:'seRevenue',dec:true},{l:'Grant revenue',k:'grantRevenue',dec:true},{l:'SE share %',k:'sePct',dec:false,s:'%'}
+  ].map(function(m){return renderMCard(m.l,m.k,m.dec,m.s||'');}).join('');
+
+  var revRows=[{l:'Statutory grants',k:'grantRevenue'},{l:'Social enterprise',k:'seRevenue'},{l:'Corporate & other',k:'otherRevenue'},{l:'Total',k:'revenue'}];
+  var revHtml='<table class="trend-table" style="width:100%"><thead><tr><th>Stream</th><th>Target</th><th>Actual</th><th>Variance</th><th>Status</th></tr></thead><tbody>';
+  revRows.forEach(function(r) {
+    var tgt=T[r.k][i], act=getA(r.k,selectedYear), rc=ragC(act,tgt);
+    var v=act!==''&&!isNaN(parseFloat(act))?(parseFloat(act)-tgt).toFixed(2):null;
+    revHtml+='<tr><td>'+r.l+'</td><td class="tgt-txt">€'+tgt+'M</td><td style="color:var(--ocean);font-weight:500">'+(act!==''?'€'+parseFloat(act).toFixed(2)+'M':'—')+'</td><td style="color:'+(v!==null?(parseFloat(v)>=0?'var(--forest)':'var(--candy)'):'var(--muted)')+'">'+( v!==null?(parseFloat(v)>=0?'+':'')+'€'+v+'M':'—')+'</td><td><span class="rag rag-'+rc+'">'+(rc==='n'?'—':rc.toUpperCase())+'</span></td></tr>';
+  });
+  revHtml+='</tbody></table>';
+  document.getElementById('p3-rev-table').innerHTML=revHtml;
+  renderTrendTable('p3-table',[{k:'revenue',l:'Total revenue',dec:true,suffix:''},{k:'seRevenue',l:'SE revenue',dec:true,suffix:''},{k:'grantRevenue',l:'Grant revenue',dec:true,suffix:''},{k:'sePct',l:'SE share %',dec:false,suffix:'%'}]);
+
+  renderInfluence(); renderStories(); renderQuarterly(); buildCharts(); buildPieCharts();
+}
+
+function renderInfluence() {
+  document.getElementById('media-stats').innerHTML=QD.mediaStats.map(function(s){return '<div class="card" style="text-align:center"><div class="mval" style="font-size:30px;font-weight:300;color:var(--ocean)">'+s.val+'</div><div class="mlabel" style="margin-top:5px">'+s.label+'</div></div>';}).join('');
+  document.getElementById('political-items').innerHTML=QD.politicalItems.map(function(p){return '<div class="pol-item">'+p+'</div>';}).join('');
+  document.getElementById('partner-chips').innerHTML=QD.partners.map(function(p){return '<span class="partner-chip">'+p+'</span>';}).join('');
+  document.getElementById('fundraising-items').innerHTML=QD.fundraisingItems.map(function(f){return '<div class="fund-item">'+f+'</div>';}).join('');
+  document.getElementById('social-stats').innerHTML=QD.socialStats.map(function(s){return '<div class="mcard" style="text-align:center"><div class="mval" style="color:var(--ocean)">'+s.val+'</div><div class="mlabel" style="margin-top:3px">'+s.label+'</div></div>';}).join('');
+}
+
+function renderStories() {
+  document.getElementById('stories-grid').innerHTML=QD.stories.map(function(s) {
+    var mediaHtml='';
+    if (s.mediaType==='image'&&s.mediaUrl) {
+      mediaHtml='<img src="'+s.mediaUrl+'" class="story-media" alt="'+s.title+'" onerror="this.style.display=\'none\'">';
+    } else if (s.mediaType==='video'&&s.mediaUrl) {
+      if (s.mediaUrl.includes('youtube.com')||s.mediaUrl.includes('youtu.be')) {
+        var vid=s.mediaUrl.includes('youtu.be')?s.mediaUrl.split('/').pop():'';
+        try{if(!vid)vid=new URL(s.mediaUrl).searchParams.get('v');}catch(e){}
+        mediaHtml='<div class="story-video-wrap"><iframe src="https://www.youtube.com/embed/'+vid+'" frameborder="0" allowfullscreen></iframe></div>';
+      } else if (s.mediaUrl.includes('vimeo.com')) {
+        var vid2=s.mediaUrl.split('/').pop();
+        mediaHtml='<div class="story-video-wrap"><iframe src="https://player.vimeo.com/video/'+vid2+'" frameborder="0" allowfullscreen></iframe></div>';
+      } else {
+        mediaHtml='<video src="'+s.mediaUrl+'" controls class="story-media"></video>';
+      }
+    } else {
+      mediaHtml='<div class="story-media-ph"><div class="kinia-k" style="width:40px;height:40px;font-size:18px;opacity:0.4">k</div><span>No media added yet</span></div>';
+    }
+    var tags=(s.tags||[]).map(function(t){return '<span class="story-tag">'+t+'</span>';}).join('');
+    return '<div class="story-card">'+mediaHtml+'<div class="story-body"><div class="story-org">'+s.org+'</div><div class="story-title">'+(s.title||'')+'</div><div class="story-quote">"'+s.quote+'"</div><div class="story-attr">— '+s.attr+'</div>'+(tags?'<div class="story-tags">'+tags+'</div>':'')+'</div></div>';
+  }).join('');
+}
+
+function mkChart(id,type,labels,datasets,opts) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+  var el=document.getElementById(id); if(!el) return;
+  charts[id]=new Chart(el,{type:type,data:{labels:labels,datasets:datasets},options:Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}},opts)});
+}
+
+function buildCharts() {
+  var L=YEARS_ALL.map(String);
+  var gx={ticks:{color:'#888',font:{size:10}},grid:{display:false}};
+  var gy=function(cb){return {ticks:{color:'#888',font:{size:10},callback:cb},grid:{color:'rgba(0,0,0,0.05)'}};};
+
+  mkChart('revChart','bar',L,[
+    {data:T.grantRevenue,backgroundColor:'#262262',stack:'a'},
+    {data:T.seRevenue,backgroundColor:'#f37021',stack:'a'},
+    {data:T.otherRevenue,backgroundColor:'#9dceef',stack:'a'}
+  ],{scales:{x:Object.assign({stacked:true},gx),y:Object.assign({stacked:true},gy(function(v){return '€'+v.toFixed(1)+'M';}))}});
+
+  mkChart('depChart','line',L,[
+    {data:T.grantPct,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
+    {data:T.sePct,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}
+  ],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+
+  mkChart('reachChart','line',L,[
+    {data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
+    {data:T.youngPeople.map(function(v){return Math.round(v/10);}),borderColor:'#f37021',backgroundColor:'rgba(243,112,33,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3}
+  ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+
+  mkChart('p1Chart','line',L,[
+    {data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
+    {data:T.platformUsers,borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#9dceef',pointRadius:3}
+  ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+
+  mkChart('p2Chart','line',L,[
+    {data:T.eduCredentials,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
+    {data:T.youthBadges,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}
+  ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+
+  mkChart('p3Chart','bar',L,[
+    {data:T.seRevenue,backgroundColor:YEARS_ALL.map(function(y){return y<PLAN_START?'#f8a06a':'#f37021';})}
+  ],{scales:{x:gx,y:gy(function(v){return '€'+v.toFixed(2)+'M';})}});
+
+  var cpyData=T.revenue.map(function(r,i){return parseFloat((r*1000000/T.youngPeople[i]).toFixed(2));});
+  mkChart('si-cpy-chart','line',L,[{data:cpyData,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:4}],
+    {scales:{x:gx,y:gy(function(v){return '€'+v.toFixed(2);})}});
+
+  var base={rev:T.revenue[0],yp:T.youngPeople[0],edu:T.educators[0]};
+  mkChart('si-index-chart','line',L,[
+    {data:T.revenue.map(function(v){return Math.round(v/base.rev*100);}),borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},
+    {data:T.youngPeople.map(function(v){return Math.round(v/base.yp*100);}),borderColor:'#262262',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#262262',pointRadius:3},
+    {data:T.educators.map(function(v){return Math.round(v/base.edu*100);}),borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[3,2],pointBackgroundColor:'#9dceef',pointRadius:3}
+  ],{scales:{x:gx,y:gy(function(v){return v;})}});
+
+  mkChart('si-cred-chart','bar',L,[
+    {data:T.eduCredentials.map(function(c,i){return parseFloat((c/T.platformUsers[i]*100).toFixed(1));}),backgroundColor:YEARS_ALL.map(function(y){return y<PLAN_START?'#9dceef':'#262262';})}
+  ],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
+
+  mkChart('si-badge-chart','line',L,[
+    {data:T.youthBadges,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}
+  ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+
+  mkChart('si-fin-chart','line',L,[
+    {data:T.grantPct,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
+    {data:T.sePct,borderColor:'#f37021',backgroundColor:'rgba(243,112,33,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},
+    {data:YEARS_ALL.map(function(){return 23;}),borderColor:'#b9f24c',backgroundColor:'transparent',fill:false,borderDash:[6,3],pointRadius:0}
+  ],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+}
+
+function buildPieCharts() {
+  ['pie1','pie2','pie3'].forEach(function(id) {
+    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+    var d=QD[id], el=document.getElementById(id); if(!el) return;
+    charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});
+    document.getElementById(id+'-leg').innerHTML=d.labels.map(function(l,i){return '<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');
+  });
+}
+
+function showAdmin() {
+  document.getElementById('admin-overlay').style.display='block';
+  document.getElementById('admin-pin-input').value='';
+  document.getElementById('admin-pin-err').style.display='none';
+  document.getElementById('admin-login').style.display='block';
+  document.getElementById('admin-panel').style.display='none';
+}
+function hideAdmin() { document.getElementById('admin-overlay').style.display='none'; }
+function checkAdminPin() {
+  if (document.getElementById('admin-pin-input').value===ADMIN_PIN) {
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    buildAdminPanel();
+  } else {
+    document.getElementById('admin-pin-err').style.display='block';
+  }
+}
+
+function buildAdminPanel() {
+  var numFields=[{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'youngPeople',l:'Young people reached',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false},{k:'eduCredentials',l:'Educator credentials',dec:false},{k:'youthBadges',l:'Youth badges',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'irishMedSchools',l:'Irish-medium schools',dec:false},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)',dec:false}];
+  var h='';
+
+  // Insights
+  h+='<h3 style="color:var(--ocean);margin-bottom:8px">Pillar insight snapshots</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">A brief sentence per pillar and year — displayed on each pillar page.</p>';
+  YEARS_ALL.forEach(function(y) {
+    h+='<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid var(--border)"><div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:8px">'+y+'</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">';
+    ['p1','p2','p3'].forEach(function(p,pi) {
+      h+='<div class="field-group"><label>Pillar '+(pi+1)+'</label><textarea id="ins_'+p+'_'+y+'" rows="2" placeholder="e.g. On track…">'+(QD.insights[p][y]||'')+'</textarea></div>';
+    });
+    h+='</div></div>';
+  });
+
+  // Annual actuals
+  h+='<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:8px"><h3 style="color:var(--ocean);margin-bottom:8px">Annual actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">Enter cumulative totals for each year.</p>';
+  YEARS_ALL.forEach(function(y,yi_) {
+    h+='<div style="margin-bottom:14px"><div style="font-weight:500;color:var(--ocean);font-size:13px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)">'+y+(y<PLAN_START?' (historical)':'')+'</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
+    numFields.forEach(function(f) {
+      h+='<div class="field-group"><label>'+f.l+'</label><div class="field-tgt">Target: '+fmtT(T[f.k][yi_],f.dec)+'</div><input type="number" id="inp_'+f.k+'_'+y+'" value="'+(A[f.k+'_'+y]||'')+'" step="'+(f.dec?'0.01':'1')+'" placeholder="—"></div>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+
+  // Quarterly actuals
+  h+='<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:8px">Quarterly actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">Enter cumulative totals at end of each quarter (Q2 = total by end of June, not just Q2 alone).</p>';
+  YEARS_ALL.forEach(function(y,yi_) {
+    h+='<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:0.5px solid var(--border)"><div style="font-weight:500;color:var(--ocean);font-size:13px;margin-bottom:8px">'+y+'</div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr><th style="text-align:left;padding:4px 8px;color:var(--muted);font-size:10px;text-transform:uppercase;min-width:160px">KPI</th>';
+    QUARTERS.forEach(function(q){h+='<th style="text-align:left;padding:4px 8px;color:var(--muted);font-size:10px;text-transform:uppercase">'+q+'</th>';});
+    h+='</tr></thead><tbody>';
+    Q_KEYS.forEach(function(m) {
+      h+='<tr><td style="padding:5px 8px;white-space:nowrap">'+m.l+'<div style="font-size:10px;color:var(--muted)">Target: '+fmtT(T[m.k][yi_],m.dec)+'</div></td>';
+      QUARTERS.forEach(function(q){
+        h+='<td style="padding:4px 6px"><input type="number" id="qinp_'+m.k+'_'+y+'_'+q+'" value="'+(QQ[m.k+'_'+y+'_'+q]||'')+'" placeholder="—" step="'+(m.dec?'0.01':'1')+'" style="width:90px;font-size:12px"></td>';
+      });
+      h+='</tr>';
+    });
+    h+='</tbody></table></div></div>';
+  });
+  h+='</div>';
+
+  // Impact stories
+  h+='<div style="border-top:1px solid var(--border);padding-top:16px"><h3 style="color:var(--ocean);margin-bottom:8px">Impact stories</h3>';
+  [0,1].forEach(function(n) {
+    var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[]};
+    h+='<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:0.5px solid var(--border)"><div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:8px">Story '+(n+1)+'</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+        '<div class="field-group"><label>Title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'"></div>'+
+        '<div class="field-group"><label>Organisation</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'"></div>'+
+      '</div>'+
+      '<div class="field-group"><label>Quote</label><textarea id="st_quote_'+n+'" rows="3">'+(s.quote||'')+'</textarea></div>'+
+      '<div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'"></div>'+
+      '<div style="display:grid;grid-template-columns:1fr 2fr;gap:8px">'+
+        '<div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image URL</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video (YouTube/Vimeo/URL)</option></select></div>'+
+        '<div class="field-group"><label>Media URL</label><input type="url" id="st_murl_'+n+'" value="'+(s.mediaUrl||'')+'" placeholder="https://…"></div>'+
+      '</div>'+
+      '<div class="field-group"><label>Tags (comma separated)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div>'+
+    '</div>';
+  });
+  h+='</div>';
+
+  // Qualitative
+  h+='<div style="border-top:1px solid var(--border);padding-top:16px"><h3 style="color:var(--ocean);margin-bottom:10px">Qualitative data</h3>'+
+    '<div class="field-group"><label>Media stats (JSON: [{val,label}])</label><textarea id="qd_mediaStats" rows="2">'+JSON.stringify(QD.mediaStats)+'</textarea></div>'+
+    '<div class="field-group"><label>Political & government items (one per line)</label><textarea id="qd_politicalItems" rows="4">'+QD.politicalItems.join('\n')+'</textarea></div>'+
+    '<div class="field-group"><label>Partners & funders (comma separated)</label><textarea id="qd_partners" rows="2">'+QD.partners.join(', ')+'</textarea></div>'+
+    '<div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems" rows="4">'+QD.fundraisingItems.join('\n')+'</textarea></div>'+
+    '<div class="field-group"><label>Social media stats (JSON: [{val,label}])</label><textarea id="qd_socialStats" rows="2">'+JSON.stringify(QD.socialStats)+'</textarea></div></div>';
+
+  // Pie charts
+  h+='<div style="border-top:1px solid var(--border);padding-top:16px"><h3 style="color:var(--ocean);margin-bottom:10px">Pie chart percentages</h3>';
+  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(function(p) {
+    h+='<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:500;color:var(--muted);margin-bottom:6px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:8px">';
+    QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});
+    h+='</div></div>';
+  });
+  h+='</div>';
+
+  document.getElementById('admin-content').innerHTML=h;
+}
+
+function saveAll() {
+  // Insights
+  YEARS_ALL.forEach(function(y) {
+    ['p1','p2','p3'].forEach(function(p) {
+      var el=document.getElementById('ins_'+p+'_'+y);
+      if (el) QD.insights[p][y]=el.value.trim();
+    });
+  });
+  // Annual actuals
+  var numKeys=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct'];
+  YEARS_ALL.forEach(function(y) {
+    numKeys.forEach(function(k) {
+      var el=document.getElementById('inp_'+k+'_'+y);
+      if (el) A[k+'_'+y]=el.value;
+    });
+  });
+  // Quarterly actuals
+  YEARS_ALL.forEach(function(y) {
+    Q_KEYS.forEach(function(m) {
+      QUARTERS.forEach(function(q) {
+        var el=document.getElementById('qinp_'+m.k+'_'+y+'_'+q);
+        if (el) QQ[m.k+'_'+y+'_'+q]=el.value;
+      });
+    });
+  });
+  // Stories
+  [0,1].forEach(function(n) {
+    var tags=document.getElementById('st_tags_'+n).value.split(',').map(function(t){return t.trim();}).filter(Boolean);
+    QD.stories[n]={
+      title:document.getElementById('st_title_'+n).value,
+      org:document.getElementById('st_org_'+n).value,
+      quote:document.getElementById('st_quote_'+n).value,
+      attr:document.getElementById('st_attr_'+n).value,
+      mediaType:document.getElementById('st_mtype_'+n).value,
+      mediaUrl:document.getElementById('st_murl_'+n).value,
+      tags:tags
+    };
+  });
+  // Qualitative
+  try{QD.mediaStats=JSON.parse(document.getElementById('qd_mediaStats').value);}catch(e){}
   QD.politicalItems=document.getElementById('qd_politicalItems').value.split('\n').filter(Boolean);
-  QD.partners=document.getElementById('qd_partners').value.split(',').map(s=>s.trim()).filter(Boolean);
+  QD.partners=document.getElementById('qd_partners').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
   QD.fundraisingItems=document.getElementById('qd_fundraisingItems').value.split('\n').filter(Boolean);
   try{QD.socialStats=JSON.parse(document.getElementById('qd_socialStats').value);}catch(e){}
-  [0,1].forEach(n=>{QD.stories[n]={org:document.getElementById(`st_org_${n}`).value,quote:document.getElementById(`st_quote_${n}`).value,attr:document.getElementById(`st_attr_${n}`).value};});
-  ['pie1','pie2','pie3'].forEach(pid=>{QD[pid].data=QD[pid].labels.map((_,li)=>parseInt(document.getElementById(`${pid}_${li}`).value)||0);});
-  const msg=document.getElementById('save-msg');msg.style.display='block';setTimeout(()=>msg.style.display='none',2500);
+  // Pie charts
+  ['pie1','pie2','pie3'].forEach(function(pid) {
+    QD[pid].data=QD[pid].labels.map(function(_,li){return parseInt(document.getElementById(pid+'_'+li).value)||0;});
+  });
+  document.getElementById('save-msg').style.display='block';
+  setTimeout(function(){document.getElementById('save-msg').style.display='none';},2500);
   renderAll();
 }
-function downloadApp(){
-  const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kinia-board-dashboard.html';a.click();
+
+function downloadApp() {
+  var blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kinia-board-dashboard.html';a.click();
 }
+
 document.getElementById('today').textContent=new Date().toLocaleDateString('en-IE',{year:'numeric',month:'long',day:'numeric'});
 renderAll();
 </script>
