@@ -12,165 +12,209 @@
   --ocean:#262262;--ocean-light:#3d3899;--orange:#f37021;--orange-pale:#fde8d8;
   --sky:#9dceef;--sky-dark:#1a7ab5;--zest:#b9f24c;--forest:#005129;--forest-light:#007a3d;
   --lemon:#f7efca;--lemon-dark:#b89a00;--pink:#fad4d6;--candy:#ef4d41;
-  --text:#1a1a2e;--muted:#5a5a7a;--border:#e2e0f0;--bg:#f8f7fc;--white:#ffffff;
+  --text:#1a1a2e;--muted:#5a5a7a;--border:#e2e0f0;--bg:#f8f7fc;--white:#fff;
   --closed-bg:#f0f4f0;--current-bg:#fff8f0;--future-bg:#f5f5fc;
+  --tgt-bg:#e8eaf6;--tgt-col:#3949ab;
+  --act-bg:#e8f5e9;--act-col:#2e7d32;
+  --ann-bg:#fff3e0;--ann-col:#e65100;
+  --rag-g-bg:#d4edda;--rag-g-col:#155724;
+  --rag-a-bg:#fff3cd;--rag-a-col:#856404;
+  --rag-r-bg:#f8d7da;--rag-r-col:#721c24;
+  --card-g-bg:#f0faf4;--card-g-border:#a8d5b5;
+  --card-a-bg:#fffbf0;--card-a-border:#f5d78e;
+  --card-r-bg:#fdf0f0;--card-r-border:#f5c0c0;
 }
 html{font-family:'Roboto',sans-serif;font-size:14px;color:var(--text);background:var(--bg)}
-h1{font-size:26px;font-weight:300;letter-spacing:-0.3px}
+h1{font-size:24px;font-weight:300;letter-spacing:-0.3px}
 h2{font-size:18px;font-weight:500}
-h3{font-size:14px;font-weight:500}
+h3{font-size:13px;font-weight:500}
 
+/* VIEWER GATE */
 #viewer-gate{position:fixed;inset:0;background:var(--ocean);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
-.gate-box{background:white;border-radius:16px;padding:40px;max-width:380px;width:100%;text-align:center}
+.gate-box{background:white;border-radius:16px;padding:40px;max-width:400px;width:100%;text-align:center}
 
-nav{background:var(--ocean);padding:0 20px;display:flex;align-items:center;position:sticky;top:0;z-index:100;flex-wrap:wrap}
-.nav-brand{display:flex;align-items:center;gap:10px;padding:12px 0;margin-right:20px}
-.kinia-k{width:34px;height:34px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:white}
-.nav-brand span{color:white;font-size:17px;font-weight:300;letter-spacing:1px}
+/* NAV */
+nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+.nav-brand{display:flex;align-items:center;gap:10px;padding:12px 0;margin-right:16px}
+.kinia-k{width:32px;height:32px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:white}
+.nav-brand span{color:white;font-size:16px;font-weight:300;letter-spacing:1px}
 .nav-tabs{display:flex;flex:1;flex-wrap:wrap}
-.nav-tab{padding:16px 11px;color:rgba(255,255,255,0.65);font-size:11.5px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.2s;font-family:'Roboto',sans-serif;white-space:nowrap}
+.nav-tab{padding:15px 10px;color:rgba(255,255,255,0.65);font-size:11px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.2s;font-family:'Roboto',sans-serif;white-space:nowrap}
 .nav-tab:hover{color:white}
 .nav-tab.active{color:white;border-bottom-color:var(--orange)}
-.nav-right{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
-.year-pill{padding:4px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);font-size:11px;cursor:pointer;background:none;font-family:'Roboto',sans-serif}
-.year-pill.active{background:var(--orange);border-color:var(--orange);color:white}
-.year-pill.closed{border-color:rgba(185,242,76,0.5);color:rgba(185,242,76,0.9)}
+.nav-right{display:flex;align-items:center;gap:4px;padding:8px 0;flex-wrap:wrap}
+.year-pill{padding:3px 8px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.75);font-size:10px;cursor:pointer;background:none;font-family:'Roboto',sans-serif}
+.year-pill.active{background:var(--orange);border-color:var(--orange);color:white;font-weight:500}
+.year-pill.closed{border-color:rgba(185,242,76,0.6);color:rgba(185,242,76,0.9)}
 .year-pill.current{border-color:var(--orange);color:var(--orange)}
 
-.page{display:none;padding:20px;max-width:1200px;margin:0 auto}
+/* PAGES */
+.page{display:none;padding:18px;max-width:1200px;margin:0 auto}
 .page.active{display:block}
-.page-header{background:var(--ocean);border-radius:12px;padding:24px 28px;margin-bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.page-header{background:var(--ocean);border-radius:12px;padding:20px 24px;margin-bottom:18px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .page-header h1{color:white}
 .page-header p{color:rgba(255,255,255,0.7);font-size:12px;margin-top:3px}
-.header-badge{background:var(--orange);color:white;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500}
-.year-status-badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500}
-.badge-closed{background:rgba(185,242,76,0.2);color:var(--zest);border:1px solid rgba(185,242,76,0.4)}
-.badge-current{background:rgba(243,112,33,0.2);color:var(--orange);border:1px solid rgba(243,112,33,0.4)}
-.badge-future{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2)}
+.header-badge{background:var(--orange);color:white;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500}
+.ys-badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500}
+.ys-closed{background:rgba(185,242,76,0.2);color:var(--zest);border:1px solid rgba(185,242,76,0.4)}
+.ys-current{background:rgba(243,112,33,0.2);color:var(--orange);border:1px solid rgba(243,112,33,0.4)}
+.ys-future{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.2)}
 
-.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px}
-.card-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:12px}
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px}
+.card-title{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:10px}
 
-/* METRIC CARDS */
-.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-.mcard{border-radius:10px;padding:14px;border:1px solid var(--border);background:var(--white)}
-.mcard.year-closed{background:var(--closed-bg);border-color:#c5d9c5}
-.mcard.year-current{background:var(--current-bg);border-color:#f8c89a}
-.mcard.year-future{background:var(--future-bg);border-color:var(--border)}
-.mcard .mlabel{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
-.mcard .mval{font-size:22px;font-weight:300;color:var(--ocean)}
-.mcard .msub{font-size:11px;color:var(--muted);margin-top:3px}
+/* YEAR BANNER */
+.yr-banner{border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:12px;display:flex;align-items:center;gap:8px}
+.yr-banner.closed{background:var(--closed-bg);border:1px solid #c5d9c5;color:var(--forest)}
+.yr-banner.current{background:var(--current-bg);border:1px solid #f8c89a;color:#854f0b}
+.yr-banner.future{background:var(--future-bg);border:1px solid var(--border);color:var(--muted)}
 
-/* TARGET vs ACTUAL labels */
-.tgt-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:1px 5px;border-radius:4px;display:inline-block;margin-bottom:2px}
-.tgt-label.tgt{background:#e8eaf6;color:#3949ab}
-.tgt-label.act{background:#e8f5e9;color:#2e7d32}
-.tgt-label.ann{background:#fff3e0;color:#e65100}
+/* METRIC CARDS — RAG coloured backgrounds */
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.mcard{border-radius:10px;padding:13px;border:1px solid var(--border);background:var(--white);transition:background 0.3s,border-color 0.3s}
+.mcard.status-g{background:var(--card-g-bg);border-color:var(--card-g-border)}
+.mcard.status-a{background:var(--card-a-bg);border-color:var(--card-a-border)}
+.mcard.status-r{background:var(--card-r-bg);border-color:var(--card-r-border)}
+.mcard.status-n{background:var(--future-bg);border-color:var(--border)}
+.mcard .mlabel{font-size:9px;color:var(--muted);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
+.mcard .mval{font-size:20px;font-weight:300;color:var(--ocean)}
+.pill{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:1px}
+.pill-tgt{background:var(--tgt-bg);color:var(--tgt-col)}
+.pill-act{background:var(--act-bg);color:var(--act-col)}
+.pill-ann{background:var(--ann-bg);color:var(--ann-col)}
 
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+/* RAG STATUS BADGE — explicit label */
+.rag-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600}
+.rag-badge.g{background:var(--rag-g-bg);color:var(--rag-g-col)}
+.rag-badge.a{background:var(--rag-a-bg);color:var(--rag-a-col)}
+.rag-badge.r{background:var(--rag-r-bg);color:var(--rag-r-col)}
+.rag-badge.n{background:var(--border);color:var(--muted)}
+.rag-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rag-dot.g{background:var(--rag-g-col)}
+.rag-dot.a{background:var(--rag-a-col)}
+.rag-dot.r{background:var(--rag-r-col)}
+.rag-dot.n{background:var(--muted)}
 
-.insight-box{border-left:4px solid var(--border);background:var(--bg);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:16px}
-.insight-box.live{border-left-color:var(--orange);background:var(--orange-pale)}
-.insight-box .ititle{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px}
-.insight-box.live .ititle{color:var(--orange)}
-.insight-box p{font-size:13px;color:var(--muted);font-style:italic;line-height:1.6}
-.insight-box.live p{color:var(--text);font-style:normal}
-
-/* YEAR STATUS BANNER */
-.year-banner{border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;display:flex;align-items:center;gap:10px}
-.year-banner.closed{background:var(--closed-bg);border:1px solid #c5d9c5;color:var(--forest)}
-.year-banner.current{background:var(--current-bg);border:1px solid #f8c89a;color:#854f0b}
-.year-banner.future{background:var(--future-bg);border:1px solid var(--border);color:var(--muted)}
-.year-banner .yb-icon{font-size:16px}
-
-.smart-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-.si-card{border-radius:10px;padding:14px 16px;border:1px solid var(--border);background:var(--white)}
-.si-card .si-icon{font-size:20px;margin-bottom:6px}
-.si-card .si-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:4px}
-.si-card .si-val{font-size:18px;font-weight:500;color:var(--ocean);margin-bottom:3px}
-.si-card .si-sub{font-size:11px;color:var(--muted);line-height:1.5}
-.si-green{background:#f0faf4;border-color:#a8d5b5}.si-green .si-val{color:var(--forest)}
-.si-amber{background:#fffbf0;border-color:#f5d78e}.si-amber .si-val{color:#854f0b}
-.si-ocean{background:#eef0fc;border-color:#b0aee8}.si-ocean .si-val{color:var(--ocean)}
-.si-orange{background:var(--orange-pale);border-color:#f8a06a}.si-orange .si-val{color:var(--orange)}
-
-.kpi-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.kpi-label{width:150px;color:var(--muted);flex-shrink:0;font-size:11px}
-.kpi-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;position:relative}
-.kpi-bar-tgt{position:absolute;left:0;top:0;height:100%;background:#c5cae9;width:100%;border-radius:4px}
-.kpi-bar-act{position:absolute;left:0;top:0;height:100%;border-radius:4px}
-.kpi-vals{min-width:110px;text-align:right;font-size:11px}
-.rag{font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500;min-width:36px;text-align:center;display:inline-block}
-.rag-g{background:#d4edda;color:#155724}
-.rag-a{background:#fff3cd;color:#856404}
-.rag-r{background:#f8d7da;color:#721c24}
+/* Small RAG for tables/bars */
+.rag{font-size:9px;padding:1px 6px;border-radius:10px;font-weight:600;min-width:36px;text-align:center;display:inline-block}
+.rag-g{background:var(--rag-g-bg);color:var(--rag-g-col)}
+.rag-a{background:var(--rag-a-bg);color:var(--rag-a-col)}
+.rag-r{background:var(--rag-r-bg);color:var(--rag-r-col)}
 .rag-n{background:var(--border);color:var(--muted)}
 
-/* TREND TABLE with year status colouring */
-.trend-table{width:100%;border-collapse:collapse;font-size:11px}
-.trend-table th{text-align:left;padding:6px 8px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:0.05em}
-.trend-table td{padding:7px 8px;border-bottom:0.5px solid var(--border);vertical-align:top}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+
+.insight-box{border-left:4px solid var(--border);background:var(--bg);border-radius:0 8px 8px 0;padding:11px 13px;margin-bottom:14px}
+.insight-box.live{border-left-color:var(--orange);background:var(--orange-pale)}
+.insight-box .ititle{font-size:9px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px}
+.insight-box.live .ititle{color:var(--orange)}
+.insight-box p{font-size:12px;color:var(--muted);font-style:italic;line-height:1.6}
+.insight-box.live p{color:var(--text);font-style:normal}
+
+/* LEGEND */
+.dash-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:8px 12px;background:var(--white);border:1px solid var(--border);border-radius:8px;font-size:10px;align-items:center}
+.dl-item{display:flex;align-items:center;gap:4px;color:var(--muted)}
+.dl-sw{width:11px;height:11px;border-radius:2px;flex-shrink:0}
+
+/* FULL RAG KEY BOX */
+.rag-key{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.rag-key-card{border-radius:10px;padding:14px 16px;border:1px solid}
+.rag-key-card.g{background:var(--card-g-bg);border-color:var(--card-g-border)}
+.rag-key-card.a{background:var(--card-a-bg);border-color:var(--card-a-border)}
+.rag-key-card.r{background:var(--card-r-bg);border-color:var(--card-r-border)}
+.rag-key-card .rk-title{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.rag-key-card.g .rk-title{color:var(--rag-g-col)}
+.rag-key-card.a .rk-title{color:var(--rag-a-col)}
+.rag-key-card.r .rk-title{color:var(--rag-r-col)}
+.rag-key-card p{font-size:11px;color:var(--muted);line-height:1.6}
+
+/* KPI BARS */
+.kpi-row{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.kpi-label{width:148px;color:var(--muted);flex-shrink:0;font-size:10px}
+.kpi-bar-wrap{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;position:relative}
+.kpi-bar-tgt{position:absolute;left:0;top:0;height:100%;background:#c5cae9;width:100%;border-radius:4px}
+.kpi-bar-act{position:absolute;left:0;top:0;height:100%;border-radius:4px}
+.kpi-vals{min-width:100px;text-align:right;font-size:10px}
+
+/* TREND TABLE */
+.trend-table{width:100%;border-collapse:collapse;font-size:10px}
+.trend-table th{text-align:left;padding:5px 7px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:0.05em}
+.trend-table td{padding:6px 7px;border-bottom:0.5px solid var(--border);vertical-align:top}
 .trend-table tr:last-child td{border-bottom:none}
 .th-closed{background:var(--closed-bg)}
 .th-current{background:var(--current-bg)}
 .th-future{background:var(--future-bg)}
 
-.pie-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.pie-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
-.pie-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+/* SMART INSIGHTS */
+.smart-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.si-card{border-radius:10px;padding:13px;border:1px solid var(--border);background:var(--white)}
+.si-card .si-icon{font-size:18px;margin-bottom:5px}
+.si-card .si-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:3px}
+.si-card .si-val{font-size:17px;font-weight:500;color:var(--ocean);margin-bottom:2px}
+.si-card .si-sub{font-size:10px;color:var(--muted);line-height:1.5}
+.si-green{background:#f0faf4;border-color:#a8d5b5}.si-green .si-val{color:var(--forest)}
+.si-amber{background:#fffbf0;border-color:#f5d78e}.si-amber .si-val{color:#854f0b}
+.si-ocean{background:#eef0fc;border-color:#b0aee8}.si-ocean .si-val{color:var(--ocean)}
+.si-orange{background:var(--orange-pale);border-color:#f8a06a}.si-orange .si-val{color:var(--orange)}
 
+/* PIE */
+.pie-legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.pie-leg-item{display:flex;align-items:center;gap:3px;font-size:9px;color:var(--muted)}
+.pie-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* STORIES */
 .story-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;border-top:4px solid var(--ocean)}
-.story-media{width:100%;height:200px;object-fit:cover;display:block}
-.story-media-ph{width:100%;height:140px;background:var(--ocean);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
-.story-media-ph span{color:rgba(255,255,255,0.4);font-size:11px}
-.story-body{padding:16px}
-.story-org{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--orange);margin-bottom:4px}
-.story-title{font-size:14px;font-weight:500;color:var(--ocean);margin-bottom:7px;line-height:1.4}
-.story-quote{font-size:13px;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:8px}
-.story-attr{font-size:11px;color:var(--muted)}
-.story-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.story-tag{background:var(--lemon);color:var(--ocean);font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+.story-media{width:100%;height:190px;object-fit:cover;display:block}
+.story-media-ph{width:100%;height:130px;background:var(--ocean);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.story-media-ph span{color:rgba(255,255,255,0.4);font-size:10px}
+.story-body{padding:14px}
+.story-org{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--orange);margin-bottom:3px}
+.story-title{font-size:13px;font-weight:500;color:var(--ocean);margin-bottom:6px;line-height:1.4}
+.story-quote{font-size:12px;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:7px}
+.story-attr{font-size:10px;color:var(--muted)}
+.story-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.story-tag{background:var(--lemon);color:var(--ocean);font-size:9px;padding:2px 7px;border-radius:10px;font-weight:500}
 .story-video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden}
 .story-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%}
 
-.partner-chip{background:var(--lemon);border:1px solid var(--lemon-dark);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--ocean);font-weight:500;display:inline-block;margin:3px}
-.pol-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--sky-dark)}
-.fund-item{background:var(--bg);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--text);margin-bottom:7px;border-left:3px solid var(--forest)}
+.partner-chip{background:var(--lemon);border:1px solid var(--lemon-dark);border-radius:20px;padding:3px 10px;font-size:10px;color:var(--ocean);font-weight:500;display:inline-block;margin:2px}
+.pol-item{background:var(--bg);border-radius:6px;padding:8px 11px;font-size:11px;color:var(--text);margin-bottom:6px;border-left:3px solid var(--sky-dark)}
+.fund-item{background:var(--bg);border-radius:6px;padding:8px 11px;font-size:11px;color:var(--text);margin-bottom:6px;border-left:3px solid var(--forest)}
 
-.btn-orange{background:var(--orange);color:white;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
-.btn-ocean{background:var(--ocean);color:white;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
-.dl-btn{display:inline-flex;align-items:center;gap:5px;background:var(--forest);color:white;border:none;border-radius:8px;padding:7px 15px;font-size:12px;cursor:pointer;font-family:'Roboto',sans-serif}
-.sec-div{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
+.btn-orange{background:var(--orange);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+.btn-ocean{background:var(--ocean);color:white;border:none;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+.dl-btn{display:inline-flex;align-items:center;gap:4px;background:var(--forest);color:white;border:none;border-radius:8px;padding:6px 13px;font-size:11px;cursor:pointer;font-family:'Roboto',sans-serif}
+.sec-div{display:flex;align-items:center;gap:8px;margin:18px 0 12px}
 .sec-div-line{flex:1;height:1px;background:var(--border)}
-.sec-div-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);white-space:nowrap}
+.sec-div-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);white-space:nowrap}
 
-/* LEGEND BAR */
-.dash-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;padding:10px 14px;background:var(--white);border:1px solid var(--border);border-radius:8px;font-size:11px;align-items:center}
-.dl-item{display:flex;align-items:center;gap:5px;color:var(--muted)}
-.dl-swatch{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+/* HOW TO USE PAGE */
+.how-section{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.how-section h3{color:var(--ocean);margin-bottom:10px;font-size:14px}
+.how-section p{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:8px}
+.how-section ul{font-size:12px;color:var(--muted);line-height:1.8;padding-left:18px}
+.how-step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.how-step-num{width:26px;height:26px;border-radius:50%;background:var(--ocean);color:white;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.how-step-body{font-size:12px;color:var(--muted);line-height:1.7}
+.how-step-body strong{color:var(--text)}
+.info-chip{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:500;margin:2px}
 
-input[type=password],input[type=number],input[type=text],input[type=url],textarea,select{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:'Roboto',sans-serif;color:var(--text);background:white}
+/* QUARTERLY */
+.q-compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.q-kpi-block{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:13px}
+.q-kpi-block .qkb-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:8px}
+
+input[type=password],input[type=number],input[type=text],input[type=url],textarea,select{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Roboto',sans-serif;color:var(--text);background:white}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ocean)}
-.field-group{margin-bottom:12px}
-.field-group label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);display:block;margin-bottom:3px}
-.field-tgt{font-size:10px;color:var(--muted);margin-bottom:3px}
+.field-group{margin-bottom:10px}
+.field-group label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);display:block;margin-bottom:2px}
+.field-tgt{font-size:9px;color:var(--muted);margin-bottom:2px}
 
-/* Q TRACKER */
-.q-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
-.q-card .ql{font-size:10px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
-.q-quarters{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
-.q-quarter{background:var(--bg);border-radius:6px;padding:7px 8px;text-align:center}
-.q-quarter .qq-label{font-size:9px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.05em}
-.q-quarter .qq-val{font-size:13px;font-weight:500;color:var(--ocean);margin-top:2px}
-.q-quarter .qq-ann{font-size:9px;color:var(--muted);margin-top:1px}
-.q-quarter.has-data{background:#eef0fc}
-.q-quarter.on-track{background:#f0faf4}
-.q-quarter.off-track{background:#fef5f5}
-
-footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:32px}
-@media(max-width:720px){.metric-grid,.g2,.g3,.g4,.smart-insights{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}}
+footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-top:1px solid var(--border);margin-top:28px}
+@media(max-width:720px){.metric-grid,.g2,.g3,.g4,.smart-insights,.q-compare-grid,.rag-key{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}}
 </style>
 </head>
 <body>
@@ -180,37 +224,37 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-t
   <div class="gate-box">
     <div class="kinia-k" style="width:52px;height:52px;font-size:26px;margin:0 auto 14px">k</div>
     <h2 style="color:var(--ocean);margin-bottom:4px">Kinia Board Dashboard</h2>
-    <p style="color:var(--orange);font-size:12px;font-style:italic;margin-bottom:12px">Learning is Life · Ní thagann saol gan foghalaim</p>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Strategic Plan 2026–2030<br>Enter your board PIN to continue.</p>
-    <input type="password" id="viewer-pin" placeholder="Board PIN" style="margin-bottom:14px;text-align:center;font-size:18px;letter-spacing:6px;max-width:220px">
+    <p style="color:var(--orange);font-size:11px;font-style:italic;margin-bottom:10px">Learning is Life · Ní thagann saol gan foghalaim</p>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:18px">Strategic Plan 2026–2030<br>Enter your board PIN to continue.</p>
+    <input type="password" id="viewer-pin" placeholder="Board PIN" style="margin-bottom:12px;text-align:center;font-size:18px;letter-spacing:6px;max-width:200px">
     <br>
-    <button class="btn-ocean" onclick="checkViewerPin()" style="margin-top:10px;min-width:180px">Enter dashboard</button>
-    <p id="viewer-err" style="color:#c0392b;font-size:12px;margin-top:10px;display:none">Incorrect PIN — please try again</p>
+    <button class="btn-ocean" onclick="checkViewerPin()" style="margin-top:10px;min-width:170px">Enter dashboard</button>
+    <p id="viewer-err" style="color:#c0392b;font-size:11px;margin-top:8px;display:none">Incorrect PIN — please try again</p>
   </div>
 </div>
 
 <!-- ADMIN OVERLAY -->
-<div id="admin-overlay" style="display:none;position:fixed;inset:0;background:rgba(38,34,98,0.9);z-index:200;overflow-y:auto;padding:32px 16px">
-  <div id="admin-login" style="background:white;border-radius:14px;padding:32px;max-width:360px;margin:0 auto;text-align:center">
-    <div class="kinia-k" style="margin:0 auto 12px;width:46px;height:46px;font-size:22px">k</div>
-    <h2 style="color:var(--ocean);margin-bottom:5px">Admin access</h2>
-    <p style="color:var(--muted);font-size:12px;margin-bottom:20px">Enter admin PIN to update data</p>
-    <input type="password" id="admin-pin-input" placeholder="PIN" style="margin-bottom:12px;text-align:center;font-size:18px;letter-spacing:6px">
+<div id="admin-overlay" style="display:none;position:fixed;inset:0;background:rgba(38,34,98,0.9);z-index:200;overflow-y:auto;padding:28px 14px">
+  <div id="admin-login" style="background:white;border-radius:14px;padding:28px;max-width:340px;margin:0 auto;text-align:center">
+    <div class="kinia-k" style="margin:0 auto 10px;width:42px;height:42px;font-size:20px">k</div>
+    <h2 style="color:var(--ocean);margin-bottom:4px">Admin access</h2>
+    <p style="color:var(--muted);font-size:11px;margin-bottom:16px">Enter admin PIN</p>
+    <input type="password" id="admin-pin-input" placeholder="PIN" style="margin-bottom:10px;text-align:center;font-size:16px;letter-spacing:6px">
     <br><br>
     <button class="btn-ocean" onclick="checkAdminPin()">Unlock</button>
-    <button onclick="hideAdmin()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;margin-left:12px">Cancel</button>
-    <p id="admin-pin-err" style="color:#c0392b;font-size:12px;margin-top:8px;display:none">Incorrect PIN</p>
+    <button onclick="hideAdmin()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;margin-left:10px">Cancel</button>
+    <p id="admin-pin-err" style="color:#c0392b;font-size:11px;margin-top:7px;display:none">Incorrect PIN</p>
   </div>
-  <div id="admin-panel" style="display:none;background:white;border-radius:14px;padding:32px;max-width:980px;margin:0 auto">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <h2 style="color:var(--ocean)">Enter actuals &amp; qualitative data</h2>
-      <div style="display:flex;gap:8px">
+  <div id="admin-panel" style="display:none;background:white;border-radius:14px;padding:28px;max-width:980px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <h2 style="color:var(--ocean)">Enter actuals &amp; data</h2>
+      <div style="display:flex;gap:7px">
         <button class="btn-ocean" onclick="saveAll()">Save all</button>
-        <button onclick="hideAdmin()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:12px">Close</button>
+        <button onclick="hideAdmin()" style="background:none;border:1px solid var(--border);border-radius:7px;padding:6px 13px;cursor:pointer;font-size:11px">Close</button>
       </div>
     </div>
     <div id="admin-content"></div>
-    <div id="save-msg" style="display:none;background:#d4edda;color:#155724;border-radius:8px;padding:10px;text-align:center;margin-top:14px;font-size:13px">Saved successfully.</div>
+    <div id="save-msg" style="display:none;background:#d4edda;color:#155724;border-radius:7px;padding:9px;text-align:center;margin-top:12px;font-size:12px">Saved successfully.</div>
   </div>
 </div>
 
@@ -218,7 +262,8 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-t
 <nav>
   <div class="nav-brand"><div class="kinia-k">k</div><span>kinia</span></div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('overview',this)">Overview</button>
+    <button class="nav-tab active" onclick="showPage('howto',this)">How to use</button>
+    <button class="nav-tab" onclick="showPage('overview',this)">Overview</button>
     <button class="nav-tab" onclick="showPage('quarterly',this)">Quarterly</button>
     <button class="nav-tab" onclick="showPage('insights',this)">Insights</button>
     <button class="nav-tab" onclick="showPage('pillar1',this)">Pillar 1</button>
@@ -229,128 +274,241 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-t
     <button class="nav-tab" onclick="showPage('risks',this)">Risks</button>
   </div>
   <div class="nav-right">
-    <div style="display:flex;gap:4px;flex-wrap:wrap" id="yr-pills-nav"></div>
-    <button class="btn-orange" onclick="showAdmin()" style="font-size:11px;padding:5px 12px;margin-left:6px">Admin</button>
+    <div style="display:flex;gap:3px;flex-wrap:wrap" id="yr-pills-nav"></div>
+    <button class="btn-orange" onclick="showAdmin()" style="font-size:10px;padding:4px 10px;margin-left:5px">Admin</button>
   </div>
 </nav>
 
-<!-- OVERVIEW -->
-<div id="page-overview" class="page active">
+<!-- HOW TO USE -->
+<div id="page-howto" class="page active">
   <div class="page-header">
-    <div><h1>Performance &amp; impact dashboard</h1><p>Strategic plan 2026–2030 · Board of Directors · <span id="today"></span></p></div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <span id="ov-status-badge" class="year-status-badge"></span>
-      <div class="header-badge">Year: <span id="ov-year">2026</span></div>
+    <div><h1>How to use this dashboard</h1><p>A guide for board members — navigation, data interpretation and status indicators.</p></div>
+    <div style="display:flex;gap:7px;align-items:center">
+      <div class="header-badge">Last updated: <span id="last-updated"></span></div>
       <button class="dl-btn" onclick="downloadApp()">Download app</button>
     </div>
   </div>
 
-  <div class="dash-legend">
-    <span style="font-weight:500;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.07em">Key:</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8eaf6;border:1px solid #3949ab"></span>Cumulative target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#fff3e0;border:1px solid #e65100"></span>Annual target (net new)</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8f5e9;border:1px solid #2e7d32"></span>Actual</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:var(--closed-bg);border:1px solid #c5d9c5"></span>Closed year</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:var(--current-bg);border:1px solid #f8c89a"></span>Year in progress</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:var(--future-bg);border:1px solid var(--border)"></span>Future year</span>
+  <div class="how-section">
+    <h3>Welcome to the Kinia Performance &amp; Impact Dashboard</h3>
+    <p>This dashboard tracks Kinia's progress against the 2026–2030 Strategic Plan across three pillars: Deepening Educator Expertise, Driving System-Wide Educational Change, and Increased Financial Independence. It is updated by the Kinia admin team and shared with the Board of Directors.</p>
+    <p>Data is presented as <strong>cumulative totals</strong> — for example, "Educators upskilled" shows the total number reached since the start of the plan, not just in the current year. Annual and quarterly breakdowns are provided alongside to give in-year context.</p>
   </div>
 
-  <div id="ov-year-banner"></div>
+  <div class="how-section">
+    <h3>Navigating the dashboard</h3>
+    <div class="how-step"><div class="how-step-num">1</div><div class="how-step-body"><strong>Use the tabs across the top</strong> to move between sections: Overview, Quarterly, Insights, Pillar pages, Reach &amp; Influence, Impact Stories, and Risks.</div></div>
+    <div class="how-step"><div class="how-step-num">2</div><div class="how-step-body"><strong>Use the year pills</strong> (top right of the navigation bar) to switch between years. The selected year determines what targets and actuals are shown on metric cards and KPI bars. Charts always show the full 2024–2030 range for trend context.</div></div>
+    <div class="how-step"><div class="how-step-num">3</div><div class="how-step-body"><strong>The Quarterly tab</strong> has its own separate year selector and shows in-year progress by quarter (January–March = Q1, April–June = Q2, July–September = Q3, October–December = Q4), plus cross-year comparisons of the same quarter across multiple years.</div></div>
+    <div class="how-step"><div class="how-step-num">4</div><div class="how-step-body"><strong>The Insights tab</strong> provides auto-generated analysis — efficiency ratios, growth indices, and trajectory charts — that update automatically as data is entered.</div></div>
+  </div>
+
+  <div class="how-section">
+    <h3>Year status — what the colours mean</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px">
+      <div style="background:var(--closed-bg);border:1px solid #c5d9c5;border-radius:8px;padding:12px">
+        <div style="font-weight:500;color:var(--forest);margin-bottom:4px">✓ Closed year (2024, 2025)</div>
+        <p style="font-size:11px;color:var(--muted);line-height:1.6">The year has ended. Actuals entered are final. RAG status reflects actual performance against the full annual target.</p>
+      </div>
+      <div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px">
+        <div style="font-weight:500;color:#854f0b;margin-bottom:4px">● Current year (2026)</div>
+        <p style="font-size:11px;color:var(--muted);line-height:1.6">The year is in progress. RAG status compares actuals against the pro-rata expected figure at the current point in the year — not the full annual target.</p>
+      </div>
+      <div style="background:var(--future-bg);border:1px solid var(--border);border-radius:8px;padding:12px">
+        <div style="font-weight:500;color:var(--muted);margin-bottom:4px">○ Future year (2027–2030)</div>
+        <p style="font-size:11px;color:var(--muted);line-height:1.6">Year not yet started. Targets are shown for planning purposes. No actuals or RAG status are displayed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-section">
+    <h3>Understanding metric cards</h3>
+    <p>Each metric card shows three layers of information:</p>
+    <div style="margin:10px 0">
+      <span class="pill pill-tgt">Cumulative target</span> <span style="font-size:12px;color:var(--muted);margin-left:4px">The total expected to be achieved by the end of this year since the plan began (e.g. 32,000 educators upskilled in total by end of 2026).</span>
+    </div>
+    <div style="margin:10px 0">
+      <span class="pill pill-ann">Annual target</span> <span style="font-size:12px;color:var(--muted);margin-left:4px">The net new figure required in this calendar year alone to stay on track (e.g. +3,000 new educators upskilled in 2026).</span>
+    </div>
+    <div style="margin:10px 0">
+      <span class="pill pill-act">Actual</span> <span style="font-size:12px;color:var(--muted);margin-left:4px">The confirmed figure to date. For the current year (2026), this reflects Q1 performance. The RAG status on the card shows whether this is on track.</span>
+    </div>
+    <p style="margin-top:8px">The <strong>card background colour</strong> immediately signals performance status — green, amber, or red.</p>
+  </div>
+
+  <div class="how-section">
+    <h3>RAG status — performance indicators</h3>
+    <p style="margin-bottom:12px">RAG (Red / Amber / Green) status is calculated differently depending on whether the year is closed or in progress:</p>
+    <div class="rag-key">
+      <div class="rag-key-card g">
+        <div class="rk-title"><span class="rag-dot g"></span>Green — On track</div>
+        <p>Actual is <strong>≥ 85%</strong> of the expected figure. Performance is within acceptable tolerance and on track to meet the annual target.</p>
+        <p style="margin-top:6px;font-size:10px"><em>Current year: compared against pro-rata quarterly pace. Closed year: compared against full annual target.</em></p>
+      </div>
+      <div class="rag-key-card a">
+        <div class="rk-title"><span class="rag-dot a"></span>Amber — Monitor</div>
+        <p>Actual is <strong>70–84%</strong> of the expected figure. Performance is below pace and warrants attention, but may recover by year end.</p>
+        <p style="margin-top:6px;font-size:10px"><em>Board should note and request an update at next meeting.</em></p>
+      </div>
+      <div class="rag-key-card r">
+        <div class="rk-title"><span class="rag-dot r"></span>Red — Action required</div>
+        <p>Actual is <strong>&lt; 70%</strong> of the expected figure. Performance is significantly behind pace and requires discussion and remedial action.</p>
+        <p style="margin-top:6px;font-size:10px"><em>Board should seek explanation and agree corrective actions.</em></p>
+      </div>
+    </div>
+    <div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px;margin-top:4px">
+      <strong style="font-size:12px;color:#854f0b">Important — current year (2026) RAG explained</strong>
+      <p style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.7">Because 2026 data currently reflects Q1 only (January–March), actuals are compared against <strong>25% of the annual target</strong> — the expected cumulative figure at the end of Q1. A Q1 actual that is 85%+ of the Q1 expected pace is Green. This avoids incorrectly flagging early-year figures as red simply because the year is not yet complete.</p>
+    </div>
+  </div>
+
+  <div class="how-section">
+    <h3>Data currency &amp; update cycle</h3>
+    <ul>
+      <li>Annual actuals for <strong>2024 and 2025</strong> are final confirmed figures.</li>
+      <li><strong>2026</strong> actuals currently reflect Q1 performance (January–March 2026).</li>
+      <li>Quarterly data for 2024 and 2025 is estimated by dividing annual totals evenly across four quarters.</li>
+      <li>The dashboard is updated by the Kinia admin team. For questions about data, contact the CEO or Head of Strategy.</li>
+    </ul>
+  </div>
+
+  <div class="how-section">
+    <h3>Access &amp; download</h3>
+    <ul>
+      <li><strong>Board viewer PIN:</strong> provided separately by the admin team.</li>
+      <li><strong>Admin PIN:</strong> held by designated Kinia staff only — not shared with the Board.</li>
+      <li>Use the <strong>Download app</strong> button (top right of this page or the Overview page) to save a local copy of the dashboard that works offline in any browser.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div id="page-overview" class="page">
+  <div class="page-header">
+    <div><h1>Performance &amp; impact dashboard</h1><p>Strategic plan 2026–2030 · Board of Directors · <span id="today"></span></p></div>
+    <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+      <span id="ov-status-badge" class="ys-badge"></span>
+      <div class="header-badge">Year: <span id="ov-year">2026</span></div>
+      <button class="dl-btn" onclick="downloadApp()">Download app</button>
+    </div>
+  </div>
+  <div class="dash-legend">
+    <strong style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em">Key:</strong>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual net-new target</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--card-g-bg);border:1px solid var(--card-g-border)"></span><span class="rag-dot g" style="margin-left:2px"></span> On track</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--card-a-bg);border:1px solid var(--card-a-border)"></span><span class="rag-dot a" style="margin-left:2px"></span> Monitor</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--card-r-bg);border:1px solid var(--card-r-border)"></span><span class="rag-dot r" style="margin-left:2px"></span> Action required</span>
+  </div>
+  <div id="ov-yr-banner"></div>
   <div class="metric-grid" id="ov-metrics"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Mission reach — target vs actual</div><div class="sec-div-line"></div></div>
+  <div class="g2" style="margin-bottom:16px">
+    <div class="card"><div class="card-title">Educators upskilled</div><div style="position:relative;height:190px"><canvas id="ov-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached</div><div style="position:relative;height:190px"><canvas id="ov-yp-chart"></canvas></div></div>
+  </div>
+  <div class="g2" style="margin-bottom:16px">
+    <div class="card"><div class="card-title">Educator credentials issued</div><div style="position:relative;height:190px"><canvas id="ov-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badges awarded</div><div style="position:relative;height:190px"><canvas id="ov-badge-chart"></canvas></div></div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Financial overview</div><div class="sec-div-line"></div></div>
   <div class="g2">
-    <div class="card"><div class="card-title">Revenue mix 2024–2030</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Grants</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>Social enterprise</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#9dceef;display:inline-block"></span>Other</span>
+    <div class="card">
+      <div class="card-title">Revenue mix — target vs actual</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);display:inline-block;border-radius:2px"></span>Grants (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(243,112,33,0.35);display:inline-block;border-radius:2px"></span>SE (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(157,206,239,0.5);display:inline-block;border-radius:2px"></span>Other (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;display:inline-block;border-radius:2px"></span>Total actual</span>
       </div>
       <div style="position:relative;height:190px"><canvas id="revChart"></canvas></div>
     </div>
-    <div class="card"><div class="card-title">Grant dependency &amp; SE share</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Grant dep. %</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>SE share %</span>
+    <div class="card">
+      <div class="card-title">Grant dependency &amp; SE share — target vs actual</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);display:inline-block;border-radius:2px"></span>Grant (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#1a7ab5;display:inline-block;border-radius:2px"></span>Grant (actual)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(243,112,33,0.35);display:inline-block;border-radius:2px"></span>SE % (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;display:inline-block;border-radius:2px"></span>SE % (actual)</span>
       </div>
       <div style="position:relative;height:190px"><canvas id="depChart"></canvas></div>
     </div>
-  </div>
-  <div class="card" style="margin-bottom:18px"><div class="card-title">Mission reach 2024–2030 — targets &amp; actuals</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;color:var(--muted)">
-      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#262262;display:inline-block"></span>Educators (target)</span>
-      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#3949ab;display:inline-block"></span>Educators (actual)</span>
-      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#f37021;display:inline-block"></span>Young people ÷10 (target)</span>
-      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;border-radius:2px;background:#e65100;display:inline-block"></span>Young people ÷10 (actual)</span>
-    </div>
-    <div style="position:relative;height:210px"><canvas id="reachChart"></canvas></div>
   </div>
 </div>
 
 <!-- QUARTERLY -->
 <div id="page-quarterly" class="page">
-  <div class="page-header">
-    <div><h1>Quarterly tracker</h1><p>In-year progress against annual targets — key strategic KPIs only.</p></div>
-    <div class="header-badge">Select year below</div>
-  </div>
-  <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap" id="q-year-row"></div>
-  <div id="q-year-banner" style="margin-bottom:16px"></div>
-
+  <div class="page-header"><div><h1>Quarterly tracker</h1><p>In-year progress by quarter (Jan–Mar = Q1, Apr–Jun = Q2, Jul–Sep = Q3, Oct–Dec = Q4) &amp; cross-year Q1 comparison.</p></div><div class="header-badge">Select year below</div></div>
+  <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap" id="q-year-row"></div>
+  <div id="q-yr-banner" style="margin-bottom:12px"></div>
   <div class="dash-legend">
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8eaf6;border:1px solid #3949ab"></span>Annual (cumulative) target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#fff3e0;border:1px solid #e65100"></span>Annual net-new target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#eef0fc"></span>Q data entered</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#f0faf4"></span>Q on track (≥80%)</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#fef5f5"></span>Q off track (&lt;80%)</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Annual target</span>
+    <span class="dl-item"><span class="dl-sw" style="background:#262262"></span>2024</span>
+    <span class="dl-item"><span class="dl-sw" style="background:#f37021"></span>2025</span>
+    <span class="dl-item"><span class="dl-sw" style="background:#005129"></span>2026</span>
+    <span class="dl-item"><span class="rag-dot g"></span>On track (≥85% of quarterly pace)</span>
+    <span class="dl-item"><span class="rag-dot a"></span>Monitor (70–84%)</span>
+    <span class="dl-item"><span class="rag-dot r"></span>Action required (&lt;70%)</span>
   </div>
-
-  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">KPI progress cards</div><div class="sec-div-line"></div></div>
-  <div id="q-kpi-cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px"></div>
-
-  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Quarterly trend charts — target pace vs actual</div><div class="sec-div-line"></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">KPI progress — selected year</div><div class="sec-div-line"></div></div>
+  <div id="q-kpi-cards" class="q-compare-grid"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Cross-year Q1 comparison — same quarter across years</div><div class="sec-div-line"></div></div>
   <div class="g2">
-    <div class="card"><div class="card-title">Educators upskilled</div><div style="position:relative;height:190px"><canvas id="q-edu-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">Young people reached</div><div style="position:relative;height:190px"><canvas id="q-yp-chart"></canvas></div></div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="card-title">Youth badges awarded</div><div style="position:relative;height:190px"><canvas id="q-badge-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">SE revenue (€M)</div><div style="position:relative;height:190px"><canvas id="q-se-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Educators upskilled — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-yp-chart"></canvas></div></div>
   </div>
   <div class="g2">
-    <div class="card"><div class="card-title">Educator credentials issued</div><div style="position:relative;height:190px"><canvas id="q-cred-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">Active platform users</div><div style="position:relative;height:190px"><canvas id="q-pu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badges — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">SE revenue — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-se-chart"></canvas></div></div>
   </div>
-
-  <div class="card" style="margin-bottom:18px">
-    <div class="card-title">Summary table — <span id="q-table-year">2026</span></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">In-year trend — selected year vs quarterly target pace</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Educators upskilled</div><div style="position:relative;height:180px"><canvas id="q-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached</div><div style="position:relative;height:180px"><canvas id="q-yp-chart"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Youth badges</div><div style="position:relative;height:180px"><canvas id="q-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">SE revenue (€M)</div><div style="position:relative;height:180px"><canvas id="q-se-chart"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Educator credentials</div><div style="position:relative;height:180px"><canvas id="q-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Platform users</div><div style="position:relative;height:180px"><canvas id="q-pu-chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Quarterly summary — <span id="q-table-year">2026</span></div>
     <div style="overflow-x:auto"><table class="trend-table" id="q-summary-table"></table></div>
   </div>
 </div>
 
-<!-- SMART INSIGHTS -->
+<!-- INSIGHTS -->
 <div id="page-insights" class="page">
-  <div class="page-header"><div><h1>Smart insights</h1><p>Auto-generated analysis — updated as actuals are entered.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
+  <div class="page-header"><div><h1>Smart insights</h1><p>Auto-generated analysis — updates as actuals are entered.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Performance at a glance</div><div class="sec-div-line"></div></div>
   <div class="smart-insights" id="si-cards"></div>
   <div class="g2">
-    <div class="card"><div class="card-title">Cost per young person reached (€)</div><div style="position:relative;height:200px"><canvas id="si-cpy-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Cost per young person reached (€)</div><div style="position:relative;height:190px"><canvas id="si-cpy-chart"></canvas></div></div>
     <div class="card"><div class="card-title">Revenue vs reach growth (2024 = 100)</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:10px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#f37021;display:inline-block;border-radius:2px"></span>Revenue</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#262262;display:inline-block;border-radius:2px"></span>Young people</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#9dceef;display:inline-block;border-radius:2px"></span>Educators</span>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#f37021;display:inline-block;border-radius:2px"></span>Revenue</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#262262;display:inline-block;border-radius:2px"></span>Young people</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#9dceef;display:inline-block;border-radius:2px"></span>Educators</span>
       </div>
-      <div style="position:relative;height:200px"><canvas id="si-index-chart"></canvas></div>
+      <div style="position:relative;height:190px"><canvas id="si-index-chart"></canvas></div>
     </div>
   </div>
   <div class="g2">
-    <div class="card"><div class="card-title">Credentials per platform user (%)</div><div style="position:relative;height:200px"><canvas id="si-cred-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">Youth badge trajectory to 2030</div><div style="position:relative;height:200px"><canvas id="si-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Credentials per platform user (%)</div><div style="position:relative;height:190px"><canvas id="si-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badge trajectory to 2030</div><div style="position:relative;height:190px"><canvas id="si-badge-chart"></canvas></div></div>
   </div>
-  <div class="card" style="margin-bottom:18px">
-    <div class="card-title">Grant dependency vs SE share — progress toward 23% target</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:10px;color:var(--muted)">
-      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#262262;display:inline-block;border-radius:2px"></span>Grant dep.</span>
-      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#f37021;display:inline-block;border-radius:2px"></span>SE share</span>
-      <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#b9f24c;display:inline-block;border-radius:2px"></span>23% target</span>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Grant dependency vs SE share — target (dashed) vs actual (solid) — 23% goal line</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+      <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.4);display:inline-block;border-radius:2px"></span>Grant dep. (tgt)</span>
+      <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#1a7ab5;display:inline-block;border-radius:2px"></span>Grant dep. (actual)</span>
+      <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(243,112,33,0.4);display:inline-block;border-radius:2px"></span>SE share (tgt)</span>
+      <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;display:inline-block;border-radius:2px"></span>SE share (actual)</span>
+      <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#b9f24c;display:inline-block;border-radius:2px"></span>23% target</span>
     </div>
     <div style="position:relative;height:200px"><canvas id="si-fin-chart"></canvas></div>
   </div>
@@ -358,74 +516,70 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-t
 
 <!-- PILLAR 1 -->
 <div id="page-pillar1" class="page">
-  <div class="page-header"><div><h1>Pillar 1 — deepening educator expertise</h1><p>Best-in-class bilingual professional development in AI, creative technology and green skills.</p></div><div style="display:flex;gap:8px;align-items:center"><span id="p1-status-badge" class="year-status-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
-  <div id="p1-year-banner"></div>
-  <div id="p1-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p1-insight-text">Insight will appear here once data is entered for this year.</p></div>
-  <div class="dash-legend" style="margin-bottom:14px">
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8eaf6;border:1px solid #3949ab"></span>Cumulative target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#fff3e0;border:1px solid #e65100"></span>Annual net-new target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8f5e9;border:1px solid #2e7d32"></span>Actual</span>
-  </div>
+  <div class="page-header"><div><h1>Pillar 1 — deepening educator expertise</h1><p>Best-in-class bilingual professional development in AI, creative technology and green skills.</p></div><div style="display:flex;gap:7px;align-items:center"><span id="p1-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div id="p1-yr-banner"></div>
+  <div id="p1-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p1-insight-text">Insight will appear here once data is entered.</p></div>
+  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual net-new target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
   <div class="metric-grid" id="p1-metrics"></div>
   <div class="g2">
-    <div class="card"><div class="card-title">KPI progress vs annual target</div><div id="p1-bars"></div></div>
+    <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p1-bars"></div></div>
     <div class="card"><div class="card-title">Trend 2024–2030</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:10px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#262262;display:inline-block;border-radius:2px"></span>Educators (target)</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#3949ab;display:inline-block;border-radius:2px"></span>Educators (actual)</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#9dceef;display:inline-block;border-radius:2px;border:1px dashed #666"></span>Platform users (target)</span>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);border-radius:2px;display:inline-block"></span>Educators (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;border-radius:2px;display:inline-block"></span>Educators (actual)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#9dceef;border-radius:2px;display:inline-block"></span>Platform users (tgt)</span>
       </div>
-      <div style="position:relative;height:210px"><canvas id="p1Chart"></canvas></div>
+      <div style="position:relative;height:200px"><canvas id="p1Chart"></canvas></div>
     </div>
   </div>
-  <div class="card" style="margin-bottom:18px"><div class="card-title">Full trend table — targets &amp; actuals all years</div><div style="overflow-x:auto"><table class="trend-table" id="p1-table"></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p1-table"></table></div></div>
 </div>
 
 <!-- PILLAR 2 -->
 <div id="page-pillar2" class="page">
-  <div class="page-header"><div><h1>Pillar 2 — driving system-wide educational change</h1><p>Embedding recognised credentials and scalable digital tools across the education system.</p></div><div style="display:flex;gap:8px;align-items:center"><span id="p2-status-badge" class="year-status-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
-  <div id="p2-year-banner"></div>
-  <div id="p2-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p2-insight-text">Insight will appear here once data is entered for this year.</p></div>
-  <div class="dash-legend" style="margin-bottom:14px">
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8eaf6;border:1px solid #3949ab"></span>Cumulative target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#fff3e0;border:1px solid #e65100"></span>Annual net-new target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8f5e9;border:1px solid #2e7d32"></span>Actual</span>
-  </div>
+  <div class="page-header"><div><h1>Pillar 2 — driving system-wide educational change</h1><p>Embedding recognised credentials and scalable digital tools.</p></div><div style="display:flex;gap:7px;align-items:center"><span id="p2-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div id="p2-yr-banner"></div>
+  <div id="p2-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p2-insight-text">Insight will appear here once data is entered.</p></div>
+  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual net-new target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
   <div class="metric-grid" id="p2-metrics"></div>
   <div class="g2">
-    <div class="card"><div class="card-title">KPI progress vs annual target</div><div id="p2-bars"></div></div>
+    <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p2-bars"></div></div>
     <div class="card"><div class="card-title">Trend 2024–2030</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:10px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#262262;display:inline-block;border-radius:2px"></span>Credentials (target)</span>
-        <span style="display:flex;align-items:center;gap:3px"><span style="width:9px;height:9px;background:#f37021;display:inline-block;border-radius:2px"></span>Badges (target)</span>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);border-radius:2px;display:inline-block"></span>Credentials (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#f37021;border-radius:2px;display:inline-block"></span>Badges (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;border-radius:2px;display:inline-block"></span>Credentials (actual)</span>
       </div>
-      <div style="position:relative;height:210px"><canvas id="p2Chart"></canvas></div>
+      <div style="position:relative;height:200px"><canvas id="p2Chart"></canvas></div>
     </div>
   </div>
-  <div class="card" style="margin-bottom:18px"><div class="card-title">Full trend table — targets &amp; actuals all years</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Community profile</div><div class="sec-div-line"></div></div>
   <div class="g3">
-    <div class="card"><div class="card-title">Who our educators work with</div><div style="position:relative;height:170px"><canvas id="pie1"></canvas></div><div class="pie-legend" id="pie1-leg"></div></div>
-    <div class="card"><div class="card-title">Formal vs non-formal education</div><div style="position:relative;height:170px"><canvas id="pie2"></canvas></div><div class="pie-legend" id="pie2-leg"></div></div>
-    <div class="card"><div class="card-title">Language of delivery</div><div style="position:relative;height:170px"><canvas id="pie3"></canvas></div><div class="pie-legend" id="pie3-leg"></div></div>
+    <div class="card"><div class="card-title">Who our educators work with</div><div style="position:relative;height:160px"><canvas id="pie1"></canvas></div><div class="pie-legend" id="pie1-leg"></div></div>
+    <div class="card"><div class="card-title">Formal vs non-formal</div><div style="position:relative;height:160px"><canvas id="pie2"></canvas></div><div class="pie-legend" id="pie2-leg"></div></div>
+    <div class="card"><div class="card-title">Language of delivery</div><div style="position:relative;height:160px"><canvas id="pie3"></canvas></div><div class="pie-legend" id="pie3-leg"></div></div>
   </div>
 </div>
 
 <!-- PILLAR 3 -->
 <div id="page-pillar3" class="page">
-  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1><p>Targeting 23–25% SE revenue share by 2030.</p></div><div style="display:flex;gap:8px;align-items:center"><span id="p3-status-badge" class="year-status-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
-  <div id="p3-year-banner"></div>
-  <div id="p3-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p3-insight-text">Insight will appear here once data is entered for this year.</p></div>
-  <div class="dash-legend" style="margin-bottom:14px">
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8eaf6;border:1px solid #3949ab"></span>Target</span>
-    <span class="dl-item"><span class="dl-swatch" style="background:#e8f5e9;border:1px solid #2e7d32"></span>Actual</span>
-  </div>
+  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1><p>Targeting 23–25% SE revenue share by 2030.</p></div><div style="display:flex;gap:7px;align-items:center"><span id="p3-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div id="p3-yr-banner"></div>
+  <div id="p3-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p3-insight-text">Insight will appear here once data is entered.</p></div>
+  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
   <div class="metric-grid" id="p3-metrics"></div>
   <div class="g2">
     <div class="card"><div class="card-title">Revenue streams — target vs actual</div><div style="overflow-x:auto" id="p3-rev-table"></div></div>
-    <div class="card"><div class="card-title">SE revenue 2024–2030</div><div style="position:relative;height:210px"><canvas id="p3Chart"></canvas></div></div>
+    <div class="card"><div class="card-title">SE revenue — target vs actual</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(248,160,106,0.5);border-radius:2px;display:inline-block"></span>Target</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;border-radius:2px;display:inline-block"></span>Actual</span>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="p3Chart"></canvas></div>
+    </div>
   </div>
-  <div class="card" style="margin-bottom:18px"><div class="card-title">Full trend table — targets &amp; actuals all years</div><div style="overflow-x:auto"><table class="trend-table" id="p3-table"></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p3-table"></table></div></div>
 </div>
 
 <!-- REACH & INFLUENCE -->
@@ -434,11 +588,11 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-t
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Media reach</div><div class="sec-div-line"></div></div>
   <div class="g3" id="media-stats"></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Political influence &amp; government engagement</div><div class="sec-div-line"></div></div>
-  <div class="card" style="margin-bottom:18px"><div id="political-items"></div></div>
+  <div class="card" style="margin-bottom:16px"><div id="political-items"></div></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Fundraising &amp; strategic partnerships</div><div class="sec-div-line"></div></div>
-  <div class="card" style="margin-bottom:18px">
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px">Strategic partners &amp; funders</p>
-    <div id="partner-chips" style="margin-bottom:18px"></div>
+  <div class="card" style="margin-bottom:16px">
+    <p style="font-size:10px;color:var(--muted);margin-bottom:10px">Strategic partners &amp; funders</p>
+    <div id="partner-chips" style="margin-bottom:16px"></div>
     <div class="card-title">Highlights</div>
     <div id="fundraising-items"></div>
   </div>
@@ -454,27 +608,27 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-t
 
 <!-- RISKS -->
 <div id="page-risks" class="page">
-  <div class="page-header"><div><h1>Risk register &amp; strategic questions</h1><p>Board oversight — likelihood, impact and mitigation actions.</p></div></div>
-  <div class="card" style="margin-bottom:18px;padding:0 0 4px">
+  <div class="page-header"><div><h1>Risk register &amp; strategic questions</h1></div></div>
+  <div class="card" style="margin-bottom:16px;padding:0 0 4px">
     <table class="trend-table" style="width:100%">
-      <thead><tr><th style="padding-left:18px">Risk</th><th>Likelihood</th><th>Impact</th><th style="padding-right:18px">Mitigation</th></tr></thead>
+      <thead><tr><th style="padding-left:16px">Risk</th><th>Likelihood</th><th>Impact</th><th style="padding-right:16px">Mitigation</th></tr></thead>
       <tbody>
-        <tr><td style="padding-left:18px">Credential uptake remains low</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">3rd-level partnerships; AI tool; monthly tracking</td></tr>
-        <tr><td style="padding-left:18px">AI PBL Tool development delays</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Phased rollout; NTT Data &amp; AWS; manual backup</td></tr>
-        <tr><td style="padding-left:18px">Social enterprise doesn't scale</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Quarterly targets; Growth Lead; retail partnerships</td></tr>
-        <tr><td style="padding-left:18px">Key person dependency</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">CPD pathways; succession planning; documentation</td></tr>
-        <tr><td style="padding-left:18px">Corporate funding decreases</td><td><span class="rag rag-a">Medium</span></td><td><span class="rag rag-a">Medium</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Diversify via social enterprise; deepen statutory</td></tr>
-        <tr><td style="padding-left:18px">Competition increases</td><td><span class="rag rag-g">Low</span></td><td><span class="rag rag-a">Medium</span></td><td style="padding-right:18px;color:var(--muted);font-size:11px">Leverage bilingual USP; innovation-led content</td></tr>
+        <tr><td style="padding-left:16px">Credential uptake remains low</td><td><span class="rag rag-a">Amber</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:16px;color:var(--muted);font-size:10px">3rd-level partnerships; AI tool; monthly tracking</td></tr>
+        <tr><td style="padding-left:16px">AI PBL Tool development delays</td><td><span class="rag rag-a">Amber</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:16px;color:var(--muted);font-size:10px">Phased rollout; NTT Data &amp; AWS; manual backup</td></tr>
+        <tr><td style="padding-left:16px">Social enterprise doesn't scale</td><td><span class="rag rag-a">Amber</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:16px;color:var(--muted);font-size:10px">Quarterly targets; Growth Lead; retail partnerships</td></tr>
+        <tr><td style="padding-left:16px">Key person dependency</td><td><span class="rag rag-a">Amber</span></td><td><span class="rag rag-r">High</span></td><td style="padding-right:16px;color:var(--muted);font-size:10px">CPD pathways; succession planning; documentation</td></tr>
+        <tr><td style="padding-left:16px">Corporate funding decreases</td><td><span class="rag rag-a">Amber</span></td><td><span class="rag rag-a">Amber</span></td><td style="padding-right:16px;color:var(--muted);font-size:10px">Diversify via SE; deepen statutory partnerships</td></tr>
+        <tr><td style="padding-left:16px">Competition increases</td><td><span class="rag rag-g">Low</span></td><td><span class="rag rag-a">Amber</span></td><td style="padding-right:16px;color:var(--muted);font-size:10px">Leverage bilingual USP; innovation-led content</td></tr>
       </tbody>
     </table>
   </div>
   <div class="card">
     <div class="card-title">Strategic questions for board discussion</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px">
       <div class="insight-box live" style="margin:0"><div class="ititle">Social enterprise structure</div><p>Maintain integrated model, or explore a spin-out entity?</p></div>
       <div class="insight-box live" style="margin:0"><div class="ititle">Credentialing strategy</div><p>Pursue proprietary and 3rd-level credentials in parallel, or prioritise one?</p></div>
-      <div class="insight-box live" style="margin:0"><div class="ititle">Geographic focus</div><p>Regional depth (stronger evidence) vs national breadth (accelerated reach)?</p></div>
-      <div class="insight-box live" style="margin:0"><div class="ititle">Resource investment priorities</div><p>Outsource webshop, invest in impact measurement, or fund external comms support?</p></div>
+      <div class="insight-box live" style="margin:0"><div class="ititle">Geographic focus</div><p>Regional depth vs national breadth?</p></div>
+      <div class="insight-box live" style="margin:0"><div class="ititle">Resource investment priorities</div><p>Outsource webshop, invest in impact measurement, or fund external comms?</p></div>
     </div>
   </div>
 </div>
@@ -482,41 +636,17 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-t
 <footer>Kinia &nbsp;·&nbsp; Learning is Life &nbsp;·&nbsp; Ní thagann saol gan foghalaim &nbsp;·&nbsp; Strategic Plan 2026–2030 &nbsp;·&nbsp; Board Confidential</footer>
 
 <script>
-var VIEWER_PIN = "board2026";
-var ADMIN_PIN  = "kinia2026";
-var CURRENT_YEAR = 2026;
-var YEARS_ALL = [2024,2025,2026,2027,2028,2029,2030];
-var PLAN_START = 2026;
-var QUARTERS = ['Q1','Q2','Q3','Q4'];
+var VP="board2026", AP="kinia2026", CY=2026;
+// Latest quarter entered for current year — drives pro-rata RAG
+// Q1=Jan-Mar, Q2=Apr-Jun, Q3=Jul-Sep, Q4=Oct-Dec
+var LATEST_Q_2026 = 'Q1'; // UPDATE THIS when new quarter data is entered
+var Q_PACE = {'Q1':0.25,'Q2':0.50,'Q3':0.75,'Q4':1.00};
 
-// Year status helper
-function yearStatus(y) {
-  if (y < CURRENT_YEAR) return 'closed';
-  if (y === CURRENT_YEAR) return 'current';
-  return 'future';
-}
-function statusLabel(y) {
-  if (y < CURRENT_YEAR) return '✓ Closed year';
-  if (y === CURRENT_YEAR) return '● Year in progress';
-  return '○ Future year';
-}
-function statusClass(y) {
-  if (y < CURRENT_YEAR) return 'closed';
-  if (y === CURRENT_YEAR) return 'current';
-  return 'future';
-}
-function bannerHtml(y) {
-  var s=yearStatus(y);
-  var msgs={
-    closed:'This is a closed year. Actuals should be final. Any variance from target is a confirmed result.',
-    current:'This year is in progress. Actuals reflect performance to date and will be updated quarterly.',
-    future:'This is a future year. Only targets are shown — actuals will be entered as the year progresses.'
-  };
-  var icons={closed:'✓',current:'●',future:'○'};
-  return '<div class="year-banner '+s+'"><span class="yb-icon">'+icons[s]+'</span><span>'+msgs[s]+'</span></div>';
-}
+var YEARS=[2024,2025,2026,2027,2028,2029,2030];
+var QQ_LABELS=['Q1','Q2','Q3','Q4'];
+var YR_COLORS={2024:'#262262',2025:'#f37021',2026:'#005129',2027:'#9dceef',2028:'#b9f24c',2029:'#660066',2030:'#ffcf01'};
 
-var T = {
+var T={
   educators:      [27000,29500,32000,35000,39000,44000,50000],
   eduSupported:   [2000,2500,2500,3000,4000,5000,6000],
   youngPeople:    [380000,430000,490000,560000,650000,730000,800000],
@@ -532,265 +662,190 @@ var T = {
   platformUsers:  [1800,2400,4000,5500,7000,8500,10000],
   irishMedSchools:[200,200,200,200,200,200,200]
 };
-
-// Keys where annual = incremental; others are already annual figures
-var INCR_KEYS = {educators:true,youngPeople:true,eduCredentials:true,youthBadges:true,platformUsers:true,irishMedSchools:true};
-
-var Q_KEYS = [
-  {k:'educators',     l:'Educators upskilled',  dec:false, color:'#262262'},
-  {k:'youngPeople',   l:'Young people reached',  dec:false, color:'#f37021'},
-  {k:'youthBadges',   l:'Youth badges awarded',  dec:false, color:'#005129'},
-  {k:'seRevenue',     l:'SE revenue (€M)',        dec:true,  color:'#9dceef'},
-  {k:'eduCredentials',l:'Educator credentials',  dec:false, color:'#3d3899'},
-  {k:'platformUsers', l:'Platform users',         dec:false, color:'#1a7ab5'}
+var INCR={educators:true,youngPeople:true,eduCredentials:true,youthBadges:true,platformUsers:true,irishMedSchools:true,eduSupported:true,orgsEngaged:true};
+var Q_KEYS=[
+  {k:'educators',l:'Educators upskilled',dec:false,color:'#262262'},
+  {k:'youngPeople',l:'Young people reached',dec:false,color:'#f37021'},
+  {k:'youthBadges',l:'Youth badges',dec:false,color:'#005129'},
+  {k:'seRevenue',l:'SE revenue (€M)',dec:true,color:'#9dceef'},
+  {k:'eduCredentials',l:'Educator credentials',dec:false,color:'#3d3899'},
+  {k:'platformUsers',l:'Platform users',dec:false,color:'#1a7ab5'}
 ];
 
-var A = {
-  // 2024 actuals
+var A={
   'educators_2024':26000,'eduSupported_2024':2725,'youngPeople_2024':380000,
   'orgsEngaged_2024':436,'eduCredentials_2024':800,'youthBadges_2024':1620,
   'platformUsers_2024':2400,'irishMedSchools_2024':200,
-  'revenue_2024':2.00,'seRevenue_2024':0.20,'grantRevenue_2024':0.90,'otherRevenue_2024':0.90,
-  'sePct_2024':10,'grantPct_2024':90,
-  // 2025 actuals
+  'revenue_2024':2.00,'seRevenue_2024':0.20,'grantRevenue_2024':0.90,'sePct_2024':10,'grantPct_2024':90,
   'educators_2025':28325,'eduSupported_2025':2325,'youngPeople_2025':401821,
   'orgsEngaged_2025':414,'eduCredentials_2025':950,'youthBadges_2025':2500,
   'platformUsers_2025':3500,'irishMedSchools_2025':200,
-  'revenue_2025':1.90,'seRevenue_2025':0.35,'grantRevenue_2025':1.10,'otherRevenue_2025':0.45,
-  'sePct_2025':16,'grantPct_2025':84,
-  // 2026 actuals (Q1 progress — entered as current cumulative)
+  'revenue_2025':1.90,'seRevenue_2025':0.35,'grantRevenue_2025':1.10,'sePct_2025':16,'grantPct_2025':84,
   'educators_2026':29125,'eduSupported_2026':740,'youngPeople_2026':408000,
   'orgsEngaged_2026':75,'eduCredentials_2026':850,'youthBadges_2026':2500,
   'platformUsers_2026':4200,'irishMedSchools_2026':200,
-  'revenue_2026':0.60,'seRevenue_2026':0.10,'grantRevenue_2026':0.40,'otherRevenue_2026':0.10,
-  'sePct_2026':16,'grantPct_2026':84
+  'revenue_2026':0.60,'seRevenue_2026':0.10,'grantRevenue_2026':0.40,'sePct_2026':16,'grantPct_2026':84
 };
 
-var QQ = {
-  // 2024 quarterly (annual ÷ 4, evenly spread)
-  'educators_2024_Q1':6500,'educators_2024_Q2':13000,'educators_2024_Q3':19500,'educators_2024_Q4':26000,
-  'eduSupported_2024_Q1':681,'eduSupported_2024_Q2':1363,'eduSupported_2024_Q3':2044,'eduSupported_2024_Q4':2725,
-  'youngPeople_2024_Q1':95000,'youngPeople_2024_Q2':190000,'youngPeople_2024_Q3':285000,'youngPeople_2024_Q4':380000,
-  'youthBadges_2024_Q1':405,'youthBadges_2024_Q2':810,'youthBadges_2024_Q3':1215,'youthBadges_2024_Q4':1620,
-  'seRevenue_2024_Q1':0.05,'seRevenue_2024_Q2':0.10,'seRevenue_2024_Q3':0.15,'seRevenue_2024_Q4':0.20,
-  'eduCredentials_2024_Q1':200,'eduCredentials_2024_Q2':400,'eduCredentials_2024_Q3':600,'eduCredentials_2024_Q4':800,
-  'platformUsers_2024_Q1':600,'platformUsers_2024_Q2':1200,'platformUsers_2024_Q3':1800,'platformUsers_2024_Q4':2400,
-  // 2025 quarterly (annual ÷ 4, evenly spread)
-  'educators_2025_Q1':7081,'educators_2025_Q2':14163,'educators_2025_Q3':21244,'educators_2025_Q4':28325,
-  'eduSupported_2025_Q1':581,'eduSupported_2025_Q2':1163,'eduSupported_2025_Q3':1744,'eduSupported_2025_Q4':2325,
-  'youngPeople_2025_Q1':100455,'youngPeople_2025_Q2':200910,'youngPeople_2025_Q3':301366,'youngPeople_2025_Q4':401821,
-  'youthBadges_2025_Q1':625,'youthBadges_2025_Q2':1250,'youthBadges_2025_Q3':1875,'youthBadges_2025_Q4':2500,
-  'seRevenue_2025_Q1':0.09,'seRevenue_2025_Q2':0.18,'seRevenue_2025_Q3':0.26,'seRevenue_2025_Q4':0.35,
-  'eduCredentials_2025_Q1':238,'eduCredentials_2025_Q2':475,'eduCredentials_2025_Q3':713,'eduCredentials_2025_Q4':950,
-  'platformUsers_2025_Q1':875,'platformUsers_2025_Q2':1750,'platformUsers_2025_Q3':2625,'platformUsers_2025_Q4':3500,
-  // 2026 Q1 actuals (from images)
-  'educators_2026_Q1':29125,
-  'eduSupported_2026_Q1':740,
-  'youngPeople_2026_Q1':408000,
-  'youthBadges_2026_Q1':2500,
-  'seRevenue_2026_Q1':0.10,
-  'eduCredentials_2026_Q1':850,
-  'platformUsers_2026_Q1':4200
-};
-var selectedYear  = CURRENT_YEAR;
-var selectedQYear = CURRENT_YEAR;
-var charts = {};
+var QQ={};
+function populateQQ(){
+  [{k:'educators',v:26000},{k:'eduSupported',v:2725},{k:'youngPeople',v:380000},{k:'youthBadges',v:1620},{k:'seRevenue',v:0.20},{k:'eduCredentials',v:800},{k:'platformUsers',v:2400}
+  ].forEach(function(m){QQ_LABELS.forEach(function(q,qi){QQ[m.k+'_2024_'+q]=parseFloat((m.v*(qi+1)/4).toFixed(m.k==='seRevenue'?2:0));});});
+  [{k:'educators',v:28325},{k:'eduSupported',v:2325},{k:'youngPeople',v:401821},{k:'youthBadges',v:2500},{k:'seRevenue',v:0.35},{k:'eduCredentials',v:950},{k:'platformUsers',v:3500}
+  ].forEach(function(m){QQ_LABELS.forEach(function(q,qi){QQ[m.k+'_2025_'+q]=parseFloat((m.v*(qi+1)/4).toFixed(m.k==='seRevenue'?2:0));});});
+  QQ['educators_2026_Q1']=29125;QQ['eduSupported_2026_Q1']=740;
+  QQ['youngPeople_2026_Q1']=408000;QQ['youthBadges_2026_Q1']=2500;
+  QQ['seRevenue_2026_Q1']=0.10;QQ['eduCredentials_2026_Q1']=850;QQ['platformUsers_2026_Q1']=4200;
+}
+populateQQ();
 
-var QD = {
-  insights: {p1:{}, p2:{}, p3:{}},
-  mediaStats: [{val:"2.4M",label:"Total media reach"},{val:"18",label:"Press mentions"},{val:"6",label:"Broadcast appearances"}],
-  politicalItems: ["Invited to present to the Joint Oireachtas Committee on Education — March 2025","Formal engagement with Dept. of Education on AI in Schools framework — ongoing","Cited in Dept. of Children & Youth Affairs annual report 2024","Participant in European Commission AI Literacy working group"],
-  partners: ["Google","Salesforce","NTT Data","AWS","Dept. of Education","Dept. of Gaeltacht","SOLAS","ETBs","QQI","IUA"],
-  fundraisingItems: ["Multi-annual funding secured from Dept. of Education 2024–2026 — €1.05M","Google.org partnership renewed — supporting AI CPD track development","Salesforce Social Impact grant awarded — €75K for platform development","Exploring IUA MicroCreds partnership with two third-level institutions"],
-  socialStats: [{val:"12.4K",label:"LinkedIn followers"},{val:"8.2K",label:"X / Twitter"},{val:"6.1K",label:"Instagram"},{val:"48K",label:"Monthly web visits"}],
-  stories: [
+var QD={
+  insights:{p1:{},p2:{},p3:{}},
+  mediaStats:[{val:"2.4M",label:"Total media reach"},{val:"18",label:"Press mentions"},{val:"6",label:"Broadcast appearances"}],
+  politicalItems:["Invited to present to the Joint Oireachtas Committee on Education — March 2025","Formal engagement with Dept. of Education on AI in Schools framework — ongoing","Cited in Dept. of Children & Youth Affairs annual report 2024","Participant in European Commission AI Literacy working group"],
+  partners:["Google","Salesforce","NTT Data","AWS","Dept. of Education","Dept. of Gaeltacht","SOLAS","ETBs","QQI","IUA"],
+  fundraisingItems:["Multi-annual funding secured from Dept. of Education 2024–2026 — €1.05M","Google.org partnership renewed — supporting AI CPD track development","Salesforce Social Impact grant awarded — €75K for platform development","Exploring IUA MicroCreds partnership with two third-level institutions"],
+  socialStats:[{val:"12.4K",label:"LinkedIn followers"},{val:"8.2K",label:"X / Twitter"},{val:"6.1K",label:"Instagram"},{val:"48K",label:"Monthly web visits"}],
+  stories:[
     {title:"A teacher finds her STEM confidence",org:"Primary school, Co. Galway",quote:"The Kinia programme transformed how I approach STEM. I now run a coding club with 40 pupils — something I never would have had the confidence to do before.",attr:"5th class teacher, DEIS school",mediaType:"none",mediaUrl:"",tags:["Pillar 1","DEIS","Educator"]},
-    {title:"Young people leading the future",org:"Youth service, Dublin 17",quote:"Our young people — many of whom have never seen themselves as 'tech people' — are now designing apps, building robots and talking about careers in engineering. Kinia made that possible.",attr:"Youth worker, community organisation",mediaType:"none",mediaUrl:"",tags:["Pillar 2","Youth","Community"]}
+    {title:"Young people leading the future",org:"Youth service, Dublin 17",quote:"Our young people — many of whom have never seen themselves as 'tech people' — are now designing apps, building robots and talking about careers in engineering.",attr:"Youth worker, community organisation",mediaType:"none",mediaUrl:"",tags:["Pillar 2","Youth","Community"]}
   ],
   pie1:{labels:["Socio-econ. disadvantage","Rural communities","Girls in STEM","Irish language","Traveller / ethnic minority"],data:[38,24,18,12,8],colors:["#262262","#f37021","#9dceef","#b9f24c","#fad4d6"]},
   pie2:{labels:["Formal (schools)","Non-formal (youth work)"],data:[62,38],colors:["#262262","#f37021"]},
   pie3:{labels:["English medium","Irish medium"],data:[78,22],colors:["#262262","#b9f24c"]}
 };
 
+var charts={}, selYear=CY, selQYear=CY;
+
 // ── UTILS ──
-function yi(y) { return YEARS_ALL.indexOf(y); }
-function getA(k,y) { var v=A[k+'_'+y]; return (v!==undefined&&v!==null)?v:''; }
-function getQA(k,y,q) { var v=QQ[k+'_'+y+'_'+q]; return (v!==undefined&&v!==null)?v:''; }
-
-function annualTgt(k,i) {
-  if (T[k][i]===null) return null;
-  if (!INCR_KEYS[k]) return T[k][i];
-  if (i===0) return T[k][0];
-  return T[k][i]-T[k][i-1];
+function yi(y){return YEARS.indexOf(y);}
+function getA(k,y){var v=A[k+'_'+y];return(v!==undefined&&v!==null)?v:'';}
+function getQA(k,y,q){var v=QQ[k+'_'+y+'_'+q];return(v!==undefined&&v!==null)?v:'';}
+function yrStat(y){return y<CY?'closed':y===CY?'current':'future';}
+function yrLabel(y){return y<CY?'✓ Closed year':y===CY?'● Year in progress':'○ Future year';}
+function bannerHtml(y){
+  var s=yrStat(y);
+  var msgs={
+    closed:'Closed year — actuals are final. RAG status compares actual vs full annual target.',
+    current:'Year in progress — Q1 data entered (Jan–Mar 2026). RAG compares actual vs 25% of annual target (expected Q1 pace).',
+    future:'Future year — targets only. No actuals or RAG status shown.'
+  };
+  var icons={closed:'✓',current:'●',future:'○'};
+  return'<div class="yr-banner '+s+'"><span>'+icons[s]+'</span><span>'+msgs[s]+'</span></div>';
 }
+function annTgt(k,i){if(T[k][i]===null)return null;if(!INCR[k])return T[k][i];if(i===0)return T[k][0];return T[k][i]-T[k][i-1];}
+function annAct(k,y){var i=yi(y);var act=getA(k,y);if(act==='')return'';if(!INCR[k])return act;if(i===0)return act;var prev=getA(k,YEARS[i-1]);if(prev==='')return'';return(parseFloat(act)-parseFloat(prev)).toFixed(0);}
 
-function annualAct(k,y) {
-  var i=yi(y);
-  var act=getA(k,y); if (act==='') return '';
-  if (!INCR_KEYS[k]) return act;
-  if (i===0) return act;
-  var prev=getA(k,YEARS_ALL[i-1]); if (prev==='') return '';
-  return (parseFloat(act)-parseFloat(prev)).toFixed(k==='seRevenue'||k==='revenue'||k==='grantRevenue'?2:0);
-}
-
-function ragC(a,t) {
-  if (a===''||a===null||t===null||t===undefined) return 'n';
-  var r=parseFloat(a)/parseFloat(t);
-  if (isNaN(r)) return 'n';
-  return r>=0.95?'g':r>=0.8?'a':'r';
-}
-function fmtN(v,dec) {
-  if (v===null||v===undefined||v==='') return '—';
-  var n=parseFloat(v); if (isNaN(n)) return '—';
-  if (dec) return '€'+n.toFixed(2)+'M';
-  if (n>=1000000) return (n/1000000).toFixed(1)+'M';
-  if (n>=1000) return Math.round(n/1000)+'K';
-  return n.toLocaleString();
-}
-function fmtT(t,dec) { return (t===null||t===undefined)?'—':fmtN(t,dec); }
-
-// ── VIEWER PIN ──
-function checkViewerPin() {
-  if (document.getElementById('viewer-pin').value===VIEWER_PIN) {
-    document.getElementById('viewer-gate').style.display='none';
-  } else {
-    document.getElementById('viewer-err').style.display='block';
+// Context-aware RAG: for current year, compare against pro-rata quarterly pace
+// Thresholds: G ≥ 85%, A 70-84%, R < 70%
+function ragC(actual, target, year) {
+  if (actual===''||actual===null||target===null||target===undefined) return 'n';
+  var a=parseFloat(actual), t=parseFloat(target);
+  if (isNaN(a)||isNaN(t)||t===0) return 'n';
+  var compareTo = t;
+  if (year === CY) {
+    // compare against pro-rata pace for latest quarter entered
+    var pace = Q_PACE[LATEST_Q_2026] || 0.25;
+    compareTo = t * pace;
   }
+  var r = a / compareTo;
+  return r >= 0.85 ? 'g' : r >= 0.70 ? 'a' : 'r';
 }
+function ragLabel(rc){return rc==='g'?'On track':rc==='a'?'Monitor':rc==='r'?'Action required':'—';}
+
+function fmtN(v,dec){if(v===null||v===undefined||v==='')return'—';var n=parseFloat(v);if(isNaN(n))return'—';if(dec)return'€'+n.toFixed(2)+'M';if(n>=1000000)return(n/1e6).toFixed(1)+'M';if(n>=1000)return Math.round(n/1000)+'K';return n.toLocaleString();}
+function fmtT(t,dec){return(t===null||t===undefined)?'—':fmtN(t,dec);}
+
+// ── PIN ──
+function checkViewerPin(){if(document.getElementById('viewer-pin').value===VP){document.getElementById('viewer-gate').style.display='none';}else{document.getElementById('viewer-err').style.display='block';}}
 document.getElementById('viewer-pin').addEventListener('keydown',function(e){if(e.key==='Enter')checkViewerPin();});
 
-// ── NAV / YEAR PILLS ──
-function buildYearPills() {
-  var el=document.getElementById('yr-pills-nav');
-  el.innerHTML=YEARS_ALL.map(function(y){
-    var s=yearStatus(y);
-    var cls='year-pill'+(y===selectedYear?' active':'')+(s==='closed'?' closed':s==='current'?' current':'');
-    return '<button class="'+cls+'" onclick="setYear('+y+',this)">'+y+'</button>';
-  }).join('');
+// ── YEAR PILLS ──
+function buildYrPills(){
+  document.getElementById('yr-pills-nav').innerHTML=YEARS.map(function(y){var s=yrStat(y);return'<button class="year-pill'+(y===selYear?' active':'')+(s==='closed'?' closed':s==='current'?' current':'')+'" onclick="setYear('+y+')">'+y+'</button>';}).join('');
 }
-function buildQYearPills() {
-  var el=document.getElementById('q-year-row');
-  el.innerHTML=YEARS_ALL.map(function(y){
-    var s=yearStatus(y);
-    var cls='year-pill'+(y===selectedQYear?' active':'')+(s==='closed'?' closed':s==='current'?' current':'');
-    return '<button class="'+cls+'" onclick="setQYear('+y+',this)">'+y+'</button>';
-  }).join('');
+function buildQYrPills(){
+  document.getElementById('q-year-row').innerHTML=YEARS.map(function(y){var s=yrStat(y);return'<button class="year-pill'+(y===selQYear?' active':'')+(s==='closed'?' closed':s==='current'?' current':'')+'" onclick="setQYear('+y+')">'+y+'</button>';}).join('');
 }
-
-function setYear(y,btn) {
-  selectedYear=y;
-  buildYearPills();
-  document.querySelectorAll('.yr-badge').forEach(function(el){el.textContent=y;});
-  document.getElementById('ov-year').textContent=y;
-  // status badges
-  var sl=statusLabel(y), sc=statusClass(y);
-  ['ov','p1','p2','p3'].forEach(function(p){
-    var b=document.getElementById(p+'-status-badge');
-    if(b){b.textContent=sl;b.className='year-status-badge badge-'+sc;}
-  });
-  renderAll();
-}
-function setQYear(y,btn) {
-  selectedQYear=y;
-  buildQYearPills();
-  document.getElementById('q-table-year').textContent=y;
-  document.getElementById('q-year-banner').innerHTML=bannerHtml(y);
-  renderQuarterly();
-}
-function showPage(id,btn) {
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
-  document.getElementById('page-'+id).classList.add('active');
-  if(btn)btn.classList.add('active');
-}
+function setYear(y){selYear=y;buildYrPills();document.querySelectorAll('.yr-badge').forEach(function(e){e.textContent=y;});document.getElementById('ov-year').textContent=y;renderAll();}
+function setQYear(y){selQYear=y;buildQYrPills();document.getElementById('q-table-year').textContent=y;document.getElementById('q-yr-banner').innerHTML=bannerHtml(y);renderQuarterly();}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});document.getElementById('page-'+id).classList.add('active');if(btn)btn.classList.add('active');}
 
 // ── METRIC CARD ──
-function renderMCard(label,key,dec,suffix,showAnnual) {
-  var i=yi(selectedYear), tgt=T[key][i], act=getA(key,selectedYear), sf=suffix||'';
-  var rc=ragC(act,tgt), s=yearStatus(selectedYear);
-  var annT=showAnnual?annualTgt(key,i):null;
-  var annA=showAnnual?annualAct(key,selectedYear):'';
-  var cumTgtD=(tgt===null)?'TBD':(dec?'€'+tgt+'M':fmtN(tgt,false))+sf;
-  var annTD=annT!==null?(dec?'€'+parseFloat(annT).toFixed(2)+'M':fmtN(annT,false))+sf:null;
+function renderMCard(label,key,dec,suffix,showAnn){
+  var i=yi(selYear),tgt=T[key][i],act=getA(key,selYear),sf=suffix||'',s=yrStat(selYear);
+  var ann=showAnn?annTgt(key,i):null;
+  var annA=showAnn?annAct(key,selYear):'';
+  var rc=ragC(act,showAnn&&ann!==null?ann:tgt,selYear);
+  var cumTD=(tgt===null)?'TBD':(dec?'€'+tgt+'M':fmtN(tgt,false))+sf;
+  var annTD=ann!==null?(dec?'€'+parseFloat(ann).toFixed(2)+'M':fmtN(ann,false))+sf:null;
   var actD=act!==''?(dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:null;
-  var annAD=annA!==''?(dec?'€'+parseFloat(annA).toFixed(2)+'M':fmtN(annA,false))+sf:null;
-  var html='<div class="mcard year-'+s+'">';
-  html+='<div class="mlabel">'+label+'</div>';
-  // Cumulative target
-  html+='<div style="margin-bottom:4px"><span class="tgt-label tgt">Cumulative target</span><div class="mval">'+cumTgtD+'</div></div>';
-  // Annual target
-  if(annTD) html+='<div style="margin-bottom:6px"><span class="tgt-label ann">Annual target</span><div style="font-size:14px;font-weight:500;color:#e65100">+'+annTD+'</div></div>';
-  // Actual
-  if(s==='future'){
-    html+='<div class="msub" style="font-style:italic">Year not yet started</div>';
-  } else if(actD){
-    html+='<div><span class="tgt-label act">Actual</span><div style="font-size:14px;font-weight:500;color:#2e7d32">'+actD+'</div>';
-    if(annAD&&annTD) html+='<div style="font-size:10px;color:var(--muted);margin-top:2px">Annual: '+annAD+' <span class="rag rag-'+ragC(annA,annT)+'" style="font-size:9px">'+Math.round(parseFloat(annA)/parseFloat(annT)*100)+'%</span></div>';
-    html+='<div style="margin-top:4px"><span class="rag rag-'+rc+'" style="font-size:10px">vs cumulative: '+Math.round(parseFloat(act)/tgt*100)+'%</span></div>';
-    html+='</div>';
-  } else {
-    html+='<div class="msub" style="color:var(--muted);font-style:italic">'+(s==='closed'?'No actual recorded':'No actual entered yet')+'</div>';
-  }
-  html+='</div>';
-  return html;
+  var annAD=annA!==''?fmtN(annA,dec)+sf:null;
+  // pro-rata expected for current year
+  var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
+  var compareVal=ann!==null?ann:tgt;
+  var expectedNow=s==='current'?parseFloat((compareVal*pace).toFixed(dec?2:0)):null;
+  var expectedD=expectedNow!==null?(dec?'€'+expectedNow.toFixed(2)+'M':fmtN(expectedNow,false))+sf:null;
+  var cardClass='mcard '+(s==='future'?'status-n':(actD?'status-'+rc:'status-n'));
+  return'<div class="'+cardClass+'">'+
+    '<div class="mlabel">'+label+'</div>'+
+    '<div style="margin-bottom:3px"><span class="pill pill-tgt">Cumulative target</span><div class="mval">'+cumTD+'</div></div>'+
+    (annTD?'<div style="margin-bottom:3px"><span class="pill pill-ann">Annual target</span><div style="font-size:13px;font-weight:500;color:var(--ann-col)">+'+annTD+'</div></div>':'')+
+    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year — targets only</div>':
+      actD?
+        '<div><span class="pill pill-act">Actual</span><div style="font-size:13px;font-weight:500;color:var(--act-col)">'+actD+'</div>'+
+        (expectedD?'<div style="font-size:9px;color:var(--muted);margin-top:2px">Expected at '+LATEST_Q_2026+' pace: '+expectedD+'</div>':'')+
+        '<div style="margin-top:5px"><span class="rag-badge '+rc+'"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div>'+
+        '</div>':
+        '<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">'+(s==='closed'?'No actual recorded':'No actual entered yet')+'</div>')+
+    '</div>';
 }
 
-// ── KPI BARS (vs annual target) ──
-function renderBars(keys,color) {
-  var i=yi(selectedYear), s=yearStatus(selectedYear);
-  return keys.map(function(m) {
-    var tgt=T[m.k][i], act=getA(m.k,selectedYear);
-    var annT=annualTgt(m.k,i), annA=annualAct(m.k,selectedYear);
-    // bar is against annual target for incremental KPIs
-    var barTgt=annT!==null?annT:tgt;
+// ── KPI BARS ──
+function renderBars(keys,color){
+  var i=yi(selYear),s=yrStat(selYear);
+  return keys.map(function(m){
+    var tgt=T[m.k][i],act=getA(m.k,selYear);
+    var ann=annTgt(m.k,i),annA=annAct(m.k,selYear);
+    var barTgt=ann!==null?ann:tgt;
     var barAct=annA!==''?parseFloat(annA):(act!==''?parseFloat(act):null);
-    var bp=barTgt&&barAct!==null?Math.min(100,Math.round(barAct/barTgt*100)):0;
-    var rc=ragC(barAct,barTgt);
-    return '<div class="kpi-row">'+
+    // for current year, bar is against pro-rata expected
+    var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
+    var expectedNow=barTgt*pace;
+    var bp=expectedNow&&barAct!==null?Math.min(100,Math.round(barAct/expectedNow*100)):0;
+    var rc=ragC(barAct,barTgt,selYear);
+    var barColor=rc==='g'?'var(--act-col)':rc==='a'?'#e65100':'var(--candy)';
+    return'<div class="kpi-row">'+
       '<span class="kpi-label">'+m.l+'</span>'+
-      '<div class="kpi-bar-wrap">'+
-        '<div class="kpi-bar-tgt"></div>'+
-        (barAct!==null&&s!=='future'?'<div class="kpi-bar-act" style="width:'+bp+'%;background:'+color+'"></div>':'')+
+      '<div class="kpi-bar-wrap"><div class="kpi-bar-tgt"></div>'+(barAct!==null&&s!=='future'?'<div class="kpi-bar-act" style="width:'+bp+'%;background:'+barColor+'"></div>':'')+
       '</div>'+
-      '<span class="kpi-vals">'+
-        (barAct!==null&&s!=='future'?'<span style="color:#2e7d32;font-weight:500">'+fmtN(barAct,m.dec)+'</span> / ':'')+
-        '<span style="color:#3949ab">'+fmtT(barTgt,m.dec)+'</span>'+
-        (annT!==null?' <span style="font-size:9px;color:var(--muted)">(ann.)</span>':'')+
+      '<span class="kpi-vals">'+(barAct!==null&&s!=='future'?'<span style="color:var(--act-col);font-weight:500">'+fmtN(barAct,m.dec)+'</span> / ':'')+
+      '<span style="color:var(--tgt-col)">'+fmtT(barTgt,m.dec)+'</span>'+
       '</span>'+
-      '<span class="rag rag-'+rc+'">'+(rc==='n'?(s==='future'?'—':'awaiting'):rc.toUpperCase())+'</span>'+
+      '<span class="rag-badge '+rc+'" style="font-size:9px;padding:2px 6px">'+(rc!=='n'?'<span class="rag-dot '+rc+'"></span>':'')+ragLabel(rc)+'</span>'+
     '</div>';
   }).join('');
 }
 
-// ── TREND TABLE with year-status column colouring ──
-function renderTrendTable(id,rows) {
+// ── TREND TABLE ──
+function renderTrendTable(id,rows){
   var el=document.getElementById(id);
-  var hdrs=YEARS_ALL.map(function(y){
-    var s=statusClass(y);
-    var icon=s==='closed'?'✓':s==='current'?'●':'○';
-    return '<th class="th-'+s+'">'+y+'<br><span style="font-size:9px;font-weight:400">'+icon+' '+s+'</span></th>';
-  }).join('');
+  var hdrs=YEARS.map(function(y){var s=yrStat(y);return'<th class="th-'+s+'">'+y+'<br><span style="font-size:8px;font-weight:400">'+(s==='closed'?'✓':s==='current'?'●':'○')+' '+s+'</span></th>';}).join('');
   var html='<thead><tr><th>Metric</th>'+hdrs+'</tr></thead><tbody>';
-  rows.forEach(function(r) {
+  rows.forEach(function(r){
     html+='<tr><td style="font-weight:500;white-space:nowrap">'+r.l+'</td>';
-    YEARS_ALL.forEach(function(y,i) {
-      var tgt=T[r.k][i], act=getA(r.k,y), s=statusClass(y);
-      var annT=annualTgt(r.k,i), annA=annualAct(r.k,y);
-      var sf=r.suffix||'';
+    YEARS.forEach(function(y,i){
+      var tgt=T[r.k][i],act=getA(r.k,y),s=yrStat(y),sf=r.suffix||'';
+      var ann=annTgt(r.k,i);
       var cumTD=(tgt===null)?'—':(r.dec?'€'+tgt+'M':fmtN(tgt,false))+sf;
-      var annTD=annT!==null?(r.dec?'€'+parseFloat(annT).toFixed(2)+'M':fmtN(annT,false))+sf:null;
+      var annTD=ann!==null?(r.dec?'€'+parseFloat(ann).toFixed(2)+'M':fmtN(ann,false))+sf:null;
       var actD=act!==''?(r.dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:'';
-      var rc=ragC(act,tgt);
-      html+='<td class="th-'+s+'">';
-      html+='<div style="font-size:10px"><span class="tgt-label tgt">Target</span> '+cumTD+'</div>';
-      if(annTD) html+='<div style="font-size:10px;margin-top:2px"><span class="tgt-label ann">Annual</span> +'+annTD+'</div>';
-      if(s!=='future'){
-        if(actD) html+='<div style="font-size:10px;margin-top:2px"><span class="tgt-label act">Actual</span> <span style="color:#2e7d32;font-weight:500">'+actD+'</span> <span class="rag rag-'+rc+'" style="font-size:9px">'+rc.toUpperCase()+'</span></div>';
-        else html+='<div style="font-size:10px;margin-top:2px;color:var(--muted);font-style:italic">No actual</div>';
-      } else {
-        html+='<div style="font-size:10px;margin-top:2px;color:var(--muted);font-style:italic">Future</div>';
-      }
-      html+='</td>';
+      var rc=ragC(act,ann!==null?ann:tgt,y);
+      html+='<td class="th-'+s+'">'+
+        '<div><span class="pill pill-tgt">T</span> '+cumTD+'</div>'+
+        (annTD?'<div><span class="pill pill-ann">+</span> '+annTD+'</div>':'')+
+        (s!=='future'?(actD?'<div><span class="pill pill-act">A</span> <strong style="color:var(--act-col)">'+actD+'</strong> <span class="rag-badge '+rc+'" style="font-size:8px;padding:1px 5px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div>':'<div style="color:var(--muted);font-style:italic;font-size:9px">No actual</div>'):'<div style="color:var(--muted);font-style:italic;font-size:9px">Future</div>')+
+        '</td>';
     });
     html+='</tr>';
   });
@@ -799,222 +854,113 @@ function renderTrendTable(id,rows) {
 }
 
 // ── QUARTERLY ──
-function renderQuarterly() {
-  var i=yi(selectedQYear), s=yearStatus(selectedQYear);
+function renderQuarterly(){
+  var i=yi(selQYear),s=yrStat(selQYear);
   var html='';
-  Q_KEYS.forEach(function(m) {
-    var cumTgt=T[m.k][i];
-    var annT=annualTgt(m.k,i);
-    var qVals=QUARTERS.map(function(q){return getQA(m.k,selectedQYear,q);});
+  Q_KEYS.forEach(function(m){
+    var cumTgt=T[m.k][i],ann=annTgt(m.k,i);
+    var qVals=QQ_LABELS.map(function(q){return getQA(m.k,selQYear,q);});
     var latest=null;
-    qVals.forEach(function(v,qi){if(v!=='')latest={val:parseFloat(v),q:QUARTERS[qi]};});
-    var pct=latest&&annT?Math.min(100,Math.round(latest.val/annT*100)):0;
-    var rc=latest?ragC(latest.val,annT):'n';
-    // Quarter expected pace (annual/4 per quarter)
-    var qTgtPace=annT?parseFloat((annT/4).toFixed(m.dec?2:0)):null;
-    html+='<div class="q-card">';
-    html+='<div class="ql">'+m.l+'</div>';
-    html+='<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px">';
-    html+='<div style="font-size:20px;font-weight:300;color:var(--ocean)">'+(latest?fmtN(latest.val,m.dec):'—')+'</div>';
-    html+='<div style="font-size:10px;color:var(--muted)">'+(latest?'latest: '+latest.q:'no data yet')+'</div>';
+    qVals.forEach(function(v,qi){if(v!=='')latest={val:parseFloat(v),q:QQ_LABELS[qi],qi:qi};});
+    var annPace=ann&&latest?ann*Q_PACE[latest.q]:null;
+    var rc=latest&&annPace?ragC(latest.val,ann,selQYear==='current'?CY:selQYear):( latest&&ann?ragC(latest.val,ann,selQYear):( latest?ragC(latest.val,cumTgt,selQYear):'n'));
+    // For the quarterly tracker, use the same pro-rata logic per quarter
+    var latestRc='n';
+    if(latest&&ann){var qPace=Q_PACE[latest.q];var expected=ann*qPace;latestRc=ragC(latest.val,ann,selQYear===CY?CY:null);}
+    html+='<div class="q-kpi-block" style="background:'+(latest?(latestRc==='g'?'var(--card-g-bg)':latestRc==='a'?'var(--card-a-bg)':'var(--card-r-bg)'):'var(--white)')+';border-color:'+(latest?(latestRc==='g'?'var(--card-g-border)':latestRc==='a'?'var(--card-a-border)':'var(--card-r-border)'):'var(--border)')+'">';
+    html+='<div class="qkb-label">'+m.l+'</div>';
+    html+='<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">';
+    html+='<div style="font-size:18px;font-weight:300;color:var(--ocean)">'+(latest?fmtN(latest.val,m.dec):'—')+'</div>';
+    if(latest)html+='<span class="rag-badge '+latestRc+'" style="font-size:9px"><span class="rag-dot '+latestRc+'"></span>'+ragLabel(latestRc)+'</span>';
     html+='</div>';
-    html+='<div style="font-size:10px;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap">';
-    html+='<span><span class="tgt-label tgt">Cumulative target</span> '+fmtT(cumTgt,m.dec)+'</span>';
-    if(annT!==null) html+='<span><span class="tgt-label ann">Annual target</span> +'+fmtN(annT,m.dec)+'</span>';
+    html+='<div style="font-size:9px;margin-bottom:6px;display:flex;gap:5px;flex-wrap:wrap">';
+    html+='<span><span class="pill pill-tgt">Cum.</span> '+fmtT(cumTgt,m.dec)+'</span>';
+    if(ann!==null)html+='<span><span class="pill pill-ann">Ann.</span> +'+fmtN(ann,m.dec)+'</span>';
+    if(latest&&ann)html+='<span style="color:var(--muted);font-size:9px">Expected at '+latest.q+': '+fmtN(ann*Q_PACE[latest.q],m.dec)+'</span>';
     html+='</div>';
     if(s!=='future'){
-      html+='<div style="margin:8px 0 4px;height:6px;background:var(--border);border-radius:3px;overflow:hidden">'+(latest?'<div style="width:'+pct+'%;height:100%;background:'+m.color+';border-radius:3px"></div>':'')+'</div>';
-      html+='<div style="font-size:10px;color:var(--muted);margin-bottom:8px">'+pct+'% of annual target'+(latest?'<span class="rag rag-'+rc+'" style="margin-left:6px">'+rc.toUpperCase()+'</span>':'')+'</div>';
+      var pct=latest&&ann?Math.min(100,Math.round(latest.val/(ann*Q_PACE[latest.q])*100)):0;
+      html+='<div style="margin-bottom:4px;height:5px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden">'+(latest?'<div style="width:'+pct+'%;height:100%;background:'+(latestRc==='g'?'var(--rag-g-col)':latestRc==='a'?'var(--rag-a-col)':'var(--rag-r-col)')+';border-radius:3px"></div>':'')+'</div>';
+      html+='<div style="font-size:9px;color:var(--muted);margin-bottom:7px">'+pct+'% of '+( latest?latest.q:'Q1')+' pace</div>';
     }
-    // Quarter boxes
-    html+='<div class="q-quarters">';
-    QUARTERS.forEach(function(q,qi) {
-      var v=getQA(m.k,selectedQYear,q);
-      var hasVal=v!=='';
-      var qrc=hasVal&&qTgtPace?ragC(v,qTgtPace):'n';
-      var cls='q-quarter'+(hasVal?(qrc==='g'||qrc==='a')?' on-track':' off-track':s!=='future'?' has-data':'');
-      // expected cumulative pace at this quarter
-      var expectedCum=annT?parseFloat((annT*(qi+1)/4).toFixed(m.dec?2:0)):null;
-      html+='<div class="'+cls+'">';
-      html+='<div class="qq-label">'+q+'</div>';
-      html+='<div class="qq-val">'+(hasVal&&s!=='future'?fmtN(v,m.dec):'—')+'</div>';
-      if(expectedCum!==null) html+='<div class="qq-ann">exp. '+fmtN(expectedCum,m.dec)+'</div>';
-      html+='</div>';
+    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">';
+    QQ_LABELS.forEach(function(q,qi){
+      var v=getQA(m.k,selQYear,q);
+      var expPace=ann?parseFloat((ann*Q_PACE[q]).toFixed(m.dec?2:0)):null;
+      var qrc=v!==''&&expPace?ragC(v,ann,selQYear===CY?CY:null):'n';
+      // For closed years, compare Q actual vs Q expected (ann*pace)
+      if(selQYear<CY&&v!==''&&ann){qrc=ragC(v,ann,null);}
+      return html+='<div style="background:'+(v!==''?(qrc==='g'?'rgba(46,125,50,0.1)':qrc==='a'?'rgba(230,81,0,0.1)':'rgba(192,57,43,0.1)'):'var(--bg)')+';border-radius:5px;padding:5px 4px;text-align:center">'+
+        '<div style="font-size:8px;color:var(--muted);font-weight:600">'+q+'</div>'+
+        '<div style="font-size:11px;font-weight:500;color:var(--ocean)">'+(v!==''&&s!=='future'?fmtN(v,m.dec):'—')+'</div>'+
+        (expPace?'<div style="font-size:7px;color:var(--muted)">exp. '+fmtN(expPace,m.dec)+'</div>':'')+
+        (v!==''?'<div><span class="rag-dot '+qrc+'" style="margin:2px auto;display:block"></span></div>':'')+
+        '</div>';
     });
     html+='</div></div>';
   });
   document.getElementById('q-kpi-cards').innerHTML=html;
 
   // Summary table
-  var tbl='<thead><tr><th>KPI</th><th>Cumul. target</th><th>Annual target</th>';
-  QUARTERS.forEach(function(q){tbl+='<th>'+q+' actual</th><th>'+q+' pace</th>';});
-  tbl+='<th>Latest RAG</th></tr></thead><tbody>';
+  var tbl='<thead><tr><th>KPI</th><th>Ann. target</th>'+QQ_LABELS.map(function(q){return'<th>'+q+' actual</th><th>vs pace</th>';}).join('')+'<th>Status</th></tr></thead><tbody>';
   Q_KEYS.forEach(function(m){
-    var cumTgt=T[m.k][i], annT=annualTgt(m.k,i);
-    tbl+='<tr><td style="font-weight:500;white-space:nowrap">'+m.l+'</td>';
-    tbl+='<td><span class="tgt-label tgt">'+fmtT(cumTgt,m.dec)+'</span></td>';
-    tbl+='<td><span class="tgt-label ann">'+(annT!==null?'+'+fmtN(annT,m.dec):'—')+'</span></td>';
-    var latestV=null;
-    QUARTERS.forEach(function(q,qi){
-      var v=getQA(m.k,selectedQYear,q);
-      var expCum=annT?parseFloat((annT*(qi+1)/4).toFixed(m.dec?2:0)):null;
-      var rc=v!==''&&expCum?ragC(v,expCum):'n';
-      if(v!=='')latestV={val:parseFloat(v),rc:ragC(v,annT)};
-      tbl+='<td>'+(v!==''&&s!=='future'?'<span style="color:#2e7d32;font-weight:500">'+fmtN(v,m.dec)+'</span>':'<span style="color:var(--muted)">—</span>')+'</td>';
-      tbl+='<td>'+(expCum&&s!=='future'?'<span class="rag rag-'+rc+'" style="font-size:10px">'+rc.toUpperCase()+'</span>':'—')+'</td>';
+    var ann=annTgt(m.k,i);
+    tbl+='<tr><td style="font-weight:500;white-space:nowrap">'+m.l+'</td><td>'+(ann!==null?'<span class="pill pill-ann">+'+fmtN(ann,m.dec)+'</span>':'—')+'</td>';
+    var lv=null,lrc='n';
+    QQ_LABELS.forEach(function(q,qi){
+      var v=getQA(m.k,selQYear,q);
+      var exp=ann?parseFloat((ann*Q_PACE[q]).toFixed(m.dec?2:0)):null;
+      var rc=v!==''&&ann?(selQYear<CY?ragC(v,ann,null):ragC(v,ann,CY)):'n';
+      if(v!==''){lv=fmtN(v,m.dec);lrc=rc;}
+      tbl+='<td>'+(v!==''&&s!=='future'?'<span style="color:var(--act-col);font-weight:500">'+fmtN(v,m.dec)+'</span>':'<span style="color:var(--muted)">—</span>')+'</td>';
+      tbl+='<td>'+(exp&&v!==''&&s!=='future'?'<span class="rag-badge '+rc+'" style="font-size:9px;padding:1px 5px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span>':'—')+'</td>';
     });
-    tbl+='<td>'+(latestV?'<span class="rag rag-'+latestV.rc+'">'+latestV.rc.toUpperCase()+'</span>':'<span style="color:var(--muted)">—</span>')+'</td>';
-    tbl+='</tr>';
+    tbl+='<td>'+(lv?'<span class="rag-badge '+lrc+'" style="font-size:9px"><span class="rag-dot '+lrc+'"></span>'+ragLabel(lrc)+'</span>':'—')+'</td></tr>';
   });
   tbl+='</tbody>';
   document.getElementById('q-summary-table').innerHTML=tbl;
-  buildQCharts();
+  buildQCharts();buildQCompareCharts();
 }
 
-function buildQCharts() {
-  var i=yi(selectedQYear), s=yearStatus(selectedQYear);
-  var defs=[
-    {id:'q-edu-chart',   k:'educators',     color:'#262262', dec:false},
-    {id:'q-yp-chart',    k:'youngPeople',    color:'#f37021', dec:false},
-    {id:'q-badge-chart', k:'youthBadges',    color:'#005129', dec:false},
-    {id:'q-se-chart',    k:'seRevenue',      color:'#9dceef', dec:true},
-    {id:'q-cred-chart',  k:'eduCredentials', color:'#3d3899', dec:false},
-    {id:'q-pu-chart',    k:'platformUsers',  color:'#1a7ab5', dec:false}
-  ];
+function buildQCharts(){
+  var i=yi(selQYear),s=yrStat(selQYear);
+  var defs=[{id:'q-edu-chart',k:'educators',color:'#262262',dec:false},{id:'q-yp-chart',k:'youngPeople',color:'#f37021',dec:false},{id:'q-badge-chart',k:'youthBadges',color:'#005129',dec:false},{id:'q-se-chart',k:'seRevenue',color:'#9dceef',dec:true},{id:'q-cred-chart',k:'eduCredentials',color:'#3d3899',dec:false},{id:'q-pu-chart',k:'platformUsers',color:'#1a7ab5',dec:false}];
   defs.forEach(function(cd){
     if(charts[cd.id]){charts[cd.id].destroy();delete charts[cd.id];}
     var el=document.getElementById(cd.id);if(!el)return;
-    var annT=annualTgt(cd.k,i);
-    var actData=QUARTERS.map(function(q){var v=getQA(cd.k,selectedQYear,q);return v!==''?parseFloat(v):null;});
-    var tgtLine=QUARTERS.map(function(_,qi){return annT?parseFloat((annT*(qi+1)/4).toFixed(cd.dec?2:0)):null;});
-    charts[cd.id]=new Chart(el,{
-      type:'bar',
-      data:{labels:QUARTERS,datasets:[
-        {label:'Target pace',data:tgtLine,type:'line',borderColor:'#999',backgroundColor:'transparent',borderDash:[5,3],pointRadius:4,pointBackgroundColor:'#999',tension:0.1,order:1},
-        {label:'Actual',data:actData,backgroundColor:actData.map(function(v,qi){return v!==null?(v>=(tgtLine[qi]*0.8)?cd.color:'#ef4d41'):'rgba(0,0,0,0.04)';}),borderRadius:4,order:2}
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-        scales:{
-          x:{ticks:{color:'#888',font:{size:10}},grid:{display:false}},
-          y:{ticks:{color:'#888',font:{size:10},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.05)'}}
-        }}
-    });
+    var ann=annTgt(cd.k,i);
+    var actData=QQ_LABELS.map(function(q){var v=getQA(cd.k,selQYear,q);return v!==''?parseFloat(v):null;});
+    var tgtLine=QQ_LABELS.map(function(q){return ann?parseFloat((ann*Q_PACE[q]).toFixed(cd.dec?2:0)):null;});
+    var barColors=actData.map(function(v,qi){if(v===null)return'rgba(0,0,0,0.04)';var rc=ann?ragC(v,ann,selQYear===CY?CY:null):'n';return rc==='g'?'rgba(46,125,50,0.7)':rc==='a'?'rgba(230,81,0,0.7)':'rgba(192,57,43,0.7)';});
+    charts[cd.id]=new Chart(el,{type:'bar',data:{labels:QQ_LABELS,datasets:[{label:'Target pace',data:tgtLine,type:'line',borderColor:'#aaa',backgroundColor:'transparent',borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#aaa',tension:0.1,order:1},{label:'Actual',data:actData,backgroundColor:barColors,borderRadius:3,order:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:9},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.04)'}}}}});
   });
 }
 
-// ── SMART INSIGHTS ──
+function buildQCompareCharts(){
+  var compareQ='Q1';
+  var compDefs=[{id:'qc-edu-chart',k:'educators',dec:false},{id:'qc-yp-chart',k:'youngPeople',dec:false},{id:'qc-badge-chart',k:'youthBadges',dec:false},{id:'qc-se-chart',k:'seRevenue',dec:true}];
+  compDefs.forEach(function(cd){
+    if(charts[cd.id]){charts[cd.id].destroy();delete charts[cd.id];}
+    var el=document.getElementById(cd.id);if(!el)return;
+    var vals=YEARS.map(function(y){var v=getQA(cd.k,y,compareQ);return v!==''?parseFloat(v):null;});
+    charts[cd.id]=new Chart(el,{type:'bar',data:{labels:YEARS.map(String),datasets:[{label:compareQ,data:vals,backgroundColor:YEARS.map(function(y){return YR_COLORS[y]||'#ccc';}),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:9},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.04)'}}}}});
+  });
+}
+
 function renderSmartInsights(){
-  var i=yi(selectedYear);
+  var i=yi(selYear);
   var cards=[];
-  var cpp=(T.revenue[i]*1000000/T.youngPeople[i]).toFixed(2);
-  cards.push({icon:'👥',label:'Cost per young person reached',val:'€'+cpp,sub:'Target cost efficiency for '+selectedYear,cls:'si-ocean'});
-  var conv=Math.round(T.eduCredentials[i]/T.platformUsers[i]*100);
-  cards.push({icon:'🎓',label:'Credential conversion rate',val:conv+'%',sub:'Of active platform users expected to earn a credential',cls:'si-green'});
+  cards.push({icon:'👥',label:'Cost per young person',val:'€'+(T.revenue[i]*1e6/T.youngPeople[i]).toFixed(2),sub:'Target efficiency '+selYear,cls:'si-ocean'});
+  cards.push({icon:'🎓',label:'Credential conversion',val:Math.round(T.eduCredentials[i]/T.platformUsers[i]*100)+'%',sub:'Platform users earning credential',cls:'si-green'});
   var seG=i>0?Math.round((T.seRevenue[i]-T.seRevenue[i-1])/T.seRevenue[i-1]*100):0;
-  cards.push({icon:'📈',label:'SE revenue growth (YoY)',val:'+'+seG+'%',sub:'Social enterprise target growth for '+selectedYear,cls:'si-orange'});
+  cards.push({icon:'📈',label:'SE revenue growth',val:'+'+seG+'%',sub:'YoY target for '+selYear,cls:'si-orange'});
   var bG=i>0?Math.round((T.youthBadges[i]-T.youthBadges[i-1])/T.youthBadges[i-1]*100):0;
-  cards.push({icon:'⭐',label:'Youth badge growth (YoY)',val:'+'+bG+'%',sub:selectedYear>=2027?'PBL Tool launch drives step-change':'Foundational growth pre-PBL Tool',cls:bG>100?'si-green':'si-ocean'});
+  cards.push({icon:'⭐',label:'Youth badge growth',val:'+'+bG+'%',sub:selYear>=2027?'PBL Tool step-change':'Pre-PBL Tool growth',cls:bG>100?'si-green':'si-ocean'});
   var gdDrop=T.grantPct[0]-T.grantPct[i];
-  cards.push({icon:'🔓',label:'Grant dependency reduction',val:'-'+gdDrop+'pp',sub:'From '+T.grantPct[0]+'% in 2024 to '+T.grantPct[i]+'% by '+selectedYear,cls:gdDrop>=10?'si-green':'si-amber'});
-  var imAnn=annualTgt('irishMedSchools',i);
-  cards.push({icon:'🇮🇪',label:'Irish-medium schools',val:''+T.irishMedSchools[i],sub:'Cumulative target by '+selectedYear+(imAnn?'. +'+imAnn+' new this year':''),cls:'si-ocean'});
-  document.getElementById('si-cards').innerHTML=cards.map(function(c){
-    return '<div class="si-card '+c.cls+'"><div class="si-icon">'+c.icon+'</div><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';
-  }).join('');
-}
-
-// ── MAIN RENDER ──
-function renderAll(){
-  var i=yi(selectedYear), s=yearStatus(selectedYear), sc=statusClass(selectedYear);
-  var bHtml=bannerHtml(selectedYear);
-  ['ov','p1','p2','p3'].forEach(function(p){
-    var b=document.getElementById(p+'-year-banner');if(b)b.innerHTML=bHtml;
-    var sb=document.getElementById(p+'-status-badge');
-    if(sb){sb.textContent=statusLabel(selectedYear);sb.className='year-status-badge badge-'+sc;}
-  });
-
-  // Overview metrics
-  document.getElementById('ov-metrics').innerHTML=[
-    {l:'Educators upskilled',k:'educators',dec:false,ann:true},
-    {l:'Young people reached',k:'youngPeople',dec:false,ann:true},
-    {l:'Total revenue',k:'revenue',dec:true,ann:false},
-    {l:'SE revenue share',k:'sePct',dec:false,ann:false,sf:'%'}
-  ].map(function(m){return renderMCard(m.l,m.k,m.dec,m.sf||'',m.ann);}).join('');
-
-  renderSmartInsights();
-
-  // Pillar insight boxes
-  ['p1','p2','p3'].forEach(function(p){
-    var txt=QD.insights[p][selectedYear]||'';
-    var box=document.getElementById(p+'-insight-box');
-    var el=document.getElementById(p+'-insight-text');
-    if(txt.trim()){box.classList.add('live');el.textContent=txt;}
-    else{box.classList.remove('live');el.textContent='Insight will appear here once data is entered for this year.';}
-  });
-
-  // Pillar 1 metrics
-  document.getElementById('p1-metrics').innerHTML=[
-    {l:'Educators upskilled',k:'educators',ann:true},{l:'Educators supported',k:'eduSupported',ann:false},{l:'Platform users',k:'platformUsers',ann:true},{l:'Credentials issued',k:'eduCredentials',ann:true}
-  ].map(function(m){return renderMCard(m.l,m.k,false,'',m.ann);}).join('');
-  document.getElementById('p1-bars').innerHTML=renderBars([{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'eduCredentials',l:'Credentials issued',dec:false}],'var(--ocean)');
-  renderTrendTable('p1-table',[{k:'educators',l:'Educators upskilled',dec:false,suffix:''},{k:'eduSupported',l:'Educators supported',dec:false,suffix:''},{k:'platformUsers',l:'Platform users',dec:false,suffix:''},{k:'eduCredentials',l:'Credentials issued',dec:false,suffix:''}]);
-
-  // Pillar 2 metrics
-  document.getElementById('p2-metrics').innerHTML=[
-    {l:'Youth badges',k:'youthBadges',ann:true},{l:'Irish-med. schools',k:'irishMedSchools',ann:true},{l:'Young people reached',k:'youngPeople',ann:true},{l:'Organisations engaged',k:'orgsEngaged',ann:false}
-  ].map(function(m){return renderMCard(m.l,m.k,false,'',m.ann);}).join('');
-  document.getElementById('p2-bars').innerHTML=renderBars([{k:'youthBadges',l:'Youth badges',dec:false},{k:'irishMedSchools',l:'Irish-med. schools',dec:false},{k:'youngPeople',l:'Young people',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false}],'var(--orange)');
-  renderTrendTable('p2-table',[{k:'youthBadges',l:'Youth badges',dec:false,suffix:''},{k:'irishMedSchools',l:'Irish-med. schools',dec:false,suffix:''},{k:'youngPeople',l:'Young people reached',dec:false,suffix:''},{k:'orgsEngaged',l:'Organisations engaged',dec:false,suffix:''}]);
-
-  // Pillar 3 metrics
-  document.getElementById('p3-metrics').innerHTML=[
-    {l:'Total revenue',k:'revenue',dec:true,ann:false},{l:'SE revenue',k:'seRevenue',dec:true,ann:false},{l:'Grant revenue',k:'grantRevenue',dec:true,ann:false},{l:'SE share %',k:'sePct',dec:false,ann:false,sf:'%'}
-  ].map(function(m){return renderMCard(m.l,m.k,m.dec,m.sf||'',m.ann);}).join('');
-  var revRows=[{l:'Statutory grants',k:'grantRevenue'},{l:'Social enterprise',k:'seRevenue'},{l:'Corporate & other',k:'otherRevenue'},{l:'Total',k:'revenue'}];
-  var revHtml='<table class="trend-table" style="width:100%"><thead><tr><th>Stream</th><th><span class="tgt-label tgt">Target</span></th><th><span class="tgt-label act">Actual</span></th><th>Variance</th><th>RAG</th></tr></thead><tbody>';
-  revRows.forEach(function(r){
-    var tgt=T[r.k][i],act=getA(r.k,selectedYear),rc=ragC(act,tgt);
-    var v=act!==''&&!isNaN(parseFloat(act))?(parseFloat(act)-tgt).toFixed(2):null;
-    var actShow=act!==''&&s!=='future';
-    revHtml+='<tr><td style="font-weight:500">'+r.l+'</td><td><span style="color:#3949ab">€'+tgt+'M</span></td><td>'+(actShow?'<span style="color:#2e7d32;font-weight:500">€'+parseFloat(act).toFixed(2)+'M</span>':'<span style="color:var(--muted);font-style:italic">'+(s==='future'?'Future':'No actual')+'</span>')+'</td><td style="color:'+(v!==null?(parseFloat(v)>=0?'var(--forest)':'var(--candy)'):'var(--muted)')+'">'+( v!==null?(parseFloat(v)>=0?'+':'')+'€'+v+'M':'—')+'</td><td><span class="rag rag-'+rc+'">'+(rc==='n'?'—':rc.toUpperCase())+'</span></td></tr>';
-  });
-  revHtml+='</tbody></table>';
-  document.getElementById('p3-rev-table').innerHTML=revHtml;
-  renderTrendTable('p3-table',[{k:'revenue',l:'Total revenue',dec:true,suffix:''},{k:'seRevenue',l:'SE revenue',dec:true,suffix:''},{k:'grantRevenue',l:'Grant revenue',dec:true,suffix:''},{k:'sePct',l:'SE share %',dec:false,suffix:'%'}]);
-
-  renderInfluence(); renderStories(); renderQuarterly(); buildCharts(); buildPieCharts();
-}
-
-function renderInfluence(){
-  document.getElementById('media-stats').innerHTML=QD.mediaStats.map(function(s){return '<div class="card" style="text-align:center"><div class="mval" style="font-size:30px;font-weight:300;color:var(--ocean)">'+s.val+'</div><div class="mlabel" style="margin-top:5px">'+s.label+'</div></div>';}).join('');
-  document.getElementById('political-items').innerHTML=QD.politicalItems.map(function(p){return '<div class="pol-item">'+p+'</div>';}).join('');
-  document.getElementById('partner-chips').innerHTML=QD.partners.map(function(p){return '<span class="partner-chip">'+p+'</span>';}).join('');
-  document.getElementById('fundraising-items').innerHTML=QD.fundraisingItems.map(function(f){return '<div class="fund-item">'+f+'</div>';}).join('');
-  document.getElementById('social-stats').innerHTML=QD.socialStats.map(function(s){return '<div class="mcard" style="text-align:center"><div class="mval" style="color:var(--ocean)">'+s.val+'</div><div class="mlabel" style="margin-top:3px">'+s.label+'</div></div>';}).join('');
-}
-
-function renderStories(){
-  document.getElementById('stories-grid').innerHTML=QD.stories.map(function(s){
-    var mediaHtml='';
-    if(s.mediaType==='image'&&s.mediaUrl){
-      mediaHtml='<img src="'+s.mediaUrl+'" class="story-media" alt="'+s.title+'" onerror="this.style.display=\'none\'">';
-    } else if(s.mediaType==='video'&&s.mediaUrl){
-      if(s.mediaUrl.includes('youtube.com')||s.mediaUrl.includes('youtu.be')){
-        var vid=s.mediaUrl.includes('youtu.be')?s.mediaUrl.split('/').pop():'';
-        try{if(!vid)vid=new URL(s.mediaUrl).searchParams.get('v');}catch(e){}
-        mediaHtml='<div class="story-video-wrap"><iframe src="https://www.youtube.com/embed/'+vid+'" frameborder="0" allowfullscreen></iframe></div>';
-      } else if(s.mediaUrl.includes('vimeo.com')){
-        var vid2=s.mediaUrl.split('/').pop();
-        mediaHtml='<div class="story-video-wrap"><iframe src="https://player.vimeo.com/video/'+vid2+'" frameborder="0" allowfullscreen></iframe></div>';
-      } else {
-        mediaHtml='<video src="'+s.mediaUrl+'" controls class="story-media"></video>';
-      }
-    } else {
-      mediaHtml='<div class="story-media-ph"><div class="kinia-k" style="width:36px;height:36px;font-size:16px;opacity:0.35">k</div><span>No media added yet</span></div>';
-    }
-    var tags=(s.tags||[]).map(function(t){return '<span class="story-tag">'+t+'</span>';}).join('');
-    return '<div class="story-card">'+mediaHtml+'<div class="story-body"><div class="story-org">'+s.org+'</div><div class="story-title">'+(s.title||'')+'</div><div class="story-quote">"'+s.quote+'"</div><div class="story-attr">— '+s.attr+'</div>'+(tags?'<div class="story-tags">'+tags+'</div>':'')+'</div></div>';
-  }).join('');
+  cards.push({icon:'🔓',label:'Grant dep. reduction',val:'-'+gdDrop+'pp',sub:'From '+T.grantPct[0]+'% (2024) to '+T.grantPct[i]+'%',cls:gdDrop>=10?'si-green':'si-amber'});
+  var imA=annTgt('irishMedSchools',i);
+  cards.push({icon:'🇮🇪',label:'Irish-medium schools',val:''+T.irishMedSchools[i],sub:'Cumulative target'+(imA?'. +'+imA+' this year':''),cls:'si-ocean'});
+  document.getElementById('si-cards').innerHTML=cards.map(function(c){return'<div class="si-card '+c.cls+'"><div class="si-icon">'+c.icon+'</div><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';}).join('');
 }
 
 function mkChart(id,type,labels,datasets,opts){
@@ -1024,168 +970,151 @@ function mkChart(id,type,labels,datasets,opts){
 }
 
 function buildCharts(){
-  var L=YEARS_ALL.map(String);
-  var gx={ticks:{color:'#888',font:{size:10}},grid:{display:false}};
-  var gy=function(cb){return{ticks:{color:'#888',font:{size:10},callback:cb},grid:{color:'rgba(0,0,0,0.05)'}};};
+  var L=YEARS.map(String);
+  var gx={ticks:{color:'#888',font:{size:9}},grid:{display:false}};
+  var gy=function(cb){return{ticks:{color:'#888',font:{size:9},callback:cb},grid:{color:'rgba(0,0,0,0.04)'}};};
+  var actEdu=YEARS.map(function(y){var v=getA('educators',y);return v!==''?parseFloat(v):null;});
+  var actYP=YEARS.map(function(y){var v=getA('youngPeople',y);return v!==''?parseFloat(v):null;});
+  var actCred=YEARS.map(function(y){var v=getA('eduCredentials',y);return v!==''?parseFloat(v):null;});
+  var actBadge=YEARS.map(function(y){var v=getA('youthBadges',y);return v!==''?parseFloat(v):null;});
+  var actRev=YEARS.map(function(y){var v=getA('revenue',y);return v!==''?parseFloat(v):null;});
+  var actSE=YEARS.map(function(y){var v=getA('seRevenue',y);return v!==''?parseFloat(v):null;});
+  var actGP=YEARS.map(function(y){var v=getA('grantPct',y);return v!==''?parseFloat(v):null;});
+  var actSEP=YEARS.map(function(y){var v=getA('sePct',y);return v!==''?parseFloat(v):null;});
 
-  // Actual data arrays (null if not entered)
-  var actEdu=YEARS_ALL.map(function(y){var v=getA('educators',y);return v!==''?parseFloat(v):null;});
-  var actYP=YEARS_ALL.map(function(y){var v=getA('youngPeople',y);return v!==''?Math.round(parseFloat(v)/10):null;});
+  function reachChart(id,tgtData,actData,color){mkChart(id,'bar',L,[{label:'Target',data:tgtData,backgroundColor:YEARS.map(function(y){return'rgba('+parseInt(color.slice(1,3),16)+','+parseInt(color.slice(3,5),16)+','+parseInt(color.slice(5,7),16)+',0.2)';}),borderColor:color,borderWidth:1,borderRadius:3},{label:'Actual',data:actData,backgroundColor:'#2e7d32',borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});}
+  reachChart('ov-edu-chart',T.educators,actEdu,'#262262');
+  reachChart('ov-yp-chart',T.youngPeople,actYP,'#f37021');
+  reachChart('ov-cred-chart',T.eduCredentials,actCred,'#3d3899');
+  reachChart('ov-badge-chart',T.youthBadges,actBadge,'#005129');
 
-  mkChart('revChart','bar',L,[
-    {data:T.grantRevenue,backgroundColor:'#262262',stack:'a'},
-    {data:T.seRevenue,backgroundColor:'#f37021',stack:'a'},
-    {data:T.otherRevenue,backgroundColor:'#9dceef',stack:'a'}
-  ],{scales:{x:Object.assign({stacked:true},gx),y:Object.assign({stacked:true},gy(function(v){return '€'+v.toFixed(1)+'M';}))}});
+  mkChart('revChart','bar',L,[{data:T.grantRevenue,backgroundColor:'rgba(38,34,98,0.3)',stack:'tgt'},{data:T.seRevenue,backgroundColor:'rgba(243,112,33,0.3)',stack:'tgt'},{data:T.otherRevenue,backgroundColor:'rgba(157,206,239,0.4)',stack:'tgt'},{data:actRev,backgroundColor:'#2e7d32',stack:'act',borderRadius:3}],{scales:{x:{stacked:true,ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{stacked:false,ticks:{color:'#888',font:{size:9},callback:function(v){return'€'+v.toFixed(1)+'M';}},grid:{color:'rgba(0,0,0,0.04)'}}}});
+  mkChart('depChart','line',L,[{data:T.grantPct,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:T.sePct,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
 
-  mkChart('depChart','line',L,[
-    {data:T.grantPct,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
-    {data:T.sePct,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}
-  ],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+  mkChart('p1Chart','line',L,[{data:T.educators,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actEdu,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false},{data:T.platformUsers,borderColor:'rgba(157,206,239,0.7)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[4,3],pointRadius:2}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('p2Chart','line',L,[{data:T.eduCredentials,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:T.youthBadges,borderColor:'rgba(243,112,33,0.4)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actCred,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('p3Chart','bar',L,[{label:'Target',data:T.seRevenue,backgroundColor:'rgba(248,160,106,0.45)',borderRadius:3},{label:'Actual',data:actSE,backgroundColor:'#2e7d32',borderRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2)+'M';})}});
 
-  mkChart('reachChart','line',L,[
-    {data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3,borderDash:[5,3]},
-    {data:actEdu,borderColor:'#3949ab',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#3949ab',pointRadius:5,spanGaps:false},
-    {data:T.youngPeople.map(function(v){return Math.round(v/10);}),borderColor:'#f37021',backgroundColor:'rgba(243,112,33,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3,borderDash:[5,3]},
-    {data:actYP,borderColor:'#e65100',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#e65100',pointRadius:5,spanGaps:false}
-  ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
-
-  var actEduArr=YEARS_ALL.map(function(y){var v=getA('educators',y);return v!==''?parseFloat(v):null;});
-  mkChart('p1Chart','line',L,[
-    {data:T.educators,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3,borderDash:[4,3]},
-    {data:actEduArr,borderColor:'#3949ab',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#3949ab',pointRadius:5,spanGaps:false},
-    {data:T.platformUsers,borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#9dceef',pointRadius:3}
-  ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
-
-  mkChart('p2Chart','line',L,[
-    {data:T.eduCredentials,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
-    {data:T.youthBadges,borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#f37021',pointRadius:3}
-  ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
-
-  mkChart('p3Chart','bar',L,[
-    {data:T.seRevenue,backgroundColor:YEARS_ALL.map(function(y){return y<PLAN_START?'#f8a06a':'#f37021';}),borderRadius:4}
-  ],{scales:{x:gx,y:gy(function(v){return '€'+v.toFixed(2)+'M';})}});
-
-  var cpyData=T.revenue.map(function(r,i){return parseFloat((r*1e6/T.youngPeople[i]).toFixed(2));});
-  mkChart('si-cpy-chart','line',L,[{data:cpyData,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:4}],{scales:{x:gx,y:gy(function(v){return '€'+v.toFixed(2);})}});
-
+  mkChart('si-cpy-chart','line',L,[{data:T.revenue.map(function(r,i){return parseFloat((r*1e6/T.youngPeople[i]).toFixed(2));}),borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2);})}});
   var base={rev:T.revenue[0],yp:T.youngPeople[0],edu:T.educators[0]};
-  mkChart('si-index-chart','line',L,[
-    {data:T.revenue.map(function(v){return Math.round(v/base.rev*100);}),borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},
-    {data:T.youngPeople.map(function(v){return Math.round(v/base.yp*100);}),borderColor:'#262262',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#262262',pointRadius:3},
-    {data:T.educators.map(function(v){return Math.round(v/base.edu*100);}),borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[3,2],pointBackgroundColor:'#9dceef',pointRadius:3}
-  ],{scales:{x:gx,y:gy(function(v){return v;})}});
-
-  mkChart('si-cred-chart','bar',L,[{data:T.eduCredentials.map(function(c,i){return parseFloat((c/T.platformUsers[i]*100).toFixed(1));}),backgroundColor:YEARS_ALL.map(function(y){return y<PLAN_START?'#9dceef':'#262262';}),borderRadius:4}],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
-  mkChart('si-badge-chart','line',L,[{data:T.youthBadges,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
-  mkChart('si-fin-chart','line',L,[
-    {data:T.grantPct,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.07)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3},
-    {data:T.sePct,borderColor:'#f37021',backgroundColor:'rgba(243,112,33,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},
-    {data:YEARS_ALL.map(function(){return 23;}),borderColor:'#b9f24c',backgroundColor:'transparent',fill:false,borderDash:[6,3],pointRadius:0}
-  ],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+  mkChart('si-index-chart','line',L,[{data:T.revenue.map(function(v){return Math.round(v/base.rev*100);}),borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},{data:T.youngPeople.map(function(v){return Math.round(v/base.yp*100);}),borderColor:'#262262',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#262262',pointRadius:3},{data:T.educators.map(function(v){return Math.round(v/base.edu*100);}),borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[3,2],pointBackgroundColor:'#9dceef',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v;})}});
+  mkChart('si-cred-chart','bar',L,[{data:T.eduCredentials.map(function(c,i){return parseFloat((c/T.platformUsers[i]*100).toFixed(1));}),backgroundColor:YEARS.map(function(y){return y<2026?'#9dceef':'#262262';}),borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
+  mkChart('si-badge-chart','line',L,[{data:T.youthBadges,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('si-fin-chart','line',L,[{data:T.grantPct,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:T.sePct,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false},{data:YEARS.map(function(){return 23;}),borderColor:'#b9f24c',backgroundColor:'transparent',fill:false,borderDash:[6,3],pointRadius:0}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
 }
 
 function buildPieCharts(){
-  ['pie1','pie2','pie3'].forEach(function(id){
-    if(charts[id]){charts[id].destroy();delete charts[id];}
-    var d=QD[id],el=document.getElementById(id);if(!el)return;
-    charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});
-    document.getElementById(id+'-leg').innerHTML=d.labels.map(function(l,i){return '<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');
+  ['pie1','pie2','pie3'].forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}var d=QD[id],el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});document.getElementById(id+'-leg').innerHTML=d.labels.map(function(l,i){return'<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');});
+}
+
+function renderInfluence(){
+  document.getElementById('media-stats').innerHTML=QD.mediaStats.map(function(s){return'<div class="card" style="text-align:center"><div style="font-size:28px;font-weight:300;color:var(--ocean)">'+s.val+'</div><div style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:4px">'+s.label+'</div></div>';}).join('');
+  document.getElementById('political-items').innerHTML=QD.politicalItems.map(function(p){return'<div class="pol-item">'+p+'</div>';}).join('');
+  document.getElementById('partner-chips').innerHTML=QD.partners.map(function(p){return'<span class="partner-chip">'+p+'</span>';}).join('');
+  document.getElementById('fundraising-items').innerHTML=QD.fundraisingItems.map(function(f){return'<div class="fund-item">'+f+'</div>';}).join('');
+  document.getElementById('social-stats').innerHTML=QD.socialStats.map(function(s){return'<div class="mcard" style="text-align:center"><div style="font-size:20px;font-weight:300;color:var(--ocean)">'+s.val+'</div><div style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:3px">'+s.label+'</div></div>';}).join('');
+}
+
+function renderStories(){
+  document.getElementById('stories-grid').innerHTML=QD.stories.map(function(s){
+    var mh='';
+    if(s.mediaType==='image'&&s.mediaUrl)mh='<img src="'+s.mediaUrl+'" class="story-media" onerror="this.style.display=\'none\'">';
+    else if(s.mediaType==='video'&&s.mediaUrl){if(s.mediaUrl.includes('youtube.com')||s.mediaUrl.includes('youtu.be')){var vid=s.mediaUrl.includes('youtu.be')?s.mediaUrl.split('/').pop():'';try{if(!vid)vid=new URL(s.mediaUrl).searchParams.get('v');}catch(e){}mh='<div class="story-video-wrap"><iframe src="https://www.youtube.com/embed/'+vid+'" frameborder="0" allowfullscreen></iframe></div>';}else if(s.mediaUrl.includes('vimeo.com')){mh='<div class="story-video-wrap"><iframe src="https://player.vimeo.com/video/'+s.mediaUrl.split('/').pop()+'" frameborder="0" allowfullscreen></iframe></div>';}else mh='<video src="'+s.mediaUrl+'" controls class="story-media"></video>';}
+    else mh='<div class="story-media-ph"><div class="kinia-k" style="width:34px;height:34px;font-size:16px;opacity:0.35">k</div><span>No media added yet</span></div>';
+    var tags=(s.tags||[]).map(function(t){return'<span class="story-tag">'+t+'</span>';}).join('');
+    return'<div class="story-card">'+mh+'<div class="story-body"><div class="story-org">'+s.org+'</div><div class="story-title">'+(s.title||'')+'</div><div class="story-quote">"'+s.quote+'"</div><div class="story-attr">— '+s.attr+'</div>'+(tags?'<div class="story-tags">'+tags+'</div>':'')+'</div></div>';
+  }).join('');
+}
+
+function renderAll(){
+  var s=yrStat(selYear),sc='ys-'+s,sl=yrLabel(selYear),bh=bannerHtml(selYear);
+  ['ov','p1','p2','p3'].forEach(function(p){var b=document.getElementById(p+'-yr-banner');if(b)b.innerHTML=bh;var sb=document.getElementById(p+'-status-badge');if(sb){sb.textContent=sl;sb.className='ys-badge '+sc;}});
+  document.getElementById('ov-status-badge').textContent=sl;document.getElementById('ov-status-badge').className='ys-badge '+sc;
+
+  document.getElementById('ov-metrics').innerHTML=[
+    {l:'Educators upskilled',k:'educators',dec:false,ann:true},
+    {l:'Young people reached',k:'youngPeople',dec:false,ann:true},
+    {l:'Total revenue',k:'revenue',dec:true,ann:false},
+    {l:'SE revenue share',k:'sePct',dec:false,ann:false,sf:'%'}
+  ].map(function(m){return renderMCard(m.l,m.k,m.dec,m.sf||'',m.ann);}).join('');
+
+  renderSmartInsights();
+  ['p1','p2','p3'].forEach(function(p){var txt=QD.insights[p][selYear]||'';var box=document.getElementById(p+'-insight-box');var el=document.getElementById(p+'-insight-text');if(txt.trim()){box.classList.add('live');el.textContent=txt;}else{box.classList.remove('live');el.textContent='Insight will appear here once data is entered.';}});
+
+  document.getElementById('p1-metrics').innerHTML=[{l:'Educators upskilled',k:'educators',ann:true},{l:'Educators supported',k:'eduSupported',ann:true},{l:'Platform users',k:'platformUsers',ann:true},{l:'Credentials issued',k:'eduCredentials',ann:true}].map(function(m){return renderMCard(m.l,m.k,false,'',m.ann);}).join('');
+  document.getElementById('p1-bars').innerHTML=renderBars([{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'eduCredentials',l:'Credentials issued',dec:false}],'#2e7d32');
+  renderTrendTable('p1-table',[{k:'educators',l:'Educators upskilled',dec:false,suffix:''},{k:'eduSupported',l:'Educators supported',dec:false,suffix:''},{k:'platformUsers',l:'Platform users',dec:false,suffix:''},{k:'eduCredentials',l:'Credentials issued',dec:false,suffix:''}]);
+
+  document.getElementById('p2-metrics').innerHTML=[{l:'Youth badges',k:'youthBadges',ann:true},{l:'Irish-med. schools',k:'irishMedSchools',ann:true},{l:'Young people reached',k:'youngPeople',ann:true},{l:'Organisations engaged',k:'orgsEngaged',ann:true}].map(function(m){return renderMCard(m.l,m.k,false,'',m.ann);}).join('');
+  document.getElementById('p2-bars').innerHTML=renderBars([{k:'youthBadges',l:'Youth badges',dec:false},{k:'irishMedSchools',l:'Irish-med. schools',dec:false},{k:'youngPeople',l:'Young people',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false}],'#2e7d32');
+  renderTrendTable('p2-table',[{k:'youthBadges',l:'Youth badges',dec:false,suffix:''},{k:'irishMedSchools',l:'Irish-med. schools',dec:false,suffix:''},{k:'youngPeople',l:'Young people reached',dec:false,suffix:''},{k:'orgsEngaged',l:'Organisations engaged',dec:false,suffix:''}]);
+
+  document.getElementById('p3-metrics').innerHTML=[{l:'Total revenue',k:'revenue',dec:true,ann:false},{l:'SE revenue',k:'seRevenue',dec:true,ann:false},{l:'Grant revenue',k:'grantRevenue',dec:true,ann:false},{l:'SE share %',k:'sePct',dec:false,ann:false,sf:'%'}].map(function(m){return renderMCard(m.l,m.k,m.dec,m.sf||'',m.ann);}).join('');
+
+  var i=yi(selYear),sv=yrStat(selYear);
+  var rh='<table class="trend-table" style="width:100%"><thead><tr><th>Stream</th><th><span class="pill pill-tgt">Target</span></th><th><span class="pill pill-act">Actual</span></th><th>Variance</th><th>Status</th></tr></thead><tbody>';
+  [{l:'Statutory grants',k:'grantRevenue'},{l:'Social enterprise',k:'seRevenue'},{l:'Corporate & other',k:'otherRevenue'},{l:'Total',k:'revenue'}].forEach(function(r){
+    var tgt=T[r.k][i],act=getA(r.k,selYear),rc=ragC(act,tgt,selYear);
+    var v=act!==''&&!isNaN(parseFloat(act))?(parseFloat(act)-tgt).toFixed(2):null;
+    rh+='<tr><td style="font-weight:500">'+r.l+'</td><td><span style="color:var(--tgt-col)">€'+tgt+'M</span></td>'+
+      '<td>'+(sv!=='future'&&act!==''?'<span style="color:var(--act-col);font-weight:500">€'+parseFloat(act).toFixed(2)+'M</span>':'<span style="color:var(--muted);font-style:italic">'+(sv==='future'?'Future':'No actual')+'</span>')+'</td>'+
+      '<td style="color:'+(v?parseFloat(v)>=0?'var(--forest)':'var(--candy)':'var(--muted)')+'">'+( v?(parseFloat(v)>=0?'+':'')+'€'+v+'M':'—')+'</td>'+
+      '<td>'+(act!==''&&sv!=='future'?'<span class="rag-badge '+rc+'" style="font-size:9px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span>':'—')+'</td></tr>';
   });
+  rh+='</tbody></table>';
+  document.getElementById('p3-rev-table').innerHTML=rh;
+  renderTrendTable('p3-table',[{k:'revenue',l:'Total revenue',dec:true,suffix:''},{k:'seRevenue',l:'SE revenue',dec:true,suffix:''},{k:'grantRevenue',l:'Grant revenue',dec:true,suffix:''},{k:'sePct',l:'SE share %',dec:false,suffix:'%'}]);
+
+  renderInfluence();renderStories();renderQuarterly();buildCharts();buildPieCharts();
 }
 
 // ── ADMIN ──
 function showAdmin(){document.getElementById('admin-overlay').style.display='block';document.getElementById('admin-pin-input').value='';document.getElementById('admin-pin-err').style.display='none';document.getElementById('admin-login').style.display='block';document.getElementById('admin-panel').style.display='none';}
 function hideAdmin(){document.getElementById('admin-overlay').style.display='none';}
-function checkAdminPin(){
-  if(document.getElementById('admin-pin-input').value===ADMIN_PIN){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';buildAdminPanel();}
-  else{document.getElementById('admin-pin-err').style.display='block';}
-}
+function checkAdminPin(){if(document.getElementById('admin-pin-input').value===AP){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';buildAdminPanel();}else{document.getElementById('admin-pin-err').style.display='block';}}
 
 function buildAdminPanel(){
-  var numFields=[{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'youngPeople',l:'Young people reached',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false},{k:'eduCredentials',l:'Educator credentials',dec:false},{k:'youthBadges',l:'Youth badges',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'irishMedSchools',l:'Irish-medium schools',dec:false},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)',dec:false}];
-  var h='';
+  var numF=[{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'youngPeople',l:'Young people reached',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false},{k:'eduCredentials',l:'Educator credentials',dec:false},{k:'youthBadges',l:'Youth badges',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'irishMedSchools',l:'Irish-medium schools',dec:false},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)',dec:false},{k:'grantPct',l:'Grant dep. (%)',dec:false}];
+  var h='<div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px;margin-bottom:16px"><strong style="font-size:12px;color:#854f0b">Current quarter setting</strong><p style="font-size:11px;color:var(--muted);margin-top:4px">Update this when new quarterly data is entered. This controls the pro-rata RAG calculation for 2026.</p><div style="display:flex;gap:8px;margin-top:8px">';
+  ['Q1','Q2','Q3','Q4'].forEach(function(q){h+='<label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="radio" name="latest_q" value="'+q+'"'+(LATEST_Q_2026===q?' checked':'')+' onchange="LATEST_Q_2026=this.value;updateBanners()"> '+q+' ('+{Q1:'Jan–Mar',Q2:'Apr–Jun',Q3:'Jul–Sep',Q4:'Oct–Dec'}[q]+')</label>';});
+  h+='</div></div>';
 
-  h+='<h3 style="color:var(--ocean);margin-bottom:8px">Pillar insight snapshots</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">A brief sentence per pillar and year.</p>';
-  YEARS_ALL.forEach(function(y){
-    var s=statusClass(y);
-    h+='<div style="margin-bottom:12px;padding:10px 12px;border-radius:8px;border-left:3px solid '+(s==='closed'?'#5a8a1a':s==='current'?'var(--orange)':'var(--border)')+'"><div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:8px">'+y+' <span style="font-size:10px;color:var(--muted)">('+s+')</span></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">';
-    ['p1','p2','p3'].forEach(function(p,pi){h+='<div class="field-group"><label>Pillar '+(pi+1)+'</label><textarea id="ins_'+p+'_'+y+'" rows="2">'+(QD.insights[p][y]||'')+'</textarea></div>';});
-    h+='</div></div>';
-  });
+  h+='<h3 style="color:var(--ocean);margin-bottom:7px">Pillar insight snapshots</h3>';
+  YEARS.forEach(function(y){h+='<div style="margin-bottom:10px;padding:9px;border-radius:7px;background:var(--'+yrStat(y)+'-bg);border-left:3px solid '+(yrStat(y)==='closed'?'var(--forest)':yrStat(y)==='current'?'var(--orange)':'var(--border)')+'"><div style="font-size:10px;font-weight:500;color:var(--ocean);margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">';['p1','p2','p3'].forEach(function(p,pi){h+='<div class="field-group"><label>Pillar '+(pi+1)+'</label><textarea id="ins_'+p+'_'+y+'" rows="2">'+(QD.insights[p][y]||'')+'</textarea></div>';});h+='</div></div>';});
 
-  h+='<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:8px"><h3 style="color:var(--ocean);margin-bottom:8px">Annual actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">Enter cumulative year-end totals.</p>';
-  YEARS_ALL.forEach(function(y,yi_){
-    var s=statusClass(y);
-    var bgCol=s==='closed'?'var(--closed-bg)':s==='current'?'var(--current-bg)':'var(--future-bg)';
-    h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;background:'+bgCol+'"><div style="font-weight:500;color:var(--ocean);font-size:13px;margin-bottom:8px">'+y+' <span style="font-size:10px;color:var(--muted);font-weight:400">('+s+')</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
-    numFields.forEach(function(f){
-      var annT=annualTgt(f.k,yi_);
-      h+='<div class="field-group"><label>'+f.l+'</label><div class="field-tgt">Cumulative target: '+fmtT(T[f.k][yi_],f.dec)+(annT!==null?' · Annual target: +'+fmtN(annT,f.dec):'')+'</div><input type="number" id="inp_'+f.k+'_'+y+'" value="'+(A[f.k+'_'+y]||'')+'" step="'+(f.dec?'0.01':'1')+'" placeholder="Enter cumulative actual…"'+(s==='future'?' style="opacity:0.5"':'')+'></div>';
-    });
-    h+='</div></div>';
-  });
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:7px"><h3 style="color:var(--ocean);margin-bottom:7px">Annual actuals</h3>';
+  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">';numF.forEach(function(f){var at=annTgt(f.k,yi_);h+='<div class="field-group"><label>'+f.l+'</label><div class="field-tgt">Target: '+fmtT(T[f.k][yi_],f.dec)+(at!==null?' · Ann: +'+fmtN(at,f.dec):'')+'</div><input type="number" id="inp_'+f.k+'_'+y+'" value="'+(A[f.k+'_'+y]||'')+'" step="'+(f.dec?'0.01':'1')+'" placeholder="—"'+(yrStat(y)==='future'?' style="opacity:0.5"':'')+'></div>';});h+='</div></div>';});
   h+='</div>';
 
-  h+='<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:8px">Quarterly actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">Enter cumulative totals at end of each quarter (Q2 = total by end of June).</p>';
-  YEARS_ALL.forEach(function(y,yi_){
-    var s=statusClass(y);
-    var bgCol=s==='closed'?'var(--closed-bg)':s==='current'?'var(--current-bg)':'var(--future-bg)';
-    h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;background:'+bgCol+'"><div style="font-weight:500;color:var(--ocean);font-size:13px;margin-bottom:8px">'+y+' <span style="font-size:10px;color:var(--muted);font-weight:400">('+s+')</span></div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr><th style="text-align:left;padding:4px 8px;color:var(--muted);font-size:10px;min-width:160px">KPI</th>';
-    QUARTERS.forEach(function(q){h+='<th style="text-align:left;padding:4px 8px;color:var(--muted);font-size:10px">'+q+'</th>';});
-    h+='</tr></thead><tbody>';
-    Q_KEYS.forEach(function(m){
-      var annT=annualTgt(m.k,yi_);
-      h+='<tr><td style="padding:5px 8px;white-space:nowrap">'+m.l+'<div style="font-size:10px;color:var(--muted)">Annual target: '+(annT!==null?'+'+fmtN(annT,m.dec):'TBD')+'</div></td>';
-      QUARTERS.forEach(function(q){h+='<td style="padding:4px 6px"><input type="number" id="qinp_'+m.k+'_'+y+'_'+q+'" value="'+(QQ[m.k+'_'+y+'_'+q]||'')+'" placeholder="—" step="'+(m.dec?'0.01':'1')+'" style="width:95px;font-size:12px'+(s==='future'?';opacity:0.5':'')+'"'+(s==='future'?' disabled':'')+'/></td>';});
-      h+='</tr>';
-    });
-    h+='</tbody></table></div></div>';
-  });
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:7px">Quarterly actuals</h3><p style="font-size:10px;color:var(--muted);margin-bottom:12px">Enter cumulative totals at end of each quarter. Q1 = Jan–Mar, Q2 = Apr–Jun, Q3 = Jul–Sep, Q4 = Oct–Dec.</p>';
+  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px;min-width:140px">KPI</th>';QQ_LABELS.forEach(function(q){h+='<th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px">'+q+'</th>';});h+='</tr></thead><tbody>';Q_KEYS.forEach(function(m){var at=annTgt(m.k,yi_);h+='<tr><td style="padding:4px 7px;white-space:nowrap">'+m.l+'<div style="font-size:9px;color:var(--muted)">Ann. target: '+(at!==null?'+'+fmtN(at,m.dec):'TBD')+'</div></td>';QQ_LABELS.forEach(function(q){h+='<td style="padding:3px 5px"><input type="number" id="qinp_'+m.k+'_'+y+'_'+q+'" value="'+(QQ[m.k+'_'+y+'_'+q]||'')+'" placeholder="—" step="'+(m.dec?'0.01':'1')+'" style="width:80px;font-size:11px'+(yrStat(y)==='future'?';opacity:0.5':'')+'"'+(yrStat(y)==='future'?' disabled':'')+'/></td>';});h+='</tr>';});h+='</tbody></table></div></div>';});
   h+='</div>';
 
-  h+='<div style="border-top:1px solid var(--border);padding-top:16px"><h3 style="color:var(--ocean);margin-bottom:8px">Impact stories</h3>';
-  [0,1].forEach(function(n){
-    var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[]};
-    h+='<div style="margin-bottom:16px;padding:12px;background:var(--bg);border-radius:8px"><div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:8px">Story '+(n+1)+'</div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-      '<div class="field-group"><label>Title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'"></div>'+
-      '<div class="field-group"><label>Organisation</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'"></div></div>'+
-      '<div class="field-group"><label>Quote</label><textarea id="st_quote_'+n+'" rows="3">'+(s.quote||'')+'</textarea></div>'+
-      '<div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'"></div>'+
-      '<div style="display:grid;grid-template-columns:1fr 2fr;gap:8px">'+
-      '<div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image URL</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video (YouTube/Vimeo)</option></select></div>'+
-      '<div class="field-group"><label>Media URL</label><input type="url" id="st_murl_'+n+'" value="'+(s.mediaUrl||'')+'" placeholder="https://…"></div></div>'+
-      '<div class="field-group"><label>Tags (comma separated)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div></div>';
-  });
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Impact stories</h3>';
+  [0,1].forEach(function(n){var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[]};h+='<div style="margin-bottom:14px;padding:10px;background:var(--bg);border-radius:7px"><div style="font-size:10px;font-weight:500;color:var(--ocean);margin-bottom:7px">Story '+(n+1)+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:7px"><div class="field-group"><label>Title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'"></div><div class="field-group"><label>Organisation</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'"></div></div><div class="field-group"><label>Quote</label><textarea id="st_quote_'+n+'" rows="3">'+(s.quote||'')+'</textarea></div><div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'"></div><div style="display:grid;grid-template-columns:1fr 2fr;gap:7px"><div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image URL</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video</option></select></div><div class="field-group"><label>Media URL</label><input type="url" id="st_murl_'+n+'" value="'+(s.mediaUrl||'')+'" placeholder="https://…"></div></div><div class="field-group"><label>Tags (comma separated)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div></div>';});
   h+='</div>';
 
-  h+='<div style="border-top:1px solid var(--border);padding-top:16px"><h3 style="color:var(--ocean);margin-bottom:10px">Qualitative data</h3>'+
-    '<div class="field-group"><label>Media stats (JSON: [{val,label}])</label><textarea id="qd_mediaStats" rows="2">'+JSON.stringify(QD.mediaStats)+'</textarea></div>'+
-    '<div class="field-group"><label>Political & government items (one per line)</label><textarea id="qd_politicalItems" rows="4">'+QD.politicalItems.join('\n')+'</textarea></div>'+
-    '<div class="field-group"><label>Partners & funders (comma separated)</label><textarea id="qd_partners" rows="2">'+QD.partners.join(', ')+'</textarea></div>'+
-    '<div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems" rows="4">'+QD.fundraisingItems.join('\n')+'</textarea></div>'+
-    '<div class="field-group"><label>Social media stats (JSON: [{val,label}])</label><textarea id="qd_socialStats" rows="2">'+JSON.stringify(QD.socialStats)+'</textarea></div></div>';
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Qualitative data</h3><div class="field-group"><label>Media stats (JSON [{val,label}])</label><textarea id="qd_mediaStats" rows="2">'+JSON.stringify(QD.mediaStats)+'</textarea></div><div class="field-group"><label>Political items (one per line)</label><textarea id="qd_politicalItems" rows="4">'+QD.politicalItems.join('\n')+'</textarea></div><div class="field-group"><label>Partners (comma separated)</label><textarea id="qd_partners" rows="2">'+QD.partners.join(', ')+'</textarea></div><div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems" rows="4">'+QD.fundraisingItems.join('\n')+'</textarea></div><div class="field-group"><label>Social stats (JSON [{val,label}])</label><textarea id="qd_socialStats" rows="2">'+JSON.stringify(QD.socialStats)+'</textarea></div></div>';
 
-  h+='<div style="border-top:1px solid var(--border);padding-top:16px"><h3 style="color:var(--ocean);margin-bottom:10px">Pie chart percentages</h3>';
-  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(function(p){
-    h+='<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:500;color:var(--muted);margin-bottom:6px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:8px">';
-    QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});
-    h+='</div></div>';
-  });
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Pie chart percentages</h3>';
+  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(function(p){h+='<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:7px">';QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});h+='</div></div>';});
   h+='</div>';
   document.getElementById('admin-content').innerHTML=h;
 }
 
+function updateBanners(){
+  var bh=bannerHtml(selYear);
+  ['ov','p1','p2','p3'].forEach(function(p){var b=document.getElementById(p+'-yr-banner');if(b)b.innerHTML=bh;});
+  renderAll();
+}
+
 function saveAll(){
-  YEARS_ALL.forEach(function(y){
+  YEARS.forEach(function(y){
     ['p1','p2','p3'].forEach(function(p){var el=document.getElementById('ins_'+p+'_'+y);if(el)QD.insights[p][y]=el.value.trim();});
-    ['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct'].forEach(function(k){var el=document.getElementById('inp_'+k+'_'+y);if(el)A[k+'_'+y]=el.value;});
-    Q_KEYS.forEach(function(m){QUARTERS.forEach(function(q){var el=document.getElementById('qinp_'+m.k+'_'+y+'_'+q);if(el)QQ[m.k+'_'+y+'_'+q]=el.value;});});
+    ['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct','grantPct'].forEach(function(k){var el=document.getElementById('inp_'+k+'_'+y);if(el)A[k+'_'+y]=el.value;});
+    Q_KEYS.forEach(function(m){QQ_LABELS.forEach(function(q){var el=document.getElementById('qinp_'+m.k+'_'+y+'_'+q);if(el)QQ[m.k+'_'+y+'_'+q]=el.value;});});
   });
-  [0,1].forEach(function(n){
-    QD.stories[n]={title:document.getElementById('st_title_'+n).value,org:document.getElementById('st_org_'+n).value,quote:document.getElementById('st_quote_'+n).value,attr:document.getElementById('st_attr_'+n).value,mediaType:document.getElementById('st_mtype_'+n).value,mediaUrl:document.getElementById('st_murl_'+n).value,tags:document.getElementById('st_tags_'+n).value.split(',').map(function(t){return t.trim();}).filter(Boolean)};
-  });
+  [0,1].forEach(function(n){QD.stories[n]={title:document.getElementById('st_title_'+n).value,org:document.getElementById('st_org_'+n).value,quote:document.getElementById('st_quote_'+n).value,attr:document.getElementById('st_attr_'+n).value,mediaType:document.getElementById('st_mtype_'+n).value,mediaUrl:document.getElementById('st_murl_'+n).value,tags:document.getElementById('st_tags_'+n).value.split(',').map(function(t){return t.trim();}).filter(Boolean)};});
   try{QD.mediaStats=JSON.parse(document.getElementById('qd_mediaStats').value);}catch(e){}
   QD.politicalItems=document.getElementById('qd_politicalItems').value.split('\n').filter(Boolean);
   QD.partners=document.getElementById('qd_partners').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
@@ -1197,14 +1126,14 @@ function saveAll(){
   renderAll();
 }
 
-function downloadApp(){
-  var blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kinia-board-dashboard.html';a.click();
-}
+function downloadApp(){var blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kinia-board-dashboard.html';a.click();}
 
-document.getElementById('today').textContent=new Date().toLocaleDateString('en-IE',{year:'numeric',month:'long',day:'numeric'});
-buildYearPills();
-buildQYearPills();
+var now=new Date();
+document.getElementById('today').textContent=now.toLocaleDateString('en-IE',{year:'numeric',month:'long',day:'numeric'});
+document.getElementById('last-updated').textContent=now.toLocaleDateString('en-IE',{year:'numeric',month:'long',day:'numeric'});
+buildYrPills();buildQYrPills();
+document.getElementById('q-yr-banner').innerHTML=bannerHtml(selQYear);
+document.getElementById('q-table-year').textContent=selQYear;
 renderAll();
 </script>
 </body>
