@@ -1148,30 +1148,113 @@ function buildAdminRisks(){
   document.getElementById('admin-risks').innerHTML=h;
 }
 
+function safeGet(id){try{return document.getElementById(id);}catch(e){return null;}}
+function safeVal(id,fallback){var el=safeGet(id);return el?el.value:(fallback||'');}
+
 function saveAll(){
-  // Insights
-  YEARS.forEach(function(y){['p1','p2','p3'].forEach(function(p){var el=document.getElementById('ins_'+p+'_'+y);if(el)QD.insights[p][y]=el.value.trim();});});
-  // Annual actuals
-  YEARS.forEach(function(y){['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct','grantPct'].forEach(function(k){var el=document.getElementById('inp_'+k+'_'+y);if(el)A[k+'_'+y]=el.value;});});
-  // Quarterly actuals
-  YEARS.forEach(function(y){Q_KEYS.forEach(function(m){QQ_LABELS.forEach(function(q){var el=document.getElementById('qinp_'+m.k+'_'+y+'_'+q);if(el)QQ[m.k+'_'+y+'_'+q]=el.value;});});});
-  // Stories
-  [0,1,2,3].forEach(function(n){if(!document.getElementById('st_title_'+n))return;QD.stories[n]={title:document.getElementById('st_title_'+n).value,org:document.getElementById('st_org_'+n).value,quote:document.getElementById('st_quote_'+n).value,attr:document.getElementById('st_attr_'+n).value,mediaType:document.getElementById('st_mtype_'+n).value,mediaUrl:document.getElementById('st_murl_'+n).value,tags:document.getElementById('st_tags_'+n).value.split(',').map(function(t){return t.trim();}).filter(Boolean)};});
-  // Targets
-  var tgtKeys=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','otherRevenue','sePct','grantPct'];
-  tgtKeys.forEach(function(k){YEARS.forEach(function(y,yi_){var el=document.getElementById('tgt_'+k+'_'+yi_);if(el&&el.value!==''){T[k].v[yi_]=parseFloat(el.value);}});});
-  // Risks
-  RISKS.forEach(function(r,ri){if(!document.getElementById('risk_status_'+ri))return;r.status=document.getElementById('risk_status_'+ri).value;r.likelihood=document.getElementById('risk_likelihood_'+ri).value;r.impact=document.getElementById('risk_impact_'+ri).value;r.owner=document.getElementById('risk_owner_'+ri).value;r.reviewed=document.getElementById('risk_reviewed_'+ri).value;r.mitigation=document.getElementById('risk_mitigation_'+ri).value;});
-  // Qualitative
-  try{QD.mediaStats=JSON.parse(document.getElementById('qd_mediaStats').value);}catch(e){}
-  if(document.getElementById('qd_politicalItems'))QD.politicalItems=document.getElementById('qd_politicalItems').value.split('\n').filter(Boolean);
-  if(document.getElementById('qd_partners'))QD.partners=document.getElementById('qd_partners').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
-  if(document.getElementById('qd_fundraisingItems'))QD.fundraisingItems=document.getElementById('qd_fundraisingItems').value.split('\n').filter(Boolean);
-  try{QD.socialStats=JSON.parse(document.getElementById('qd_socialStats').value);}catch(e){}
-  ['pie1','pie2','pie3'].forEach(function(pid){if(!document.getElementById(pid+'_0'))return;QD[pid].data=QD[pid].labels.map(function(_,li){return parseInt(document.getElementById(pid+'_'+li).value)||0;});});
-  document.getElementById('save-msg').style.display='block';
-  setTimeout(function(){document.getElementById('save-msg').style.display='none';},2500);
-  renderAll();
+  try{
+    // Insights
+    YEARS.forEach(function(y){
+      ['p1','p2','p3'].forEach(function(p){
+        try{var el=safeGet('ins_'+p+'_'+y);if(el)QD.insights[p][y]=el.value.trim();}catch(e){}
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Annual actuals
+    var aKeys=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct','grantPct'];
+    YEARS.forEach(function(y){
+      aKeys.forEach(function(k){
+        try{var el=safeGet('inp_'+k+'_'+y);if(el)A[k+'_'+y]=el.value;}catch(e){}
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Quarterly actuals
+    YEARS.forEach(function(y){
+      Q_KEYS.forEach(function(m){
+        QQ_LABELS.forEach(function(q){
+          try{var el=safeGet('qinp_'+m.k+'_'+y+'_'+q);if(el)QQ[m.k+'_'+y+'_'+q]=el.value;}catch(e){}
+        });
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Stories
+    [0,1,2,3].forEach(function(n){
+      try{
+        if(!safeGet('st_title_'+n))return;
+        QD.stories[n]={
+          title:safeVal('st_title_'+n),
+          org:safeVal('st_org_'+n),
+          quote:safeVal('st_quote_'+n),
+          attr:safeVal('st_attr_'+n),
+          mediaType:safeVal('st_mtype_'+n,'none'),
+          mediaUrl:safeVal('st_murl_'+n),
+          tags:safeVal('st_tags_'+n).split(',').map(function(t){return t.trim();}).filter(Boolean)
+        };
+      }catch(e){}
+    });
+  }catch(e){}
+
+  try{
+    // Targets
+    var tgtKeys=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','otherRevenue','sePct','grantPct'];
+    tgtKeys.forEach(function(k){
+      YEARS.forEach(function(y,yi_){
+        try{var el=safeGet('tgt_'+k+'_'+yi_);if(el&&el.value!=='')T[k].v[yi_]=parseFloat(el.value);}catch(e){}
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Risks
+    RISKS.forEach(function(r,ri){
+      try{
+        if(!safeGet('risk_status_'+ri))return;
+        r.status=safeVal('risk_status_'+ri,'Monitoring');
+        r.likelihood=safeVal('risk_likelihood_'+ri,'Amber');
+        r.impact=safeVal('risk_impact_'+ri,'Amber');
+        r.owner=safeVal('risk_owner_'+ri);
+        r.reviewed=safeVal('risk_reviewed_'+ri);
+        r.mitigation=safeVal('risk_mitigation_'+ri);
+      }catch(e){}
+    });
+  }catch(e){}
+
+  try{
+    // Qualitative — media stats
+    var ms=safeGet('qd_mediaStats');
+    if(ms)try{QD.mediaStats=JSON.parse(ms.value);}catch(e){}
+    var pi=safeGet('qd_politicalItems');
+    if(pi)QD.politicalItems=pi.value.split('\n').filter(Boolean);
+    var pa=safeGet('qd_partners');
+    if(pa)QD.partners=pa.value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+    var fi=safeGet('qd_fundraisingItems');
+    if(fi)QD.fundraisingItems=fi.value.split('\n').filter(Boolean);
+    var ss=safeGet('qd_socialStats');
+    if(ss)try{QD.socialStats=JSON.parse(ss.value);}catch(e){}
+  }catch(e){}
+
+  try{
+    // Pie charts
+    ['pie1','pie2','pie3'].forEach(function(pid){
+      try{
+        if(!safeGet(pid+'_0'))return;
+        QD[pid].data=QD[pid].labels.map(function(_,li){
+          return parseInt(safeVal(pid+'_'+li,'0'))||0;
+        });
+      }catch(e){}
+    });
+  }catch(e){}
+
+  // Always show success and re-render regardless of any individual field errors
+  var msg=document.getElementById('save-msg');
+  if(msg){msg.style.display='block';setTimeout(function(){msg.style.display='none';},2500);}
+  try{renderAll();}catch(e){}
 }
 
 function downloadApp(){var blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kinia-board-dashboard.html';a.click();}
