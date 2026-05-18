@@ -57,9 +57,7 @@ nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;posit
 .yr-banner.current{background:var(--current-bg);border:1px solid #f8c89a;color:#854f0b}
 .yr-banner.future{background:var(--future-bg);border:1px solid var(--border);color:var(--muted)}
 
-/* METRIC CARDS */
 .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.metric-grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
 .mcard{border-radius:10px;padding:13px;border:1px solid var(--border);background:var(--white)}
 .mcard.status-g{background:var(--card-g-bg);border-color:var(--card-g-border)}
 .mcard.status-a{background:var(--card-a-bg);border-color:var(--card-a-border)}
@@ -120,12 +118,6 @@ nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;posit
 .trend-table tr:last-child td{border-bottom:none}
 .th-closed{background:var(--closed-bg)}.th-current{background:var(--current-bg)}.th-future{background:var(--future-bg)}
 
-/* RISK TABLE */
-.risk-status-monitoring{background:#e3f2fd;color:#1565c0;border:1px solid #90caf9}
-.risk-status-escalated{background:var(--card-r-bg);color:#721c24;border:1px solid var(--card-r-border)}
-.risk-status-action{background:var(--card-a-bg);color:#856404;border:1px solid var(--card-a-border)}
-.risk-status-resolved{background:var(--card-g-bg);color:#155724;border:1px solid var(--card-g-border)}
-
 .smart-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
 .si-card{border-radius:10px;padding:13px;border:1px solid var(--border);background:var(--white)}
 .si-card .si-icon{font-size:18px;margin-bottom:5px}
@@ -177,16 +169,17 @@ nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;posit
 
 .q-compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
 .q-kpi-block{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:13px}
-.q-kpi-block .qkb-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:8px}
+
+/* Admin target warning */
+.tgt-warning{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#5d4037}
 
 input[type=password],input[type=number],input[type=text],input[type=url],input[type=date],textarea,select{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Roboto',sans-serif;color:var(--text);background:white}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ocean)}
 .field-group{margin-bottom:10px}
 .field-group label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);display:block;margin-bottom:2px}
-.field-tgt{font-size:9px;color:var(--muted);margin-bottom:2px}
 
 footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-top:1px solid var(--border);margin-top:28px}
-@media(max-width:720px){.metric-grid,.metric-grid-5,.g2,.g3,.g4,.smart-insights,.q-compare-grid,.rag-key,.stories-grid{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}}
+@media(max-width:720px){.metric-grid,.g2,.g3,.g4,.smart-insights,.q-compare-grid,.rag-key,.stories-grid{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}}
 </style>
 </head>
 <body>
@@ -217,13 +210,21 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
   </div>
   <div id="admin-panel" style="display:none;background:white;border-radius:14px;padding:28px;max-width:980px;margin:0 auto">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-      <h2 style="color:var(--ocean)">Enter actuals &amp; data</h2>
+      <h2 style="color:var(--ocean)">Admin panel</h2>
       <div style="display:flex;gap:7px">
         <button class="btn-ocean" onclick="saveAll()">Save all</button>
         <button onclick="hideAdmin()" style="background:none;border:1px solid var(--border);border-radius:7px;padding:6px 13px;cursor:pointer;font-size:11px">Close</button>
       </div>
     </div>
-    <div id="admin-content"></div>
+    <!-- Admin tabs -->
+    <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px">
+      <button onclick="showAdminTab('actuals')" id="atab-actuals" style="padding:8px 18px;border:none;background:var(--ocean);color:white;font-family:'Roboto',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border-radius:6px 6px 0 0;margin-right:4px">Actuals &amp; data</button>
+      <button onclick="showAdminTab('targets')" id="atab-targets" style="padding:8px 18px;border:none;background:var(--bg);color:var(--muted);font-family:'Roboto',sans-serif;font-size:12px;cursor:pointer;border-radius:6px 6px 0 0;margin-right:4px">Target management</button>
+      <button onclick="showAdminTab('risks')" id="atab-risks" style="padding:8px 18px;border:none;background:var(--bg);color:var(--muted);font-family:'Roboto',sans-serif;font-size:12px;cursor:pointer;border-radius:6px 6px 0 0">Risk register</button>
+    </div>
+    <div id="admin-actuals"></div>
+    <div id="admin-targets" style="display:none"></div>
+    <div id="admin-risks" style="display:none"></div>
     <div id="save-msg" style="display:none;background:#d4edda;color:#155724;border-radius:7px;padding:9px;text-align:center;margin-top:12px;font-size:12px">Saved successfully.</div>
   </div>
 </div>
@@ -260,52 +261,33 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
   </div>
   <div class="how-section">
     <h3>Welcome to the Kinia Performance &amp; Impact Dashboard</h3>
-    <p>This dashboard tracks Kinia's progress against the 2026–2030 Strategic Plan across three pillars: Deepening Educator Expertise, Driving System-Wide Educational Change, and Increased Financial Independence. Updated by the Kinia admin team and shared with the Board of Directors.</p>
-    <p>Data is presented as <strong>cumulative totals</strong> — totals reached since the start of the plan — alongside <strong>annual figures</strong> showing in-year performance only. Both views are provided throughout.</p>
+    <p>This dashboard tracks Kinia's progress against the 2026–2030 Strategic Plan. Data is presented as <strong>cumulative totals</strong> alongside <strong>annual figures</strong> showing in-year performance only.</p>
   </div>
   <div class="how-section">
     <h3>Navigating the dashboard</h3>
-    <div class="how-step"><div class="how-step-num">1</div><div class="how-step-body"><strong>Tabs across the top</strong> move between sections: Overview, Quarterly, Insights, Pillar pages, Reach &amp; Influence, Impact Stories, and Risks.</div></div>
-    <div class="how-step"><div class="how-step-num">2</div><div class="how-step-body"><strong>Year pills (top right)</strong> switch between years. The selected year determines targets and actuals on metric cards and KPI bars. Charts always show the full 2024–2030 range.</div></div>
-    <div class="how-step"><div class="how-step-num">3</div><div class="how-step-body"><strong>Quarterly tab</strong> shows in-year progress by quarter (Jan–Mar = Q1, Apr–Jun = Q2, Jul–Sep = Q3, Oct–Dec = Q4) plus cross-year Q1 comparisons.</div></div>
-    <div class="how-step"><div class="how-step-num">4</div><div class="how-step-body"><strong>Insights tab</strong> provides auto-generated analysis — efficiency ratios, growth indices, and trajectory charts.</div></div>
+    <div class="how-step"><div class="how-step-num">1</div><div class="how-step-body"><strong>Tabs across the top</strong> move between sections.</div></div>
+    <div class="how-step"><div class="how-step-num">2</div><div class="how-step-body"><strong>Year pills (top right)</strong> switch between years. Charts always show the full 2024–2030 range.</div></div>
+    <div class="how-step"><div class="how-step-num">3</div><div class="how-step-body"><strong>Quarterly tab</strong> shows flat per-quarter figures (Jan–Mar=Q1, Apr–Jun=Q2, Jul–Sep=Q3, Oct–Dec=Q4) plus cross-year Q1 comparisons.</div></div>
   </div>
   <div class="how-section">
     <h3>Year status</h3>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px">
-      <div style="background:var(--closed-bg);border:1px solid #c5d9c5;border-radius:8px;padding:12px"><div style="font-weight:500;color:var(--forest);margin-bottom:4px">✓ Closed year (2024, 2025)</div><p>Year has ended. Actuals are final. RAG compares actual vs full annual target.</p></div>
-      <div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px"><div style="font-weight:500;color:#854f0b;margin-bottom:4px">● Current year (2026)</div><p>Year in progress. RAG compares actual vs pro-rata expected figure at the current quarter.</p></div>
-      <div style="background:var(--future-bg);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-weight:500;color:var(--muted);margin-bottom:4px">○ Future year (2027–2030)</div><p>Not yet started. Targets shown for planning purposes only.</p></div>
+      <div style="background:var(--closed-bg);border:1px solid #c5d9c5;border-radius:8px;padding:12px"><div style="font-weight:500;color:var(--forest);margin-bottom:4px">✓ Closed year (2024, 2025)</div><p>Year ended. Actuals are final. RAG vs full annual target.</p></div>
+      <div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px"><div style="font-weight:500;color:#854f0b;margin-bottom:4px">● Current year (2026)</div><p>In progress. RAG vs pro-rata expected figure at the current quarter.</p></div>
+      <div style="background:var(--future-bg);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-weight:500;color:var(--muted);margin-bottom:4px">○ Future year (2027–2030)</div><p>Not yet started. Targets shown for planning only.</p></div>
     </div>
   </div>
   <div class="how-section">
-    <h3>Understanding metric cards</h3>
-    <p>Each metric card shows:</p>
-    <div style="margin:8px 0"><span class="pill pill-tgt">Cumulative target</span> <span style="font-size:12px;color:var(--muted);margin-left:4px">Total expected since plan began (e.g. 32,000 educators upskilled in total by end of 2026).</span></div>
-    <div style="margin:8px 0"><span class="pill pill-ann">Annual target</span> <span style="font-size:12px;color:var(--muted);margin-left:4px">Net new figure required in this calendar year alone (e.g. +3,000 new educators in 2026).</span></div>
-    <div style="margin:8px 0"><span class="pill pill-act">Actual</span> <span style="font-size:12px;color:var(--muted);margin-left:4px">Confirmed figure to date. Card background colour signals RAG status.</span></div>
-    <p style="margin-top:8px">Cards with an <strong style="color:var(--ann-col)">orange top border</strong> show annual (in-year) figures only — not cumulative.</p>
-  </div>
-  <div class="how-section">
-    <h3>RAG status — performance indicators</h3>
+    <h3>RAG status</h3>
     <div class="rag-key">
-      <div class="rag-key-card g"><div class="rk-title"><span class="rag-dot g"></span>Green — On track</div><p>Actual ≥ <strong>85%</strong> of expected. Within acceptable tolerance.</p><p style="margin-top:6px;font-size:10px"><em>Current year: vs pro-rata quarterly pace. Closed year: vs full annual target.</em></p></div>
-      <div class="rag-key-card a"><div class="rk-title"><span class="rag-dot a"></span>Amber — Monitor</div><p>Actual <strong>70–84%</strong> of expected. Below pace — warrants attention.</p><p style="margin-top:6px;font-size:10px"><em>Board should note and request update at next meeting.</em></p></div>
-      <div class="rag-key-card r"><div class="rk-title"><span class="rag-dot r"></span>Red — Action required</div><p>Actual <strong>&lt;70%</strong> of expected. Significantly behind — requires discussion.</p><p style="margin-top:6px;font-size:10px"><em>Board should seek explanation and agree corrective actions.</em></p></div>
+      <div class="rag-key-card g"><div class="rk-title"><span class="rag-dot g"></span>Green — On track</div><p>Actual ≥ <strong>85%</strong> of expected.</p></div>
+      <div class="rag-key-card a"><div class="rk-title"><span class="rag-dot a"></span>Amber — Monitor</div><p>Actual <strong>70–84%</strong> of expected.</p></div>
+      <div class="rag-key-card r"><div class="rk-title"><span class="rag-dot r"></span>Red — Action required</div><p>Actual <strong>&lt;70%</strong> of expected.</p></div>
     </div>
     <div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px">
       <strong style="font-size:12px;color:#854f0b">2026 RAG note</strong>
-      <p style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.7">2026 data reflects Q1 only (January–March). Actuals are compared against <strong>25% of the annual target</strong>. This updates automatically when Q2, Q3 or Q4 data is entered via Admin.</p>
+      <p style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.7">2026 data reflects Q1 only (January–March). Actuals are compared against <strong>25% of the annual target</strong>. Updates automatically when Q2, Q3 or Q4 data is entered via Admin.</p>
     </div>
-  </div>
-  <div class="how-section">
-    <h3>Data currency</h3>
-    <ul>
-      <li>Annual actuals for <strong>2024 and 2025</strong> are final confirmed figures.</li>
-      <li><strong>2026</strong> reflects Q1 performance (January–March 2026).</li>
-      <li>Quarterly data for 2024 and 2025 is estimated by dividing annual totals evenly across four quarters.</li>
-      <li>For questions about data, contact the CEO or Head of Strategy.</li>
-    </ul>
   </div>
   <div class="how-section">
     <h3>Access &amp; download</h3>
@@ -338,10 +320,8 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
     <span class="dl-item" style="border-left:1px solid var(--border);padding-left:10px"><span style="display:inline-block;width:10px;height:3px;background:var(--ann-col);border-radius:2px;margin-right:2px"></span>Orange top border = annual card</span>
   </div>
   <div id="ov-yr-banner"></div>
-
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Headline metrics</div><div class="sec-div-line"></div></div>
   <div id="ov-metrics"></div>
-
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Mission reach — cumulative targets vs actuals</div><div class="sec-div-line"></div></div>
   <div class="g2">
     <div class="card"><div class="card-title">Educators upskilled (cumulative)</div><div style="position:relative;height:190px"><canvas id="ov-edu-chart"></canvas></div></div>
@@ -351,11 +331,9 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
     <div class="card"><div class="card-title">Educator credentials issued (cumulative)</div><div style="position:relative;height:190px"><canvas id="ov-cred-chart"></canvas></div></div>
     <div class="card"><div class="card-title">Youth badges awarded (cumulative)</div><div style="position:relative;height:190px"><canvas id="ov-badge-chart"></canvas></div></div>
   </div>
-
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Financial overview</div><div class="sec-div-line"></div></div>
   <div class="g2">
-    <div class="card">
-      <div class="card-title">Revenue mix — cumulative targets vs actual</div>
+    <div class="card"><div class="card-title">Revenue mix — targets vs actual</div>
       <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
         <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);display:inline-block;border-radius:2px"></span>Grants (tgt)</span>
         <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(243,112,33,0.35);display:inline-block;border-radius:2px"></span>SE (tgt)</span>
@@ -364,8 +342,7 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
       </div>
       <div style="position:relative;height:190px"><canvas id="revChart"></canvas></div>
     </div>
-    <div class="card">
-      <div class="card-title">Grant dependency &amp; SE share — target vs actual</div>
+    <div class="card"><div class="card-title">Grant dependency &amp; SE share — target vs actual</div>
       <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
         <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);display:inline-block;border-radius:2px"></span>Grant (tgt)</span>
         <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#1a7ab5;display:inline-block;border-radius:2px"></span>Grant (actual)</span>
@@ -379,7 +356,7 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
 
 <!-- QUARTERLY -->
 <div id="page-quarterly" class="page">
-  <div class="page-header"><div><h1>Quarterly tracker</h1><p>In-year progress by quarter (Jan–Mar=Q1, Apr–Jun=Q2, Jul–Sep=Q3, Oct–Dec=Q4) &amp; cross-year Q1 comparison.</p></div><div class="header-badge">Select year below</div></div>
+  <div class="page-header"><div><h1>Quarterly tracker</h1><p>Flat per-quarter figures — each Q shows that quarter's activity only. Jan–Mar=Q1, Apr–Jun=Q2, Jul–Sep=Q3, Oct–Dec=Q4.</p></div><div class="header-badge">Select year below</div></div>
   <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap" id="q-year-row"></div>
   <div id="q-yr-banner" style="margin-bottom:12px"></div>
   <div class="dash-legend">
@@ -391,7 +368,7 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
     <span class="dl-item"><span class="rag-dot a"></span>Monitor (70–84%)</span>
     <span class="dl-item"><span class="rag-dot r"></span>Action required (&lt;70%)</span>
   </div>
-  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">KPI progress — selected year</div><div class="sec-div-line"></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">KPI progress — selected year (flat per-quarter)</div><div class="sec-div-line"></div></div>
   <div id="q-kpi-cards" class="q-compare-grid"></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Cross-year Q1 comparison</div><div class="sec-div-line"></div></div>
   <div class="g2">
@@ -402,18 +379,18 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
     <div class="card"><div class="card-title">Youth badges — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-badge-chart"></canvas></div></div>
     <div class="card"><div class="card-title">SE revenue — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-se-chart"></canvas></div></div>
   </div>
-  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">In-year trend — selected year vs quarterly target pace</div><div class="sec-div-line"></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">In-year trend — flat quarterly bars vs expected quarterly pace</div><div class="sec-div-line"></div></div>
   <div class="g2">
-    <div class="card"><div class="card-title">Educators upskilled</div><div style="position:relative;height:180px"><canvas id="q-edu-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">Young people reached</div><div style="position:relative;height:180px"><canvas id="q-yp-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Educators upskilled (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-yp-chart"></canvas></div></div>
   </div>
   <div class="g2">
-    <div class="card"><div class="card-title">Youth badges</div><div style="position:relative;height:180px"><canvas id="q-badge-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">SE revenue (€M)</div><div style="position:relative;height:180px"><canvas id="q-se-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badges (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">SE revenue (per quarter €M)</div><div style="position:relative;height:180px"><canvas id="q-se-chart"></canvas></div></div>
   </div>
   <div class="g2">
-    <div class="card"><div class="card-title">Educator credentials</div><div style="position:relative;height:180px"><canvas id="q-cred-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">Platform users</div><div style="position:relative;height:180px"><canvas id="q-pu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Educator credentials (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Platform users (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-pu-chart"></canvas></div></div>
   </div>
   <div class="card" style="margin-bottom:16px"><div class="card-title">Summary — <span id="q-table-year">2026</span></div><div style="overflow-x:auto"><table class="trend-table" id="q-summary-table"></table></div></div>
 </div>
@@ -425,65 +402,41 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
   <div class="smart-insights" id="si-cards"></div>
   <div class="g2">
     <div class="card"><div class="card-title">Cost per young person reached (€)</div><div style="position:relative;height:190px"><canvas id="si-cpy-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">Revenue vs reach growth (2024 = 100)</div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#f37021;display:inline-block;border-radius:2px"></span>Revenue</span>
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#262262;display:inline-block;border-radius:2px"></span>Young people</span>
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#9dceef;display:inline-block;border-radius:2px"></span>Educators</span>
-      </div>
-      <div style="position:relative;height:190px"><canvas id="si-index-chart"></canvas></div>
-    </div>
+    <div class="card"><div class="card-title">Revenue vs reach growth (2024=100)</div><div style="position:relative;height:190px"><canvas id="si-index-chart"></canvas></div></div>
   </div>
   <div class="g2">
     <div class="card"><div class="card-title">Credentials per platform user (%)</div><div style="position:relative;height:190px"><canvas id="si-cred-chart"></canvas></div></div>
-    <div class="card"><div class="card-title">Youth badge trajectory to 2030</div><div style="position:relative;height:190px"><canvas id="si-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badge trajectory</div><div style="position:relative;height:190px"><canvas id="si-badge-chart"></canvas></div></div>
   </div>
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-title">Grant dependency vs SE share — target (dashed) vs actual (solid)</div>
-    <div style="position:relative;height:200px"><canvas id="si-fin-chart"></canvas></div>
-  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Grant dependency vs SE share — target vs actual</div><div style="position:relative;height:200px"><canvas id="si-fin-chart"></canvas></div></div>
 </div>
 
 <!-- PILLAR 1 -->
 <div id="page-pillar1" class="page">
-  <div class="page-header"><div><h1>Pillar 1 — deepening educator expertise</h1><p>Best-in-class bilingual professional development in AI, creative technology and green skills.</p></div><div style="display:flex;gap:7px;align-items:center"><span id="p1-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div class="page-header"><div><h1>Pillar 1 — deepening educator expertise</h1></div><div style="display:flex;gap:7px;align-items:center"><span id="p1-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
   <div id="p1-yr-banner"></div>
   <div id="p1-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p1-insight-text">Insight will appear here once data is entered.</p></div>
   <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
   <div id="p1-metrics"></div>
   <div class="g2">
     <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p1-bars"></div></div>
-    <div class="card"><div class="card-title">Trend 2024–2030</div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);border-radius:2px;display:inline-block"></span>Educators (tgt)</span>
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;border-radius:2px;display:inline-block"></span>Educators (actual)</span>
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#9dceef;border-radius:2px;display:inline-block"></span>Platform users (tgt)</span>
-      </div>
-      <div style="position:relative;height:200px"><canvas id="p1Chart"></canvas></div>
-    </div>
+    <div class="card"><div class="card-title">Trend 2024–2030</div><div style="position:relative;height:200px"><canvas id="p1Chart"></canvas></div></div>
   </div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p1-table"></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p1-table"></table></div></div>
 </div>
 
 <!-- PILLAR 2 -->
 <div id="page-pillar2" class="page">
-  <div class="page-header"><div><h1>Pillar 2 — driving system-wide educational change</h1><p>Embedding recognised credentials and scalable digital tools.</p></div><div style="display:flex;gap:7px;align-items:center"><span id="p2-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div class="page-header"><div><h1>Pillar 2 — driving system-wide educational change</h1></div><div style="display:flex;gap:7px;align-items:center"><span id="p2-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
   <div id="p2-yr-banner"></div>
   <div id="p2-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p2-insight-text">Insight will appear here once data is entered.</p></div>
-  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
+  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span></div>
   <div id="p2-metrics"></div>
   <div class="g2">
     <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p2-bars"></div></div>
-    <div class="card"><div class="card-title">Trend 2024–2030</div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);border-radius:2px;display:inline-block"></span>Credentials (tgt)</span>
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#f37021;border-radius:2px;display:inline-block"></span>Badges (tgt)</span>
-        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;border-radius:2px;display:inline-block"></span>Credentials (actual)</span>
-      </div>
-      <div style="position:relative;height:200px"><canvas id="p2Chart"></canvas></div>
-    </div>
+    <div class="card"><div class="card-title">Trend 2024–2030</div><div style="position:relative;height:200px"><canvas id="p2Chart"></canvas></div></div>
   </div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Community profile</div><div class="sec-div-line"></div></div>
   <div class="g3">
     <div class="card"><div class="card-title">Who our educators work with</div><div style="position:relative;height:160px"><canvas id="pie1"></canvas></div><div class="pie-legend" id="pie1-leg"></div></div>
@@ -494,21 +447,20 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
 
 <!-- PILLAR 3 -->
 <div id="page-pillar3" class="page">
-  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1><p>Targeting 23–25% SE revenue share by 2030.</p></div><div style="display:flex;gap:7px;align-items:center"><span id="p3-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1></div><div style="display:flex;gap:7px;align-items:center"><span id="p3-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
   <div id="p3-yr-banner"></div>
   <div id="p3-insight-box" class="insight-box"><div class="ititle">Insight snapshot</div><p id="p3-insight-text">Insight will appear here once data is entered.</p></div>
-  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
   <div class="metric-grid" id="p3-metrics"></div>
   <div class="g2">
     <div class="card"><div class="card-title">Revenue streams — target vs actual</div><div style="overflow-x:auto" id="p3-rev-table"></div></div>
     <div class="card"><div class="card-title">SE revenue — target vs actual</div><div style="position:relative;height:200px"><canvas id="p3Chart"></canvas></div></div>
   </div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table — all years</div><div style="overflow-x:auto"><table class="trend-table" id="p3-table"></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p3-table"></table></div></div>
 </div>
 
 <!-- REACH & INFLUENCE -->
 <div id="page-influence" class="page">
-  <div class="page-header"><div><h1>Reach &amp; influence</h1><p>Media, political engagement, partnerships and social media impact.</p></div></div>
+  <div class="page-header"><div><h1>Reach &amp; influence</h1></div></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Media reach</div><div class="sec-div-line"></div></div>
   <div class="g3" id="media-stats"></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Political influence &amp; government engagement</div><div class="sec-div-line"></div></div>
@@ -517,8 +469,7 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
   <div class="card" style="margin-bottom:16px">
     <p style="font-size:10px;color:var(--muted);margin-bottom:10px">Strategic partners &amp; funders</p>
     <div id="partner-chips" style="margin-bottom:16px"></div>
-    <div class="card-title">Highlights</div>
-    <div id="fundraising-items"></div>
+    <div class="card-title">Highlights</div><div id="fundraising-items"></div>
   </div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Social media reach</div><div class="sec-div-line"></div></div>
   <div class="g4" id="social-stats"></div>
@@ -526,13 +477,13 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
 
 <!-- IMPACT STORIES -->
 <div id="page-stories" class="page">
-  <div class="page-header"><div><h1>Impact stories</h1><p>Voices from our network — educators and young people transformed by Kinia programmes.</p></div></div>
+  <div class="page-header"><div><h1>Impact stories</h1><p>Voices from our network.</p></div></div>
   <div class="stories-grid" id="stories-grid"></div>
 </div>
 
 <!-- RISKS -->
 <div id="page-risks" class="page">
-  <div class="page-header"><div><h1>Risk register</h1><p>Board oversight — live status, likelihood, impact and mitigation actions.</p></div></div>
+  <div class="page-header"><div><h1>Risk register</h1><p>Live status, likelihood, impact and mitigation.</p></div></div>
   <div class="dash-legend">
     <strong style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em">Risk status:</strong>
     <span class="dl-item"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#e3f2fd;border:1px solid #90caf9"></span>Monitoring</span>
@@ -540,9 +491,7 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
     <span class="dl-item"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--card-r-bg);border:1px solid var(--card-r-border)"></span>Escalated</span>
     <span class="dl-item"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--card-g-bg);border:1px solid var(--card-g-border)"></span>Resolved</span>
   </div>
-  <div class="card" style="padding:0 0 4px">
-    <div style="overflow-x:auto"><table class="trend-table" style="width:100%;min-width:800px" id="risk-table"></table></div>
-  </div>
+  <div class="card" style="padding:0 0 4px"><div style="overflow-x:auto"><table class="trend-table" style="width:100%;min-width:800px" id="risk-table"></table></div></div>
 </div>
 
 <footer>Kinia &nbsp;·&nbsp; Learning is Life &nbsp;·&nbsp; Ní thagann saol gan foghalaim &nbsp;·&nbsp; Strategic Plan 2026–2030 &nbsp;·&nbsp; Board Confidential</footer>
@@ -555,95 +504,102 @@ var YEARS=[2024,2025,2026,2027,2028,2029,2030];
 var QQ_LABELS=['Q1','Q2','Q3','Q4'];
 var YR_COLORS={2024:'#262262',2025:'#f37021',2026:'#005129',2027:'#9dceef',2028:'#b9f24c',2029:'#660066',2030:'#ffcf01'};
 
+// ── TARGETS — fully editable via admin ──
+// INCR = true means cumulative (annual target = this year minus last year)
+// INCR = false means the target IS the annual figure already
 var T={
-  educators:[27000,29500,32000,35000,39000,44000,50000],
-  eduSupported:[2000,2500,2500,3000,4000,5000,6000],
-  youngPeople:[380000,430000,490000,560000,650000,730000,800000],
-  orgsEngaged:[200,350,400,450,500,600,800],
-  revenue:[2.00,2.50,2.50,2.50,2.60,2.80,3.00],
-  seRevenue:[0.40,0.70,0.50,0.50,0.50,0.60,0.65],
-  grantRevenue:[1.00,1.10,1.30,1.30,1.40,1.50,1.60],
-  otherRevenue:[0.60,0.40,0.70,0.70,0.70,0.70,0.75],
-  grantPct:[92,90,85,82,80,79,76],
-  sePct:[11,13,16,17,19,21,23],
-  eduCredentials:[800,1000,1500,2000,2500,3000,3500],
-  youthBadges:[1000,2000,3000,4000,6000,8000,10000],
-  platformUsers:[1800,2400,4000,5500,7000,8500,10000],
-  irishMedSchools:[200,200,200,200,200,200,200]
+  educators:      {v:[27000,29500,32000,35000,39000,44000,50000], incr:true},
+  eduSupported:   {v:[2000,2500,3000,3000,4000,5000,6000],        incr:false}, // annual standalone
+  youngPeople:    {v:[380000,430000,490000,560000,650000,730000,800000], incr:true},
+  orgsEngaged:    {v:[200,350,400,450,500,600,800],                incr:false}, // annual standalone
+  revenue:        {v:[2.00,2.50,2.50,2.50,2.60,2.80,3.00],        incr:false},
+  seRevenue:      {v:[0.40,0.70,0.50,0.50,0.50,0.60,0.65],        incr:false},
+  grantRevenue:   {v:[1.00,1.10,1.30,1.30,1.40,1.50,1.60],        incr:false},
+  otherRevenue:   {v:[0.60,0.40,0.70,0.70,0.70,0.70,0.75],        incr:false},
+  grantPct:       {v:[92,90,85,82,80,79,76],                       incr:false},
+  sePct:          {v:[11,13,16,17,19,21,23],                       incr:false},
+  eduCredentials: {v:[800,1000,1500,2000,2500,3000,3500],          incr:true},
+  youthBadges:    {v:[1000,2000,3000,4000,6000,8000,10000],        incr:true},
+  platformUsers:  {v:[1800,2400,4000,5500,7000,8500,10000],        incr:true},
+  irishMedSchools:{v:[200,200,200,200,200,200,200],                 incr:false}
 };
-var INCR={educators:true,youngPeople:true,eduCredentials:true,youthBadges:true,platformUsers:true,irishMedSchools:true,eduSupported:true,orgsEngaged:true};
-var Q_KEYS=[
-  {k:'educators',l:'Educators upskilled',dec:false,color:'#262262'},
-  {k:'youngPeople',l:'Young people reached',dec:false,color:'#f37021'},
-  {k:'youthBadges',l:'Youth badges',dec:false,color:'#005129'},
-  {k:'seRevenue',l:'SE revenue (€M)',dec:true,color:'#9dceef'},
-  {k:'eduCredentials',l:'Educator credentials',dec:false,color:'#3d3899'},
-  {k:'platformUsers',l:'Platform users',dec:false,color:'#1a7ab5'}
-];
 
+// Helper: get target value for key at year index
+function tgt(k,i){return T[k]?T[k].v[i]:null;}
+// Helper: get annual target (net-new for cumulative, direct for annual)
+function annTgt(k,i){
+  var t=T[k]; if(!t||t.v[i]===null)return null;
+  if(!t.incr)return t.v[i]; // already annual
+  if(i===0)return t.v[0];
+  return t.v[i]-t.v[i-1];
+}
+
+// Actuals — keyed as k_year
 var A={
-  'educators_2024':26000,'eduSupported_2024':2725,'youngPeople_2024':380000,'orgsEngaged_2024':436,'eduCredentials_2024':800,'youthBadges_2024':1620,'platformUsers_2024':2400,'irishMedSchools_2024':200,'revenue_2024':2.00,'seRevenue_2024':0.20,'grantRevenue_2024':0.90,'sePct_2024':10,'grantPct_2024':90,
-  'educators_2025':28325,'eduSupported_2025':2325,'youngPeople_2025':401821,'orgsEngaged_2025':414,'eduCredentials_2025':950,'youthBadges_2025':2500,'platformUsers_2025':3500,'irishMedSchools_2025':200,'revenue_2025':1.90,'seRevenue_2025':0.35,'grantRevenue_2025':1.10,'sePct_2025':16,'grantPct_2025':84,
-  'educators_2026':29125,'eduSupported_2026':740,'youngPeople_2026':408000,'orgsEngaged_2026':75,'eduCredentials_2026':850,'youthBadges_2026':2500,'platformUsers_2026':4200,'irishMedSchools_2026':200,'revenue_2026':0.60,'seRevenue_2026':0.10,'grantRevenue_2026':0.40,'sePct_2026':16,'grantPct_2026':84
+  'educators_2024':26000,'eduSupported_2024':2725,'youngPeople_2024':380000,
+  'orgsEngaged_2024':436,'eduCredentials_2024':800,'youthBadges_2024':1620,
+  'platformUsers_2024':2400,'irishMedSchools_2024':200,
+  'revenue_2024':2.00,'seRevenue_2024':0.20,'grantRevenue_2024':0.90,'sePct_2024':10,'grantPct_2024':90,
+  'educators_2025':28325,'eduSupported_2025':2325,'youngPeople_2025':401821,
+  'orgsEngaged_2025':414,'eduCredentials_2025':950,'youthBadges_2025':2500,
+  'platformUsers_2025':3500,'irishMedSchools_2025':200,
+  'revenue_2025':1.90,'seRevenue_2025':0.35,'grantRevenue_2025':1.10,'sePct_2025':16,'grantPct_2025':84,
+  'educators_2026':29125,'eduSupported_2026':740,'youngPeople_2026':408000,
+  'orgsEngaged_2026':75,'eduCredentials_2026':850,'youthBadges_2026':2500,
+  'platformUsers_2026':4200,'irishMedSchools_2026':200,
+  'revenue_2026':0.60,'seRevenue_2026':0.10,'grantRevenue_2026':0.40,'sePct_2026':16,'grantPct_2026':84
 };
+
+// Quarterly actuals — FLAT per quarter (each Q = that quarter's activity only)
 var QQ={};
 function populateQQ(){
-  // Annual net-new figures for incremental KPIs
-  // 2024: first year so annual = cumulative
-  // 2025: annual = cumulative 2025 minus cumulative 2024
-  // 2026 Q1: net-new in Q1 only = cumulative Q1 2026 minus cumulative end 2025
-
-  var annual2024={
-    educators:26000,       // first year — same as cumulative
-    eduSupported:2725,
-    youngPeople:380000,
-    youthBadges:1620,
-    seRevenue:0.20,        // revenue is already annual, not cumulative
-    eduCredentials:800,
-    platformUsers:2400
-  };
-  var annual2025={
-    educators:28325-26000,         // 2325 net-new educators in 2025
-    eduSupported:2325-2725,        // negative — use 0 floor; supported may differ
-    youngPeople:401821-380000,     // 21821 net-new young people in 2025
-    youthBadges:2500-1620,         // 880 net-new badges in 2025
-    seRevenue:0.35,                // revenue is annual not cumulative
-    eduCredentials:950-800,        // 150 net-new credentials in 2025
-    platformUsers:3500-2400        // 1100 net-new platform users in 2025
-  };
-  // 2026 Q1 net-new only (cumulative at end Q1 minus cumulative end 2025)
-  var q1netNew2026={
-    educators:29125-28325,         // 800 net-new educators in Q1 2026
-    eduSupported:740,              // standalone figure — no prior 2026 base
-    youngPeople:408000-401821,     // 6179 net-new young people in Q1 2026
-    youthBadges:2500-2500,         // 0 net-new badges Q1 (same as 2025 end)
-    seRevenue:0.10,                // revenue is annual/period figure
-    eduCredentials:850-950,        // negative — use 0; fewer than 2025 end unlikely, treat as 0
-    platformUsers:4200-3500        // 700 net-new platform users in Q1 2026
-  };
-
-  // Spread 2024 annual evenly across Q1–Q4 (cumulative within year)
-  Object.keys(annual2024).forEach(function(k){
-    var v=Math.max(0,annual2024[k]);
-    QQ_LABELS.forEach(function(q,qi){
-      QQ[k+'_2024_'+q]=parseFloat((v*(qi+1)/4).toFixed(k==='seRevenue'?2:0));
-    });
+  // 2024: annual = cumulative (first year). Flat per quarter = annual/4
+  var ann2024={educators:26000,eduSupported:2725,youngPeople:380000,youthBadges:1620,seRevenue:0.20,eduCredentials:800,platformUsers:2400};
+  Object.keys(ann2024).forEach(function(k){
+    var perQ=parseFloat((ann2024[k]/4).toFixed(k==='seRevenue'?2:0));
+    QQ_LABELS.forEach(function(q){QQ[k+'_2024_'+q]=perQ;});
   });
-  // Spread 2025 annual net-new evenly across Q1–Q4 (cumulative within year)
-  Object.keys(annual2025).forEach(function(k){
-    var v=Math.max(0,annual2025[k]);
-    QQ_LABELS.forEach(function(q,qi){
-      QQ[k+'_2025_'+q]=parseFloat((v*(qi+1)/4).toFixed(k==='seRevenue'?2:0));
-    });
+  // 2025: annual net-new / 4. Flat per quarter.
+  var netNew2025={
+    educators:28325-26000,       // 2325
+    eduSupported:Math.max(0,2325-2725), // 0 (supported dropped — treat as 0)
+    youngPeople:401821-380000,   // 21821
+    youthBadges:2500-1620,       // 880
+    seRevenue:0.35,              // revenue is already annual
+    eduCredentials:950-800,      // 150
+    platformUsers:3500-2400      // 1100
+  };
+  Object.keys(netNew2025).forEach(function(k){
+    var v=Math.max(0,netNew2025[k]);
+    var perQ=parseFloat((v/4).toFixed(k==='seRevenue'?2:0));
+    QQ_LABELS.forEach(function(q){QQ[k+'_2025_'+q]=perQ;});
   });
-  // 2026 Q1 only — net-new this year so far
-  Object.keys(q1netNew2026).forEach(function(k){
-    QQ[k+'_2026_Q1']=Math.max(0,parseFloat(q1netNew2026[k].toFixed(k==='seRevenue'?2:0)));
-  });
+  // 2026 Q1: net-new in Q1 only (cumulative Q1 2026 minus cumulative end 2025)
+  // eduCredentials: 850 is standalone Q1 2026 figure, not cumulative from plan start
+  QQ['educators_2026_Q1']=Math.max(0,29125-28325);    // 800
+  QQ['eduSupported_2026_Q1']=740;                      // standalone Q1 figure
+  QQ['youngPeople_2026_Q1']=Math.max(0,408000-401821);// 6179
+  QQ['youthBadges_2026_Q1']=Math.max(0,2500-2500);    // 0
+  QQ['seRevenue_2026_Q1']=0.10;                        // period figure
+  QQ['eduCredentials_2026_Q1']=850;                    // standalone Q1 2026 figure
+  QQ['platformUsers_2026_Q1']=Math.max(0,4200-3500);  // 700
 }
 populateQQ();
 
-// Default risks — all fields editable via admin
+// Annual actual (net-new for cumulative metrics, direct for annual metrics)
+// eduCredentials and others that are standalone: use direct actual value for annual card
+function annAct(k,y){
+  var i=yi(y);
+  var act=getA(k,y); if(act==='')return'';
+  var t=T[k]; if(!t)return act;
+  if(!t.incr)return act; // already annual figure
+  // cumulative metric: net-new = this year minus last year
+  if(i===0)return act;
+  var prev=getA(k,YEARS[i-1]); if(prev==='')return'';
+  var diff=parseFloat(act)-parseFloat(prev);
+  return diff.toFixed(0);
+}
+
 var RISKS=[
   {name:'Credential uptake remains low',likelihood:'Amber',impact:'High',status:'Monitoring',owner:'CEO',reviewed:'2026-03-31',mitigation:'3rd-level partnerships; AI tool; monthly tracking'},
   {name:'AI PBL Tool development delays',likelihood:'Amber',impact:'High',status:'Monitoring',owner:'CTO',reviewed:'2026-03-31',mitigation:'Phased rollout; NTT Data & AWS; manual backup'},
@@ -678,9 +634,13 @@ function getA(k,y){var v=A[k+'_'+y];return(v!==undefined&&v!==null)?v:'';}
 function getQA(k,y,q){var v=QQ[k+'_'+y+'_'+q];return(v!==undefined&&v!==null)?v:'';}
 function yrStat(y){return y<CY?'closed':y===CY?'current':'future';}
 function yrLabel(y){return y<CY?'✓ Closed year':y===CY?'● Year in progress':'○ Future year';}
-function bannerHtml(y){var s=yrStat(y);var m={closed:'Closed year — actuals are final.',current:'Year in progress — Q'+LATEST_Q_2026.slice(1)+' data entered. RAG compares actual vs '+Math.round(Q_PACE[LATEST_Q_2026]*100)+'% of annual target ('+LATEST_Q_2026+' pace).',future:'Future year — targets only shown.'};return'<div class="yr-banner '+s+'"><span>'+(s==='closed'?'✓':s==='current'?'●':'○')+'</span><span>'+m[s]+'</span></div>';}
-function annTgt(k,i){if(T[k][i]===null)return null;if(!INCR[k])return T[k][i];if(i===0)return T[k][0];return T[k][i]-T[k][i-1];}
-function annAct(k,y){var i=yi(y);var act=getA(k,y);if(act==='')return'';if(!INCR[k])return act;if(i===0)return act;var prev=getA(k,YEARS[i-1]);if(prev==='')return'';return(parseFloat(act)-parseFloat(prev)).toFixed(0);}
+function bannerHtml(y){
+  var s=yrStat(y);
+  var m={closed:'Closed year — actuals are final.',
+    current:'Year in progress — Q'+LATEST_Q_2026.slice(1)+' data entered. RAG vs '+Math.round(Q_PACE[LATEST_Q_2026]*100)+'% of annual target.',
+    future:'Future year — targets only shown.'};
+  return'<div class="yr-banner '+s+'"><span>'+(s==='closed'?'✓':s==='current'?'●':'○')+'</span><span>'+m[s]+'</span></div>';
+}
 
 function ragC(actual,target,year){
   if(actual===''||actual===null||target===null||target===undefined)return'n';
@@ -692,7 +652,14 @@ function ragC(actual,target,year){
   return r>=0.85?'g':r>=0.70?'a':'r';
 }
 function ragLabel(rc){return rc==='g'?'On track':rc==='a'?'Monitor':rc==='r'?'Action required':'—';}
-function fmtN(v,dec){if(v===null||v===undefined||v==='')return'—';var n=parseFloat(v);if(isNaN(n))return'—';if(dec)return'€'+n.toFixed(2)+'M';if(n>=1000000)return(n/1e6).toFixed(1)+'M';if(n>=1000)return Math.round(n/1000)+'K';return n.toLocaleString();}
+function fmtN(v,dec){
+  if(v===null||v===undefined||v==='')return'—';
+  var n=parseFloat(v);if(isNaN(n))return'—';
+  if(dec)return'€'+n.toFixed(2)+'M';
+  if(n>=1000000)return(n/1e6).toFixed(1)+'M';
+  if(n>=1000)return Math.round(n/1000)+'K';
+  return n.toLocaleString();
+}
 function fmtT(t,dec){return(t===null||t===undefined)?'—':fmtN(t,dec);}
 
 function checkViewerPin(){if(document.getElementById('viewer-pin').value===VP){document.getElementById('viewer-gate').style.display='none';}else{document.getElementById('viewer-err').style.display='block';}}
@@ -704,50 +671,48 @@ function setYear(y){selYear=y;buildYrPills();document.querySelectorAll('.yr-badg
 function setQYear(y){selQYear=y;buildQYrPills();document.getElementById('q-table-year').textContent=y;document.getElementById('q-yr-banner').innerHTML=bannerHtml(y);renderQuarterly();}
 function showPage(id,btn){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});document.getElementById('page-'+id).classList.add('active');if(btn)btn.classList.add('active');}
 
-// ── CUMULATIVE CARD ──
+// ── METRIC CARDS ──
 function mkCumCard(label,key,dec,suffix){
-  var i=yi(selYear),tgt=T[key][i],act=getA(key,selYear),sf=suffix||'',s=yrStat(selYear);
-  var ann=annTgt(key,i),annA=annAct(key,selYear);
-  var rc=ragC(act,ann!==null?ann:tgt,selYear);
-  var cumTD=(tgt===null)?'TBD':(dec?'€'+tgt+'M':fmtN(tgt,false))+sf;
-  var annTD=ann!==null?(dec?'€'+parseFloat(ann).toFixed(2)+'M':fmtN(ann,false))+sf:null;
+  var i=yi(selYear),at=annTgt(key,i),act=getA(key,selYear),sf=suffix||'',s=yrStat(selYear);
+  var cumTgtVal=tgt(key,i);
+  var rc=ragC(act,at,selYear);
+  var cumTD=cumTgtVal===null?'TBD':(dec?'€'+cumTgtVal+'M':fmtN(cumTgtVal,false))+sf;
+  var annTD=at!==null?(dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false))+sf:null;
   var actD=act!==''?(dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:null;
-  var annAD=annA!==''?fmtN(annA,dec)+sf:null;
+  var annA=annAct(key,selYear);
+  var annActD=annA!==''?fmtN(annA,dec)+sf:null;
   var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
-  var compareVal=ann!==null?ann:tgt;
-  var expectedNow=s==='current'?parseFloat((compareVal*pace).toFixed(dec?2:0)):null;
-  var expectedD=expectedNow!==null?(dec?'€'+expectedNow.toFixed(2)+'M':fmtN(expectedNow,false))+sf:null;
+  var expNow=at!==null&&s==='current'?parseFloat((at*pace).toFixed(dec?2:0)):null;
+  var expD=expNow!==null?(dec?'€'+expNow.toFixed(2)+'M':fmtN(expNow,false))+sf:null;
   var cardClass='mcard '+(s==='future'?'status-n':(actD?'status-'+rc:'status-n'));
   return'<div class="'+cardClass+'">'+
-    '<div class="mlabel">'+label+' <span style="font-size:8px;background:var(--tgt-bg);color:var(--tgt-col);padding:1px 4px;border-radius:3px;font-weight:600">CUMULATIVE</span></div>'+
+    '<div class="mlabel">'+label+' <span style="font-size:8px;background:var(--tgt-bg);color:var(--tgt-col);padding:1px 4px;border-radius:3px;font-weight:600">'+(T[key]&&T[key].incr?'CUMULATIVE':'ANNUAL')+'</span></div>'+
     '<div style="margin-bottom:3px"><span class="pill pill-tgt">Target</span><div class="mval">'+cumTD+'</div></div>'+
-    (annTD?'<div style="margin-bottom:3px"><span class="pill pill-ann">Annual</span><div style="font-size:12px;font-weight:500;color:var(--ann-col)">+'+annTD+'</div></div>':'')+
-    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year — targets only</div>':
+    (annTD&&T[key]&&T[key].incr?'<div style="margin-bottom:3px"><span class="pill pill-ann">Annual</span><div style="font-size:12px;font-weight:500;color:var(--ann-col)">+'+annTD+'</div></div>':'')+
+    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year</div>':
       actD?'<div><span class="pill pill-act">Actual</span><div style="font-size:12px;font-weight:500;color:var(--act-col)">'+actD+'</div>'+
-        (expectedD?'<div style="font-size:9px;color:var(--muted);margin-top:1px">Expected at '+LATEST_Q_2026+': '+expectedD+'</div>':'')+
+        (expD?'<div style="font-size:9px;color:var(--muted);margin-top:1px">Expected at '+LATEST_Q_2026+': '+expD+'</div>':'')+
         '<div style="margin-top:4px"><span class="rag-badge '+rc+'"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div></div>':
       '<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">'+(s==='closed'?'No actual recorded':'No actual entered yet')+'</div>')+
     '</div>';
 }
 
-// ── ANNUAL CARD (net-new this year only) ──
 function mkAnnCard(label,key,dec,suffix){
-  var i=yi(selYear),s=yrStat(selYear),sf=suffix||'';
-  var ann=annTgt(key,i);
+  var i=yi(selYear),at=annTgt(key,i),s=yrStat(selYear),sf=suffix||'';
   var annA=annAct(key,selYear);
-  var rc=ragC(annA,ann,selYear);
-  var annTD=ann!==null?(dec?'€'+parseFloat(ann).toFixed(2)+'M':fmtN(ann,false))+sf:'TBD';
+  var rc=ragC(annA,at,selYear);
+  var annTD=at!==null?(dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false))+sf:'TBD';
   var annActD=annA!==''?fmtN(annA,dec)+sf:null;
   var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
-  var expectedNow=ann!==null&&s==='current'?parseFloat((ann*pace).toFixed(dec?2:0)):null;
-  var expectedD=expectedNow!==null?(dec?'€'+expectedNow.toFixed(2)+'M':fmtN(expectedNow,false))+sf:null;
+  var expNow=at!==null&&s==='current'?parseFloat((at*pace).toFixed(dec?2:0)):null;
+  var expD=expNow!==null?(dec?'€'+expNow.toFixed(2)+'M':fmtN(expNow,false))+sf:null;
   var cardClass='mcard annual-card '+(s==='future'?'status-n':(annActD?'status-'+rc:'status-n'));
   return'<div class="'+cardClass+'">'+
     '<div class="mlabel">'+label+' <span style="font-size:8px;background:var(--ann-bg);color:var(--ann-col);padding:1px 4px;border-radius:3px;font-weight:600">THIS YEAR</span></div>'+
     '<div style="margin-bottom:3px"><span class="pill pill-ann">Annual target</span><div class="mval" style="color:var(--ann-col)">'+annTD+'</div></div>'+
-    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year — targets only</div>':
+    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year</div>':
       annActD?'<div><span class="pill pill-act">Actual</span><div style="font-size:12px;font-weight:500;color:var(--act-col)">'+annActD+'</div>'+
-        (expectedD?'<div style="font-size:9px;color:var(--muted);margin-top:1px">Expected at '+LATEST_Q_2026+': '+expectedD+'</div>':'')+
+        (expD?'<div style="font-size:9px;color:var(--muted);margin-top:1px">Expected at '+LATEST_Q_2026+': '+expD+'</div>':'')+
         '<div style="margin-top:4px"><span class="rag-badge '+rc+'"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div></div>':
       '<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">'+(s==='closed'?'No actual recorded':'No actual entered yet')+'</div>')+
     '</div>';
@@ -756,18 +721,19 @@ function mkAnnCard(label,key,dec,suffix){
 function renderBars(keys,color){
   var i=yi(selYear),s=yrStat(selYear);
   return keys.map(function(m){
-    var ann=annTgt(m.k,i),annA=annAct(m.k,selYear);
-    var barTgt=ann!==null?ann:T[m.k][i];
-    var barAct=annA!==''?parseFloat(annA):(getA(m.k,selYear)!==''?parseFloat(getA(m.k,selYear)):null);
+    var at=annTgt(m.k,i);
+    var annA=annAct(m.k,selYear);
+    var barAct=annA!==''?parseFloat(annA):null;
     var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
-    var expectedNow=barTgt*pace;
-    var bp=expectedNow&&barAct!==null?Math.min(100,Math.round(barAct/expectedNow*100)):0;
-    var rc=ragC(barAct,barTgt,selYear);
+    var expNow=at!==null?at*pace:null;
+    var bp=expNow&&barAct!==null?Math.min(100,Math.round(barAct/expNow*100)):0;
+    var rc=ragC(barAct,at,selYear);
     var barColor=rc==='g'?'var(--act-col)':rc==='a'?'#e65100':'var(--candy)';
-    return'<div class="kpi-row"><span class="kpi-label">'+m.l+'</span><div class="kpi-bar-wrap"><div class="kpi-bar-tgt"></div>'+(barAct!==null&&s!=='future'?'<div class="kpi-bar-act" style="width:'+bp+'%;background:'+barColor+'"></div>':'')+
-    '</div><span class="kpi-vals">'+(barAct!==null&&s!=='future'?'<span style="color:var(--act-col);font-weight:500">'+fmtN(barAct,m.dec)+'</span> / ':'')+
-    '<span style="color:var(--tgt-col)">'+fmtT(barTgt,m.dec)+'</span></span>'+
-    '<span class="rag-badge '+rc+'" style="font-size:9px;padding:2px 6px">'+(rc!=='n'?'<span class="rag-dot '+rc+'"></span>':'')+ragLabel(rc)+'</span></div>';
+    return'<div class="kpi-row"><span class="kpi-label">'+m.l+'</span>'+
+      '<div class="kpi-bar-wrap"><div class="kpi-bar-tgt"></div>'+(barAct!==null&&s!=='future'?'<div class="kpi-bar-act" style="width:'+bp+'%;background:'+barColor+'"></div>':'')+
+      '</div><span class="kpi-vals">'+(barAct!==null&&s!=='future'?'<span style="color:var(--act-col);font-weight:500">'+fmtN(barAct,m.dec)+'</span> / ':'')+
+      '<span style="color:var(--tgt-col)">'+fmtT(at,m.dec)+'</span></span>'+
+      '<span class="rag-badge '+rc+'" style="font-size:9px;padding:2px 6px">'+(rc!=='n'?'<span class="rag-dot '+rc+'"></span>':'')+ragLabel(rc)+'</span></div>';
   }).join('');
 }
 
@@ -778,12 +744,11 @@ function renderTrendTable(id,rows){
   rows.forEach(function(r){
     html+='<tr><td style="font-weight:500;white-space:nowrap">'+r.l+'</td>';
     YEARS.forEach(function(y,i){
-      var tgt=T[r.k][i],act=getA(r.k,y),s=yrStat(y),sf=r.suffix||'';
-      var ann=annTgt(r.k,i);
-      var cumTD=(tgt===null)?'—':(r.dec?'€'+tgt+'M':fmtN(tgt,false))+sf;
-      var annTD=ann!==null?(r.dec?'€'+parseFloat(ann).toFixed(2)+'M':fmtN(ann,false))+sf:null;
+      var cumTgtVal=tgt(r.k,i),at=annTgt(r.k,i),act=getA(r.k,y),s=yrStat(y),sf=r.suffix||'';
+      var cumTD=cumTgtVal===null?'—':(r.dec?'€'+cumTgtVal+'M':fmtN(cumTgtVal,false))+sf;
+      var annTD=at!==null&&T[r.k]&&T[r.k].incr?(r.dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false))+sf:null;
       var actD=act!==''?(r.dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:'';
-      var rc=ragC(act,ann!==null?ann:tgt,y);
+      var rc=ragC(act,at,y);
       html+='<td class="th-'+s+'"><div><span class="pill pill-tgt">T</span> '+cumTD+'</div>'+
         (annTD?'<div><span class="pill pill-ann">+</span> '+annTD+'</div>':'')+
         (s!=='future'?(actD?'<div><span class="pill pill-act">A</span> <strong style="color:var(--act-col)">'+actD+'</strong> <span class="rag-badge '+rc+'" style="font-size:8px;padding:1px 5px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div>':'<div style="color:var(--muted);font-style:italic;font-size:9px">No actual</div>'):'<div style="color:var(--muted);font-style:italic;font-size:9px">Future</div>')+'</td>';
@@ -793,32 +758,40 @@ function renderTrendTable(id,rows){
   el.innerHTML=html+'</tbody>';
 }
 
+// ── QUARTERLY — flat per quarter ──
 function renderQuarterly(){
   var i=yi(selQYear),s=yrStat(selQYear);
   var html='';
   Q_KEYS.forEach(function(m){
-    var cumTgt=T[m.k][i],ann=annTgt(m.k,i);
+    var at=annTgt(m.k,i);
+    var perQTgt=at!==null?parseFloat((at/4).toFixed(m.dec?2:0)):null; // expected per quarter
     var qVals=QQ_LABELS.map(function(q){return getQA(m.k,selQYear,q);});
-    var latest=null;qVals.forEach(function(v,qi){if(v!=='')latest={val:parseFloat(v),q:QQ_LABELS[qi],qi:qi};});
+    var latest=null;qVals.forEach(function(v,qi){if(v!=='')latest={val:parseFloat(v),q:QQ_LABELS[qi]};});
+    // RAG: each quarter vs expected per-quarter figure
     var latestRc='n';
-    if(latest&&ann){latestRc=selQYear===CY?ragC(latest.val,ann,CY):ragC(latest.val,ann,null);}
+    if(latest&&perQTgt){
+      var r=latest.val/perQTgt;
+      latestRc=r>=0.85?'g':r>=0.70?'a':'r';
+    }
     html+='<div class="q-kpi-block" style="background:'+(latest?(latestRc==='g'?'var(--card-g-bg)':latestRc==='a'?'var(--card-a-bg)':'var(--card-r-bg)'):'var(--white)')+';border-color:'+(latest?(latestRc==='g'?'var(--card-g-border)':latestRc==='a'?'var(--card-a-border)':'var(--card-r-border)'):'var(--border)')+'">';
-    html+='<div class="qkb-label">'+m.l+'</div>';
+    html+='<div style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:8px">'+m.l+'</div>';
     html+='<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">';
     html+='<div style="font-size:18px;font-weight:300;color:var(--ocean)">'+(latest?fmtN(latest.val,m.dec):'—')+'</div>';
     if(latest)html+='<span class="rag-badge '+latestRc+'" style="font-size:9px"><span class="rag-dot '+latestRc+'"></span>'+ragLabel(latestRc)+'</span>';
     html+='</div>';
-    html+='<div style="font-size:9px;margin-bottom:6px;display:flex;gap:5px;flex-wrap:wrap"><span><span class="pill pill-tgt">Cum.</span> '+fmtT(cumTgt,m.dec)+'</span>'+(ann!==null?'<span><span class="pill pill-ann">Ann.</span> +'+fmtN(ann,m.dec)+'</span>':'')+(latest&&ann?'<span style="color:var(--muted);font-size:9px">Expected at '+latest.q+': '+fmtN(ann*Q_PACE[latest.q],m.dec)+'</span>':'')+'</div>';
-    if(s!=='future'){var pct=latest&&ann?Math.min(100,Math.round(latest.val/(ann*Q_PACE[latest.q])*100)):0;html+='<div style="margin-bottom:4px;height:5px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden">'+(latest?'<div style="width:'+pct+'%;height:100%;background:'+(latestRc==='g'?'#155724':latestRc==='a'?'#856404':'#721c24')+';border-radius:3px"></div>':'')+'</div><div style="font-size:9px;color:var(--muted);margin-bottom:7px">'+pct+'% of '+( latest?latest.q:'Q1')+' pace</div>';}
+    html+='<div style="font-size:9px;margin-bottom:6px;display:flex;gap:5px;flex-wrap:wrap">';
+    html+='<span><span class="pill pill-ann">Ann. target</span> '+fmtT(at,m.dec)+'</span>';
+    if(perQTgt!==null)html+='<span style="color:var(--muted)">Expected per Q: '+fmtN(perQTgt,m.dec)+'</span>';
+    html+='</div>';
     html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">';
-    QQ_LABELS.forEach(function(q,qi){
+    QQ_LABELS.forEach(function(q){
       var v=getQA(m.k,selQYear,q);
-      var expPace=ann?parseFloat((ann*Q_PACE[q]).toFixed(m.dec?2:0)):null;
-      var qrc=v!==''&&ann?(selQYear===CY?ragC(v,ann,CY):ragC(v,ann,null)):'n';
+      var qrc='n';
+      if(v!==''&&perQTgt){var r=parseFloat(v)/perQTgt;qrc=r>=0.85?'g':r>=0.70?'a':'r';}
       html+='<div style="background:'+(v!==''?(qrc==='g'?'rgba(46,125,50,0.1)':qrc==='a'?'rgba(230,81,0,0.1)':'rgba(192,57,43,0.1)'):'var(--bg)')+';border-radius:5px;padding:5px 4px;text-align:center">'+
         '<div style="font-size:8px;color:var(--muted);font-weight:600">'+q+'</div>'+
         '<div style="font-size:11px;font-weight:500;color:var(--ocean)">'+(v!==''&&s!=='future'?fmtN(v,m.dec):'—')+'</div>'+
-        (expPace?'<div style="font-size:7px;color:var(--muted)">exp.'+fmtN(expPace,m.dec)+'</div>':'')+
+        (perQTgt?'<div style="font-size:7px;color:var(--muted)">exp.'+fmtN(perQTgt,m.dec)+'</div>':'')+
         (v!==''?'<div><span class="rag-dot '+qrc+'" style="margin:2px auto;display:block"></span></div>':'')+
         '</div>';
     });
@@ -826,35 +799,57 @@ function renderQuarterly(){
   });
   document.getElementById('q-kpi-cards').innerHTML=html;
 
-  var tbl='<thead><tr><th>KPI</th><th>Ann. target</th>'+QQ_LABELS.map(function(q){return'<th>'+q+' actual</th><th>vs pace</th>';}).join('')+'<th>Status</th></tr></thead><tbody>';
+  // Summary table
+  var tbl='<thead><tr><th>KPI</th><th>Ann. target</th><th>Per Q expected</th>'+QQ_LABELS.map(function(q){return'<th>'+q+'</th><th>RAG</th>';}).join('')+'</tr></thead><tbody>';
   Q_KEYS.forEach(function(m){
-    var ann=annTgt(m.k,i);tbl+='<tr><td style="font-weight:500;white-space:nowrap">'+m.l+'</td><td>'+(ann!==null?'<span class="pill pill-ann">+'+fmtN(ann,m.dec)+'</span>':'—')+'</td>';
-    var lv=null,lrc='n';
-    QQ_LABELS.forEach(function(q,qi){
+    var at=annTgt(m.k,i);
+    var perQTgt=at!==null?parseFloat((at/4).toFixed(m.dec?2:0)):null;
+    tbl+='<tr><td style="font-weight:500;white-space:nowrap">'+m.l+'</td>'+
+      '<td>'+(at!==null?'<span class="pill pill-ann">'+fmtN(at,m.dec)+'</span>':'—')+'</td>'+
+      '<td style="color:var(--muted)">'+(perQTgt!==null?fmtN(perQTgt,m.dec):'—')+'</td>';
+    QQ_LABELS.forEach(function(q){
       var v=getQA(m.k,selQYear,q);
-      var exp=ann?parseFloat((ann*Q_PACE[q]).toFixed(m.dec?2:0)):null;
-      var rc=v!==''&&ann?(selQYear<CY?ragC(v,ann,null):ragC(v,ann,CY)):'n';
-      if(v!==''){lv=fmtN(v,m.dec);lrc=rc;}
+      var qrc='n';
+      if(v!==''&&perQTgt){var r=parseFloat(v)/perQTgt;qrc=r>=0.85?'g':r>=0.70?'a':'r';}
       tbl+='<td>'+(v!==''&&s!=='future'?'<span style="color:var(--act-col);font-weight:500">'+fmtN(v,m.dec)+'</span>':'<span style="color:var(--muted)">—</span>')+'</td>';
-      tbl+='<td>'+(exp&&v!==''&&s!=='future'?'<span class="rag-badge '+rc+'" style="font-size:9px;padding:1px 5px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span>':'—')+'</td>';
+      tbl+='<td>'+(v!==''&&s!=='future'?'<span class="rag-badge '+qrc+'" style="font-size:9px;padding:1px 5px"><span class="rag-dot '+qrc+'"></span>'+ragLabel(qrc)+'</span>':'—')+'</td>';
     });
-    tbl+='<td>'+(lv?'<span class="rag-badge '+lrc+'" style="font-size:9px"><span class="rag-dot '+lrc+'"></span>'+ragLabel(lrc)+'</span>':'—')+'</td></tr>';
+    tbl+='</tr>';
   });
   document.getElementById('q-summary-table').innerHTML=tbl+'</tbody>';
   buildQCharts();buildQCompareCharts();
 }
 
+var Q_KEYS=[
+  {k:'educators',l:'Educators upskilled',dec:false,color:'#262262'},
+  {k:'youngPeople',l:'Young people reached',dec:false,color:'#f37021'},
+  {k:'youthBadges',l:'Youth badges',dec:false,color:'#005129'},
+  {k:'seRevenue',l:'SE revenue (€M)',dec:true,color:'#9dceef'},
+  {k:'eduCredentials',l:'Educator credentials',dec:false,color:'#3d3899'},
+  {k:'platformUsers',l:'Platform users',dec:false,color:'#1a7ab5'}
+];
+
 function buildQCharts(){
   var i=yi(selQYear),s=yrStat(selQYear);
-  var defs=[{id:'q-edu-chart',k:'educators',color:'#262262',dec:false},{id:'q-yp-chart',k:'youngPeople',color:'#f37021',dec:false},{id:'q-badge-chart',k:'youthBadges',color:'#005129',dec:false},{id:'q-se-chart',k:'seRevenue',color:'#9dceef',dec:true},{id:'q-cred-chart',k:'eduCredentials',color:'#3d3899',dec:false},{id:'q-pu-chart',k:'platformUsers',color:'#1a7ab5',dec:false}];
+  var defs=[{id:'q-edu-chart',k:'educators',dec:false},{id:'q-yp-chart',k:'youngPeople',dec:false},{id:'q-badge-chart',k:'youthBadges',dec:false},{id:'q-se-chart',k:'seRevenue',dec:true},{id:'q-cred-chart',k:'eduCredentials',dec:false},{id:'q-pu-chart',k:'platformUsers',dec:false}];
   defs.forEach(function(cd){
     if(charts[cd.id]){charts[cd.id].destroy();delete charts[cd.id];}
     var el=document.getElementById(cd.id);if(!el)return;
-    var ann=annTgt(cd.k,i);
+    var at=annTgt(cd.k,i);
+    var perQTgt=at!==null?parseFloat((at/4).toFixed(cd.dec?2:0)):null;
     var actData=QQ_LABELS.map(function(q){var v=getQA(cd.k,selQYear,q);return v!==''?parseFloat(v):null;});
-    var tgtLine=QQ_LABELS.map(function(q){return ann?parseFloat((ann*Q_PACE[q]).toFixed(cd.dec?2:0)):null;});
-    var barColors=actData.map(function(v,qi){if(v===null)return'rgba(0,0,0,0.04)';var rc=ann?ragC(v,ann,selQYear===CY?CY:null):'n';return rc==='g'?'rgba(46,125,50,0.7)':rc==='a'?'rgba(230,81,0,0.7)':'rgba(192,57,43,0.7)';});
-    charts[cd.id]=new Chart(el,{type:'bar',data:{labels:QQ_LABELS,datasets:[{label:'Target pace',data:tgtLine,type:'line',borderColor:'#aaa',backgroundColor:'transparent',borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#aaa',tension:0.1,order:1},{label:'Actual',data:actData,backgroundColor:barColors,borderRadius:3,order:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:9},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.04)'}}}}});
+    // flat target line = same value per quarter
+    var tgtLine=QQ_LABELS.map(function(){return perQTgt;});
+    var barColors=actData.map(function(v){
+      if(v===null)return'rgba(0,0,0,0.04)';
+      if(!perQTgt)return'#9dceef';
+      var r=v/perQTgt;
+      return r>=0.85?'rgba(46,125,50,0.7)':r>=0.70?'rgba(230,81,0,0.7)':'rgba(192,57,43,0.7)';
+    });
+    charts[cd.id]=new Chart(el,{type:'bar',data:{labels:QQ_LABELS,datasets:[
+      {label:'Expected per Q',data:tgtLine,type:'line',borderColor:'#aaa',backgroundColor:'transparent',borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#aaa',tension:0,order:1},
+      {label:'Actual',data:actData,backgroundColor:barColors,borderRadius:3,order:2}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:9},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.04)'}}}}});
   });
 }
 
@@ -871,33 +866,14 @@ function buildQCompareCharts(){
 function renderSmartInsights(){
   var i=yi(selYear);
   var cards=[
-    {icon:'👥',label:'Cost per young person',val:'€'+(T.revenue[i]*1e6/T.youngPeople[i]).toFixed(2),sub:'Target efficiency '+selYear,cls:'si-ocean'},
-    {icon:'🎓',label:'Credential conversion',val:Math.round(T.eduCredentials[i]/T.platformUsers[i]*100)+'%',sub:'Platform users earning credential',cls:'si-green'},
-    {icon:'📈',label:'SE revenue growth',val:'+'+(i>0?Math.round((T.seRevenue[i]-T.seRevenue[i-1])/T.seRevenue[i-1]*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-orange'},
-    {icon:'⭐',label:'Youth badge growth',val:'+'+(i>0?Math.round((T.youthBadges[i]-T.youthBadges[i-1])/T.youthBadges[i-1]*100):0)+'%',sub:selYear>=2027?'PBL Tool step-change':'Pre-PBL Tool growth',cls:'si-ocean'},
-    {icon:'🔓',label:'Grant dep. reduction',val:'-'+(T.grantPct[0]-T.grantPct[i])+'pp',sub:'From '+T.grantPct[0]+'% (2024) to '+T.grantPct[i]+'%',cls:(T.grantPct[0]-T.grantPct[i])>=10?'si-green':'si-amber'},
-    {icon:'🇮🇪',label:'Irish-medium schools',val:''+T.irishMedSchools[i],sub:'Cumulative target'+(annTgt('irishMedSchools',i)?'. +'+ annTgt('irishMedSchools',i)+' this year':''),cls:'si-ocean'}
+    {icon:'👥',label:'Cost per young person',val:'€'+(tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2),sub:'Target efficiency '+selYear,cls:'si-ocean'},
+    {icon:'🎓',label:'Credential conversion',val:Math.round(tgt('eduCredentials',i)/tgt('platformUsers',i)*100)+'%',sub:'Platform users earning credential',cls:'si-green'},
+    {icon:'📈',label:'SE revenue growth',val:'+'+(i>0?Math.round((tgt('seRevenue',i)-tgt('seRevenue',i-1))/tgt('seRevenue',i-1)*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-orange'},
+    {icon:'⭐',label:'Youth badge growth',val:'+'+(i>0?Math.round((tgt('youthBadges',i)-tgt('youthBadges',i-1))/tgt('youthBadges',i-1)*100):0)+'%',sub:selYear>=2027?'PBL Tool step-change':'Pre-PBL growth',cls:'si-ocean'},
+    {icon:'🔓',label:'Grant dep. reduction',val:'-'+(tgt('grantPct',0)-tgt('grantPct',i))+'pp',sub:'From '+tgt('grantPct',0)+'% (2024) to '+tgt('grantPct',i)+'%',cls:(tgt('grantPct',0)-tgt('grantPct',i))>=10?'si-green':'si-amber'},
+    {icon:'🇮🇪',label:'Irish-medium schools',val:''+tgt('irishMedSchools',i),sub:'Target for '+selYear,cls:'si-ocean'}
   ];
   document.getElementById('si-cards').innerHTML=cards.map(function(c){return'<div class="si-card '+c.cls+'"><div class="si-icon">'+c.icon+'</div><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';}).join('');
-}
-
-function renderRisks(){
-  var tbl='<thead><tr><th style="padding-left:14px">Risk</th><th>Status</th><th>Likelihood</th><th>Impact</th><th>Owner</th><th>Last reviewed</th><th style="padding-right:14px">Mitigation</th></tr></thead><tbody>';
-  RISKS.forEach(function(r){
-    var statusClass=r.status==='Escalated'?'risk-status-escalated':r.status==='Action underway'?'risk-status-action':r.status==='Resolved'?'risk-status-resolved':'risk-status-monitoring';
-    var likeClass=r.likelihood==='Red'?'rag-r':r.likelihood==='Amber'?'rag-a':'rag-g';
-    var impClass=r.impact==='High'?'rag-r':r.impact==='Low'?'rag-g':'rag-a';
-    tbl+='<tr>'+
-      '<td style="padding-left:14px;font-weight:500">'+r.name+'</td>'+
-      '<td><span class="rag-badge '+statusClass.replace('risk-status-','').replace('monitoring','n')+'" style="font-size:9px;padding:2px 7px;border-radius:6px;'+
-        (r.status==='Monitoring'?'background:#e3f2fd;color:#1565c0;border:1px solid #90caf9':r.status==='Escalated'?'background:var(--card-r-bg);color:#721c24;border:1px solid var(--card-r-border)':r.status==='Action underway'?'background:var(--card-a-bg);color:#856404;border:1px solid var(--card-a-border)':'background:var(--card-g-bg);color:#155724;border:1px solid var(--card-g-border)')+'">'+r.status+'</span></td>'+
-      '<td><span class="rag '+likeClass+'">'+r.likelihood+'</span></td>'+
-      '<td><span class="rag '+impClass+'">'+r.impact+'</span></td>'+
-      '<td style="font-size:11px;color:var(--muted)">'+r.owner+'</td>'+
-      '<td style="font-size:11px;color:var(--muted)">'+r.reviewed+'</td>'+
-      '<td style="padding-right:14px;font-size:10px;color:var(--muted)">'+r.mitigation+'</td></tr>';
-  });
-  document.getElementById('risk-table').innerHTML=tbl+'</tbody>';
 }
 
 function mkChart(id,type,labels,datasets,opts){
@@ -918,22 +894,40 @@ function buildCharts(){
   var actSE=YEARS.map(function(y){var v=getA('seRevenue',y);return v!==''?parseFloat(v):null;});
   var actGP=YEARS.map(function(y){var v=getA('grantPct',y);return v!==''?parseFloat(v):null;});
   var actSEP=YEARS.map(function(y){var v=getA('sePct',y);return v!==''?parseFloat(v):null;});
-  function reachChart(id,tgtData,actData,color){mkChart(id,'bar',L,[{data:tgtData,backgroundColor:tgtData.map(function(){return'rgba('+parseInt(color.slice(1,3),16)+','+parseInt(color.slice(3,5),16)+','+parseInt(color.slice(5,7),16)+',0.2)';}),borderColor:color,borderWidth:1,borderRadius:3},{data:actData,backgroundColor:'#2e7d32',borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});}
-  reachChart('ov-edu-chart',T.educators,actEdu,'#262262');
-  reachChart('ov-yp-chart',T.youngPeople,actYP,'#f37021');
-  reachChart('ov-cred-chart',T.eduCredentials,actCred,'#3d3899');
-  reachChart('ov-badge-chart',T.youthBadges,actBadge,'#005129');
-  mkChart('revChart','bar',L,[{data:T.grantRevenue,backgroundColor:'rgba(38,34,98,0.3)',stack:'tgt'},{data:T.seRevenue,backgroundColor:'rgba(243,112,33,0.3)',stack:'tgt'},{data:T.otherRevenue,backgroundColor:'rgba(157,206,239,0.4)',stack:'tgt'},{data:actRev,backgroundColor:'#2e7d32',stack:'act',borderRadius:3}],{scales:{x:{stacked:true,ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{stacked:false,ticks:{color:'#888',font:{size:9},callback:function(v){return'€'+v.toFixed(1)+'M';}},grid:{color:'rgba(0,0,0,0.04)'}}}});
-  mkChart('depChart','line',L,[{data:T.grantPct,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:T.sePct,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
-  mkChart('p1Chart','line',L,[{data:T.educators,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actEdu,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false},{data:T.platformUsers,borderColor:'rgba(157,206,239,0.7)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[4,3],pointRadius:2}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
-  mkChart('p2Chart','line',L,[{data:T.eduCredentials,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:T.youthBadges,borderColor:'rgba(243,112,33,0.4)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actCred,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
-  mkChart('p3Chart','bar',L,[{data:T.seRevenue,backgroundColor:'rgba(248,160,106,0.45)',borderRadius:3},{data:actSE,backgroundColor:'#2e7d32',borderRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2)+'M';})}});
-  var base={rev:T.revenue[0],yp:T.youngPeople[0],edu:T.educators[0]};
-  mkChart('si-cpy-chart','line',L,[{data:T.revenue.map(function(r,i){return parseFloat((r*1e6/T.youngPeople[i]).toFixed(2));}),borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2);})}});
-  mkChart('si-index-chart','line',L,[{data:T.revenue.map(function(v){return Math.round(v/base.rev*100);}),borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},{data:T.youngPeople.map(function(v){return Math.round(v/base.yp*100);}),borderColor:'#262262',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#262262',pointRadius:3},{data:T.educators.map(function(v){return Math.round(v/base.edu*100);}),borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[3,2],pointBackgroundColor:'#9dceef',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v;})}});
-  mkChart('si-cred-chart','bar',L,[{data:T.eduCredentials.map(function(c,i){return parseFloat((c/T.platformUsers[i]*100).toFixed(1));}),backgroundColor:YEARS.map(function(y){return y<2026?'#9dceef':'#262262';}),borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
-  mkChart('si-badge-chart','line',L,[{data:T.youthBadges,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
-  mkChart('si-fin-chart','line',L,[{data:T.grantPct,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:T.sePct,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false},{data:YEARS.map(function(){return 23;}),borderColor:'#b9f24c',backgroundColor:'transparent',fill:false,borderDash:[6,3],pointRadius:0}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+  var tEdu=YEARS.map(function(y,i){return tgt('educators',i);});
+  var tYP=YEARS.map(function(y,i){return tgt('youngPeople',i);});
+  var tCred=YEARS.map(function(y,i){return tgt('eduCredentials',i);});
+  var tBadge=YEARS.map(function(y,i){return tgt('youthBadges',i);});
+  var tRev=YEARS.map(function(y,i){return tgt('revenue',i);});
+  var tSE=YEARS.map(function(y,i){return tgt('seRevenue',i);});
+  var tOther=YEARS.map(function(y,i){return tgt('otherRevenue',i);});
+  var tGrant=YEARS.map(function(y,i){return tgt('grantRevenue',i);});
+  var tGP=YEARS.map(function(y,i){return tgt('grantPct',i);});
+  var tSEP=YEARS.map(function(y,i){return tgt('sePct',i);});
+
+  function rcChart(id,tData,aData,color){
+    mkChart(id,'bar',L,[
+      {data:tData,backgroundColor:tData.map(function(){return'rgba('+parseInt(color.slice(1,3),16)+','+parseInt(color.slice(3,5),16)+','+parseInt(color.slice(5,7),16)+',0.2)';}),borderColor:color,borderWidth:1,borderRadius:3},
+      {data:aData,backgroundColor:'#2e7d32',borderRadius:3}
+    ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  }
+  rcChart('ov-edu-chart',tEdu,actEdu,'#262262');
+  rcChart('ov-yp-chart',tYP,actYP,'#f37021');
+  rcChart('ov-cred-chart',tCred,actCred,'#3d3899');
+  rcChart('ov-badge-chart',tBadge,actBadge,'#005129');
+
+  mkChart('revChart','bar',L,[{data:tGrant,backgroundColor:'rgba(38,34,98,0.3)',stack:'tgt'},{data:tSE,backgroundColor:'rgba(243,112,33,0.3)',stack:'tgt'},{data:tOther,backgroundColor:'rgba(157,206,239,0.4)',stack:'tgt'},{data:actRev,backgroundColor:'#2e7d32',stack:'act',borderRadius:3}],{scales:{x:{stacked:true,ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{stacked:false,ticks:{color:'#888',font:{size:9},callback:function(v){return'€'+v.toFixed(1)+'M';}},grid:{color:'rgba(0,0,0,0.04)'}}}});
+  mkChart('depChart','line',L,[{data:tGP,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:tSEP,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+  mkChart('p1Chart','line',L,[{data:tEdu,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actEdu,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false},{data:YEARS.map(function(y,i){return tgt('platformUsers',i);}),borderColor:'rgba(157,206,239,0.7)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[4,3],pointRadius:2}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('p2Chart','line',L,[{data:tCred,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:tBadge,borderColor:'rgba(243,112,33,0.4)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actCred,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('p3Chart','bar',L,[{data:tSE,backgroundColor:'rgba(248,160,106,0.45)',borderRadius:3},{data:actSE,backgroundColor:'#2e7d32',borderRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2)+'M';})}});
+
+  var base={rev:tgt('revenue',0),yp:tgt('youngPeople',0),edu:tgt('educators',0)};
+  mkChart('si-cpy-chart','line',L,[{data:YEARS.map(function(y,i){return parseFloat((tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2));}),borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2);})}});
+  mkChart('si-index-chart','line',L,[{data:tRev.map(function(v){return Math.round(v/base.rev*100);}),borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},{data:tYP.map(function(v){return Math.round(v/base.yp*100);}),borderColor:'#262262',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#262262',pointRadius:3},{data:tEdu.map(function(v){return Math.round(v/base.edu*100);}),borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[3,2],pointBackgroundColor:'#9dceef',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v;})}});
+  mkChart('si-cred-chart','bar',L,[{data:YEARS.map(function(y,i){return parseFloat((tgt('eduCredentials',i)/tgt('platformUsers',i)*100).toFixed(1));}),backgroundColor:YEARS.map(function(y){return y<2026?'#9dceef':'#262262';}),borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
+  mkChart('si-badge-chart','line',L,[{data:tBadge,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('si-fin-chart','line',L,[{data:tGP,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:tSEP,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false},{data:YEARS.map(function(){return 23;}),borderColor:'#b9f24c',backgroundColor:'transparent',fill:false,borderDash:[6,3],pointRadius:0}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
 }
 
 function buildPieCharts(){
@@ -959,30 +953,48 @@ function renderStories(){
   }).join('');
 }
 
+function renderRisks(){
+  var tbl='<thead><tr><th style="padding-left:14px">Risk</th><th>Status</th><th>Likelihood</th><th>Impact</th><th>Owner</th><th>Last reviewed</th><th style="padding-right:14px">Mitigation</th></tr></thead><tbody>';
+  RISKS.forEach(function(r){
+    var stStyle=r.status==='Escalated'?'background:var(--card-r-bg);color:#721c24;border:1px solid var(--card-r-border)':r.status==='Action underway'?'background:var(--card-a-bg);color:#856404;border:1px solid var(--card-a-border)':r.status==='Resolved'?'background:var(--card-g-bg);color:#155724;border:1px solid var(--card-g-border)':'background:#e3f2fd;color:#1565c0;border:1px solid #90caf9';
+    var likeClass=r.likelihood==='Red'?'rag-r':r.likelihood==='Amber'?'rag-a':'rag-g';
+    var impClass=r.impact==='High'?'rag-r':r.impact==='Low'?'rag-g':'rag-a';
+    tbl+='<tr><td style="padding-left:14px;font-weight:500">'+r.name+'</td>'+
+      '<td><span class="rag-badge" style="font-size:9px;padding:2px 7px;border-radius:6px;'+stStyle+'">'+r.status+'</span></td>'+
+      '<td><span class="rag '+likeClass+'">'+r.likelihood+'</span></td>'+
+      '<td><span class="rag '+impClass+'">'+r.impact+'</span></td>'+
+      '<td style="font-size:11px;color:var(--muted)">'+r.owner+'</td>'+
+      '<td style="font-size:11px;color:var(--muted)">'+r.reviewed+'</td>'+
+      '<td style="padding-right:14px;font-size:10px;color:var(--muted)">'+r.mitigation+'</td></tr>';
+  });
+  document.getElementById('risk-table').innerHTML=tbl+'</tbody>';
+}
+
 function renderAll(){
   var s=yrStat(selYear),sc='ys-'+s,sl=yrLabel(selYear),bh=bannerHtml(selYear);
   ['ov','p1','p2','p3'].forEach(function(p){var b=document.getElementById(p+'-yr-banner');if(b)b.innerHTML=bh;var sb=document.getElementById(p+'-status-badge');if(sb){sb.textContent=sl;sb.className='ys-badge '+sc;}});
   document.getElementById('ov-status-badge').textContent=sl;document.getElementById('ov-status-badge').className='ys-badge '+sc;
 
-  // OVERVIEW — cumulative row + annual row
-  var ovCumRow='<div class="metric-grid">'+
-    mkCumCard('Educators upskilled','educators',false,'')+
-    mkCumCard('Young people reached','youngPeople',false,'')+
-    mkCumCard('Total revenue','revenue',true,'')+
-    mkCumCard('SE revenue','seRevenue',true,'')+
+  // Overview — cumulative + annual rows
+  var i=yi(selYear);
+  document.getElementById('ov-metrics').innerHTML=
+    '<div class="metric-grid">'+
+      mkCumCard('Educators upskilled','educators',false,'')+
+      mkCumCard('Young people reached','youngPeople',false,'')+
+      mkCumCard('Total revenue','revenue',true,'')+
+      mkCumCard('SE revenue','seRevenue',true,'')+
+    '</div>'+
+    '<div class="metric-grid">'+
+      mkAnnCard('Educators upskilled','educators',false,'')+
+      mkAnnCard('Young people reached','youngPeople',false,'')+
+      mkAnnCard('Total revenue','revenue',true,'')+
+      mkAnnCard('SE revenue','seRevenue',true,'')+
     '</div>';
-  var ovAnnRow='<div class="metric-grid">'+
-    mkAnnCard('Educators upskilled','educators',false,'')+
-    mkAnnCard('Young people reached','youngPeople',false,'')+
-    mkAnnCard('Total revenue','revenue',true,'')+
-    mkAnnCard('SE revenue','seRevenue',true,'')+
-    '</div>';
-  document.getElementById('ov-metrics').innerHTML=ovCumRow+ovAnnRow;
 
   renderSmartInsights();
   ['p1','p2','p3'].forEach(function(p){var txt=QD.insights[p][selYear]||'';var box=document.getElementById(p+'-insight-box');var el=document.getElementById(p+'-insight-text');if(txt.trim()){box.classList.add('live');el.textContent=txt;}else{box.classList.remove('live');el.textContent='Insight will appear here once data is entered.';}});
 
-  // PILLAR 1 — cumulative row + annual educators card
+  // Pillar 1
   document.getElementById('p1-metrics').innerHTML=
     '<div class="metric-grid">'+
       mkCumCard('Educators upskilled','educators',false,'')+
@@ -997,7 +1009,7 @@ function renderAll(){
   document.getElementById('p1-bars').innerHTML=renderBars([{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'eduCredentials',l:'Credentials issued',dec:false}],'#2e7d32');
   renderTrendTable('p1-table',[{k:'educators',l:'Educators upskilled',dec:false,suffix:''},{k:'eduSupported',l:'Educators supported',dec:false,suffix:''},{k:'platformUsers',l:'Platform users',dec:false,suffix:''},{k:'eduCredentials',l:'Credentials issued',dec:false,suffix:''}]);
 
-  // PILLAR 2 — cumulative row + annual credentials card
+  // Pillar 2
   document.getElementById('p2-metrics').innerHTML=
     '<div class="metric-grid">'+
       mkCumCard('Youth badges','youthBadges',false,'')+
@@ -1012,14 +1024,18 @@ function renderAll(){
   document.getElementById('p2-bars').innerHTML=renderBars([{k:'youthBadges',l:'Youth badges',dec:false},{k:'irishMedSchools',l:'Irish-med. schools',dec:false},{k:'youngPeople',l:'Young people',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false}],'#2e7d32');
   renderTrendTable('p2-table',[{k:'youthBadges',l:'Youth badges',dec:false,suffix:''},{k:'irishMedSchools',l:'Irish-med. schools',dec:false,suffix:''},{k:'youngPeople',l:'Young people reached',dec:false,suffix:''},{k:'orgsEngaged',l:'Organisations engaged',dec:false,suffix:''}]);
 
-  // PILLAR 3
-  document.getElementById('p3-metrics').innerHTML='<div class="metric-grid">'+[{l:'Total revenue',k:'revenue',dec:true},{l:'SE revenue',k:'seRevenue',dec:true},{l:'Grant revenue',k:'grantRevenue',dec:true},{l:'SE share %',k:'sePct',dec:false,sf:'%'}].map(function(m){return mkCumCard(m.l,m.k,m.dec,m.sf||'');}).join('')+'</div>';
-  var i=yi(selYear),sv=yrStat(selYear);
+  // Pillar 3
+  document.getElementById('p3-metrics').innerHTML='<div class="metric-grid">'+
+    [['Total revenue','revenue',true,''],['SE revenue','seRevenue',true,''],['Grant revenue','grantRevenue',true,''],['SE share %','sePct',false,'%']].map(function(m){return mkCumCard(m[0],m[1],m[2],m[3]);}).join('')+'</div>';
+  var sv=yrStat(selYear);
   var rh='<table class="trend-table" style="width:100%"><thead><tr><th>Stream</th><th><span class="pill pill-tgt">Target</span></th><th><span class="pill pill-act">Actual</span></th><th>Variance</th><th>Status</th></tr></thead><tbody>';
   [{l:'Statutory grants',k:'grantRevenue'},{l:'Social enterprise',k:'seRevenue'},{l:'Corporate & other',k:'otherRevenue'},{l:'Total',k:'revenue'}].forEach(function(r){
-    var tgt=T[r.k][i],act=getA(r.k,selYear),rc=ragC(act,tgt,selYear);
-    var v=act!==''&&!isNaN(parseFloat(act))?(parseFloat(act)-tgt).toFixed(2):null;
-    rh+='<tr><td style="font-weight:500">'+r.l+'</td><td><span style="color:var(--tgt-col)">€'+tgt+'M</span></td><td>'+(sv!=='future'&&act!==''?'<span style="color:var(--act-col);font-weight:500">€'+parseFloat(act).toFixed(2)+'M</span>':'<span style="color:var(--muted);font-style:italic">'+(sv==='future'?'Future':'No actual')+'</span>')+'</td><td style="color:'+(v?parseFloat(v)>=0?'var(--forest)':'var(--candy)':'var(--muted)')+'">'+( v?(parseFloat(v)>=0?'+':'')+'€'+v+'M':'—')+'</td><td>'+(act!==''&&sv!=='future'?'<span class="rag-badge '+rc+'" style="font-size:9px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span>':'—')+'</td></tr>';
+    var tv=tgt(r.k,i),act=getA(r.k,selYear),rc=ragC(act,tv,selYear);
+    var v=act!==''&&!isNaN(parseFloat(act))?(parseFloat(act)-tv).toFixed(2):null;
+    rh+='<tr><td style="font-weight:500">'+r.l+'</td><td><span style="color:var(--tgt-col)">€'+tv+'M</span></td>'+
+      '<td>'+(sv!=='future'&&act!==''?'<span style="color:var(--act-col);font-weight:500">€'+parseFloat(act).toFixed(2)+'M</span>':'<span style="color:var(--muted);font-style:italic">'+(sv==='future'?'Future':'No actual')+'</span>')+'</td>'+
+      '<td style="color:'+(v?parseFloat(v)>=0?'var(--forest)':'var(--candy)':'var(--muted)')+'">'+( v?(parseFloat(v)>=0?'+':'')+'€'+v+'M':'—')+'</td>'+
+      '<td>'+(act!==''&&sv!=='future'?'<span class="rag-badge '+rc+'" style="font-size:9px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span>':'—')+'</td></tr>';
   });
   document.getElementById('p3-rev-table').innerHTML=rh+'</tbody></table>';
   renderTrendTable('p3-table',[{k:'revenue',l:'Total revenue',dec:true,suffix:''},{k:'seRevenue',l:'SE revenue',dec:true,suffix:''},{k:'grantRevenue',l:'Grant revenue',dec:true,suffix:''},{k:'sePct',l:'SE share %',dec:false,suffix:'%'}]);
@@ -1030,14 +1046,24 @@ function renderAll(){
 // ── ADMIN ──
 function showAdmin(){document.getElementById('admin-overlay').style.display='block';document.getElementById('admin-pin-input').value='';document.getElementById('admin-pin-err').style.display='none';document.getElementById('admin-login').style.display='block';document.getElementById('admin-panel').style.display='none';}
 function hideAdmin(){document.getElementById('admin-overlay').style.display='none';}
-function checkAdminPin(){if(document.getElementById('admin-pin-input').value===AP){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';buildAdminPanel();}else{document.getElementById('admin-pin-err').style.display='block';}}
+function checkAdminPin(){if(document.getElementById('admin-pin-input').value===AP){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';buildAdminActuals();buildAdminTargets();buildAdminRisks();}else{document.getElementById('admin-pin-err').style.display='block';}}
 
-function buildAdminPanel(){
-  var numF=[{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'youngPeople',l:'Young people reached',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false},{k:'eduCredentials',l:'Educator credentials',dec:false},{k:'youthBadges',l:'Youth badges',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'irishMedSchools',l:'Irish-medium schools',dec:false},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)',dec:false},{k:'grantPct',l:'Grant dep. (%)',dec:false}];
+function showAdminTab(tab){
+  ['actuals','targets','risks'].forEach(function(t){
+    document.getElementById('admin-'+t).style.display=t===tab?'block':'none';
+    var btn=document.getElementById('atab-'+t);
+    btn.style.background=t===tab?'var(--ocean)':'var(--bg)';
+    btn.style.color=t===tab?'white':'var(--muted)';
+    btn.style.fontWeight=t===tab?'500':'400';
+  });
+}
+
+function buildAdminActuals(){
+  var numF=[{k:'educators',l:'Educators upskilled'},{k:'eduSupported',l:'Educators supported'},{k:'youngPeople',l:'Young people reached'},{k:'orgsEngaged',l:'Organisations engaged'},{k:'eduCredentials',l:'Educator credentials'},{k:'youthBadges',l:'Youth badges'},{k:'platformUsers',l:'Platform users'},{k:'irishMedSchools',l:'Irish-medium schools'},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)'},{k:'grantPct',l:'Grant dep. (%)'}];
   var h='';
 
-  // Current quarter
-  h+='<div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px;margin-bottom:16px"><strong style="font-size:12px;color:#854f0b">Current quarter (2026)</strong><p style="font-size:11px;color:var(--muted);margin-top:4px;margin-bottom:8px">Select which quarter\'s data has been entered. This sets the pro-rata RAG benchmark.</p><div style="display:flex;gap:8px;flex-wrap:wrap">';
+  // Quarter selector
+  h+='<div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px;margin-bottom:16px"><strong style="font-size:12px;color:#854f0b">Current quarter (2026)</strong><p style="font-size:11px;color:var(--muted);margin-top:4px;margin-bottom:8px">Controls the pro-rata RAG benchmark for 2026.</p><div style="display:flex;gap:8px;flex-wrap:wrap">';
   ['Q1','Q2','Q3','Q4'].forEach(function(q){h+='<label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="radio" name="latest_q" value="'+q+'"'+(LATEST_Q_2026===q?' checked':'')+' onchange="LATEST_Q_2026=this.value;renderAll()"> '+q+' ('+{Q1:'Jan–Mar',Q2:'Apr–Jun',Q3:'Jul–Sep',Q4:'Oct–Dec'}[q]+')</label>';});
   h+='</div></div>';
 
@@ -1046,41 +1072,63 @@ function buildAdminPanel(){
   YEARS.forEach(function(y){h+='<div style="margin-bottom:10px;padding:9px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-size:10px;font-weight:500;color:var(--ocean);margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">';['p1','p2','p3'].forEach(function(p,pi){h+='<div class="field-group"><label>Pillar '+(pi+1)+'</label><textarea id="ins_'+p+'_'+y+'" rows="2">'+(QD.insights[p][y]||'')+'</textarea></div>';});h+='</div></div>';});
 
   // Annual actuals
-  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:7px"><h3 style="color:var(--ocean);margin-bottom:7px">Annual actuals</h3>';
-  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">';numF.forEach(function(f){var at=annTgt(f.k,yi_);h+='<div class="field-group"><label>'+f.l+'</label><div class="field-tgt">Target: '+fmtT(T[f.k][yi_],f.dec)+(at!==null?' · Ann: +'+fmtN(at,f.dec):'')+'</div><input type="number" id="inp_'+f.k+'_'+y+'" value="'+(A[f.k+'_'+y]||'')+'" step="'+(f.dec?'0.01':'1')+'" placeholder="—"'+(yrStat(y)==='future'?' style="opacity:0.5"':'')+'></div>';});h+='</div></div>';});
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:7px"><h3 style="color:var(--ocean);margin-bottom:7px">Annual actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">Enter the actual figure for the year. For cumulative metrics (educators, young people, badges, credentials, platform users) enter the cumulative total — the dashboard calculates net-new automatically.</p>';
+  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">';numF.forEach(function(f){var at=annTgt(f.k,yi_);var cumTv=tgt(f.k,yi_);h+='<div class="field-group"><label>'+f.l+'</label><div style="font-size:9px;color:var(--muted);margin-bottom:2px">Cumul. target: '+fmtT(cumTv,f.dec)+(at!==null?' · Ann: '+fmtN(at,f.dec):'')+'</div><input type="number" id="inp_'+f.k+'_'+y+'" value="'+(A[f.k+'_'+y]||'')+'" step="'+(f.dec?'0.01':'1')+'" placeholder="—"'+(yrStat(y)==='future'?' style="opacity:0.5"':'')+'></div>';});h+='</div></div>';});
   h+='</div>';
 
-  // Quarterly
-  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:7px">Quarterly actuals</h3><p style="font-size:10px;color:var(--muted);margin-bottom:12px">Enter cumulative totals at end of each quarter. Q1=Jan–Mar, Q2=Apr–Jun, Q3=Jul–Sep, Q4=Oct–Dec.</p>';
-  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px;min-width:140px">KPI</th>';QQ_LABELS.forEach(function(q){h+='<th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px">'+q+'</th>';});h+='</tr></thead><tbody>';Q_KEYS.forEach(function(m){var at=annTgt(m.k,yi_);h+='<tr><td style="padding:4px 7px;white-space:nowrap">'+m.l+'<div style="font-size:9px;color:var(--muted)">Ann. target: '+(at!==null?'+'+fmtN(at,m.dec):'TBD')+'</div></td>';QQ_LABELS.forEach(function(q){h+='<td style="padding:3px 5px"><input type="number" id="qinp_'+m.k+'_'+y+'_'+q+'" value="'+(QQ[m.k+'_'+y+'_'+q]||'')+'" placeholder="—" step="'+(m.dec?'0.01':'1')+'" style="width:80px;font-size:11px'+(yrStat(y)==='future'?';opacity:0.5':'')+'"'+(yrStat(y)==='future'?' disabled':'')+'/></td>';});h+='</tr>';});h+='</tbody></table></div></div>';});
+  // Quarterly actuals
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:7px">Quarterly actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">Enter flat per-quarter figures — the activity in that quarter only. Q1=Jan–Mar, Q2=Apr–Jun, Q3=Jul–Sep, Q4=Oct–Dec.</p>';
+  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px;min-width:140px">KPI</th>';QQ_LABELS.forEach(function(q){h+='<th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px">'+q+' (this Q only)</th>';});h+='</tr></thead><tbody>';Q_KEYS.forEach(function(m){var at=annTgt(m.k,yi_);var perQ=at!==null?parseFloat((at/4).toFixed(m.dec?2:0)):null;h+='<tr><td style="padding:4px 7px;white-space:nowrap">'+m.l+'<div style="font-size:9px;color:var(--muted)">Ann. target: '+fmtN(at,m.dec)+' · Per Q expected: '+fmtN(perQ,m.dec)+'</div></td>';QQ_LABELS.forEach(function(q){h+='<td style="padding:3px 5px"><input type="number" id="qinp_'+m.k+'_'+y+'_'+q+'" value="'+(QQ[m.k+'_'+y+'_'+q]||'')+'" placeholder="—" step="'+(m.dec?'0.01':'1')+'" style="width:90px;font-size:11px'+(yrStat(y)==='future'?';opacity:0.5':'')+'"'+(yrStat(y)==='future'?' disabled':'')+'/></td>';});h+='</tr>';});h+='</tbody></table></div></div>';});
   h+='</div>';
 
-  // IMPACT STORIES — full management for 4 stories
-  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:4px">Impact stories</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">Add or edit up to 4 impact stories. Only stories with a title or quote will appear on the dashboard.</p>';
-  [0,1,2,3].forEach(function(n){
-    var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[]};
-    h+='<div style="margin-bottom:16px;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg)">'+
-      '<div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">'+
-        '<span>Story '+(n+1)+(n<2?' (populated)':' (empty — add story here)')+'</span>'+
-        '<span style="font-size:9px;color:var(--muted)">Only shown if title or quote is entered</span>'+
-      '</div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
-        '<div class="field-group"><label>Story title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'" placeholder="e.g. A teacher transforms her classroom"></div>'+
-        '<div class="field-group"><label>Organisation / context</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'" placeholder="e.g. Primary school, Co. Clare"></div>'+
-      '</div>'+
-      '<div class="field-group"><label>Quote (without quotation marks)</label><textarea id="st_quote_'+n+'" rows="3" placeholder="The educator or young person\'s words…">'+(s.quote||'')+'</textarea></div>'+
-      '<div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'" placeholder="e.g. 5th class teacher, DEIS school"></div>'+
-      '<div style="display:grid;grid-template-columns:1fr 2fr;gap:8px">'+
-        '<div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image (URL)</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video (YouTube/Vimeo/URL)</option></select></div>'+
-        '<div class="field-group"><label>Media URL</label><input type="url" id="st_murl_'+n+'" value="'+(s.mediaUrl||'')+'" placeholder="https://… (paste image or video URL)"></div>'+
-      '</div>'+
-      '<div class="field-group"><label>Tags (comma separated — e.g. Pillar 1, DEIS, Educator)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div>'+
-    '</div>';
+  // Stories
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Impact stories</h3>';
+  [0,1,2,3].forEach(function(n){var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[]};h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg)"><div style="font-size:10px;font-weight:500;color:var(--ocean);margin-bottom:8px">Story '+(n+1)+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="field-group"><label>Title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'"></div><div class="field-group"><label>Organisation</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'"></div></div><div class="field-group"><label>Quote</label><textarea id="st_quote_'+n+'" rows="3">'+(s.quote||'')+'</textarea></div><div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'"></div><div style="display:grid;grid-template-columns:1fr 2fr;gap:8px"><div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image URL</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video</option></select></div><div class="field-group"><label>Media URL</label><input type="url" id="st_murl_'+n+'" value="'+(s.mediaUrl||'')+'" placeholder="https://…"></div></div><div class="field-group"><label>Tags (comma separated)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div></div>';});
+  h+='</div>';
+
+  // Qualitative
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Qualitative data</h3><div class="field-group"><label>Media stats (JSON [{val,label}])</label><textarea id="qd_mediaStats" rows="2">'+JSON.stringify(QD.mediaStats)+'</textarea></div><div class="field-group"><label>Political items (one per line)</label><textarea id="qd_politicalItems" rows="4">'+QD.politicalItems.join('\n')+'</textarea></div><div class="field-group"><label>Partners (comma separated)</label><textarea id="qd_partners" rows="2">'+QD.partners.join(', ')+'</textarea></div><div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems" rows="4">'+QD.fundraisingItems.join('\n')+'</textarea></div><div class="field-group"><label>Social stats (JSON [{val,label}])</label><textarea id="qd_socialStats" rows="2">'+JSON.stringify(QD.socialStats)+'</textarea></div></div>';
+
+  // Pie charts
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Pie chart percentages</h3>';
+  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(function(p){h+='<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:7px">';QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});h+='</div></div>';});
+  h+='</div>';
+  document.getElementById('admin-actuals').innerHTML=h;
+}
+
+function buildAdminTargets(){
+  var keys=[
+    {k:'educators',l:'Educators upskilled',dec:false,note:'Cumulative — each year is total since plan began'},
+    {k:'eduSupported',l:'Educators supported',dec:false,note:'Annual standalone figure per year'},
+    {k:'youngPeople',l:'Young people reached',dec:false,note:'Cumulative'},
+    {k:'orgsEngaged',l:'Organisations engaged',dec:false,note:'Annual standalone figure per year'},
+    {k:'eduCredentials',l:'Educator credentials',dec:false,note:'Cumulative'},
+    {k:'youthBadges',l:'Youth badges',dec:false,note:'Cumulative'},
+    {k:'platformUsers',l:'Platform users',dec:false,note:'Cumulative'},
+    {k:'irishMedSchools',l:'Irish-medium schools',dec:false,note:'Annual standalone figure per year'},
+    {k:'revenue',l:'Total revenue (€M)',dec:true,note:'Annual figure'},
+    {k:'seRevenue',l:'SE revenue (€M)',dec:true,note:'Annual figure'},
+    {k:'grantRevenue',l:'Statutory grants (€M)',dec:true,note:'Annual figure'},
+    {k:'otherRevenue',l:'Other revenue (€M)',dec:true,note:'Annual figure'},
+    {k:'sePct',l:'SE share (%)',dec:false,note:'Annual figure'},
+    {k:'grantPct',l:'Grant dependency (%)',dec:false,note:'Annual figure'}
+  ];
+  var h='<div class="tgt-warning">⚠️ <strong>Target management</strong> — changes here update the strategic plan targets in the dashboard. Only amend with board awareness. All figures should align with the 2026–2030 Strategic Plan document.</div>';
+  keys.forEach(function(f){
+    h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;background:var(--bg);border-left:3px solid var(--ocean)">'+
+      '<div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:2px">'+f.l+'</div>'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:8px">'+f.note+'</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">';
+    YEARS.forEach(function(y,yi_){
+      h+='<div class="field-group"><label>'+y+'</label><input type="number" id="tgt_'+f.k+'_'+yi_+'" value="'+T[f.k].v[yi_]+'" step="'+(f.dec?'0.01':'1')+'"></div>';
+    });
+    h+='</div></div>';
   });
-  h+='</div>';
+  document.getElementById('admin-targets').innerHTML=h;
+}
 
-  // Risk register admin
-  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:4px">Risk register</h3><p style="font-size:11px;color:var(--muted);margin-bottom:14px">Update live status, owner and last reviewed date for each risk.</p>';
+function buildAdminRisks(){
+  var h='<p style="font-size:11px;color:var(--muted);margin-bottom:14px">Update live status, owner and last reviewed date for each risk.</p>';
   RISKS.forEach(function(r,ri){
     h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--bg);border-left:3px solid '+(r.status==='Escalated'?'var(--candy)':r.status==='Action underway'?'var(--ann-col)':r.status==='Resolved'?'var(--act-col)':'var(--sky-dark)')+'">'+
       '<div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:8px">'+r.name+'</div>'+
@@ -1092,49 +1140,33 @@ function buildAdminPanel(){
       '</div>'+
       '<div style="display:grid;grid-template-columns:1fr 3fr;gap:8px">'+
         '<div class="field-group"><label>Last reviewed</label><input type="date" id="risk_reviewed_'+ri+'" value="'+r.reviewed+'"></div>'+
-        '<div class="field-group"><label>Mitigation summary</label><input type="text" id="risk_mitigation_'+ri+'" value="'+r.mitigation+'"></div>'+
-      '</div>'+
-    '</div>';
+        '<div class="field-group"><label>Mitigation</label><input type="text" id="risk_mitigation_'+ri+'" value="'+r.mitigation+'"></div>'+
+      '</div></div>';
   });
-  h+='</div>';
-
-  // Qualitative
-  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Qualitative data</h3>'+
-    '<div class="field-group"><label>Media stats (JSON [{val,label}])</label><textarea id="qd_mediaStats" rows="2">'+JSON.stringify(QD.mediaStats)+'</textarea></div>'+
-    '<div class="field-group"><label>Political items (one per line)</label><textarea id="qd_politicalItems" rows="4">'+QD.politicalItems.join('\n')+'</textarea></div>'+
-    '<div class="field-group"><label>Partners (comma separated)</label><textarea id="qd_partners" rows="2">'+QD.partners.join(', ')+'</textarea></div>'+
-    '<div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems" rows="4">'+QD.fundraisingItems.join('\n')+'</textarea></div>'+
-    '<div class="field-group"><label>Social stats (JSON [{val,label}])</label><textarea id="qd_socialStats" rows="2">'+JSON.stringify(QD.socialStats)+'</textarea></div></div>';
-
-  // Pie charts
-  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Pie chart percentages</h3>';
-  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(function(p){h+='<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:7px">';QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});h+='</div></div>';});
-  h+='</div>';
-
-  document.getElementById('admin-content').innerHTML=h;
+  document.getElementById('admin-risks').innerHTML=h;
 }
 
 function saveAll(){
-  YEARS.forEach(function(y){
-    ['p1','p2','p3'].forEach(function(p){var el=document.getElementById('ins_'+p+'_'+y);if(el)QD.insights[p][y]=el.value.trim();});
-    ['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct','grantPct'].forEach(function(k){var el=document.getElementById('inp_'+k+'_'+y);if(el)A[k+'_'+y]=el.value;});
-    Q_KEYS.forEach(function(m){QQ_LABELS.forEach(function(q){var el=document.getElementById('qinp_'+m.k+'_'+y+'_'+q);if(el)QQ[m.k+'_'+y+'_'+q]=el.value;});});
-  });
-  [0,1,2,3].forEach(function(n){QD.stories[n]={title:document.getElementById('st_title_'+n).value,org:document.getElementById('st_org_'+n).value,quote:document.getElementById('st_quote_'+n).value,attr:document.getElementById('st_attr_'+n).value,mediaType:document.getElementById('st_mtype_'+n).value,mediaUrl:document.getElementById('st_murl_'+n).value,tags:document.getElementById('st_tags_'+n).value.split(',').map(function(t){return t.trim();}).filter(Boolean)};});
-  RISKS.forEach(function(r,ri){
-    r.status=document.getElementById('risk_status_'+ri).value;
-    r.likelihood=document.getElementById('risk_likelihood_'+ri).value;
-    r.impact=document.getElementById('risk_impact_'+ri).value;
-    r.owner=document.getElementById('risk_owner_'+ri).value;
-    r.reviewed=document.getElementById('risk_reviewed_'+ri).value;
-    r.mitigation=document.getElementById('risk_mitigation_'+ri).value;
-  });
+  // Insights
+  YEARS.forEach(function(y){['p1','p2','p3'].forEach(function(p){var el=document.getElementById('ins_'+p+'_'+y);if(el)QD.insights[p][y]=el.value.trim();});});
+  // Annual actuals
+  YEARS.forEach(function(y){['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','sePct','grantPct'].forEach(function(k){var el=document.getElementById('inp_'+k+'_'+y);if(el)A[k+'_'+y]=el.value;});});
+  // Quarterly actuals
+  YEARS.forEach(function(y){Q_KEYS.forEach(function(m){QQ_LABELS.forEach(function(q){var el=document.getElementById('qinp_'+m.k+'_'+y+'_'+q);if(el)QQ[m.k+'_'+y+'_'+q]=el.value;});});});
+  // Stories
+  [0,1,2,3].forEach(function(n){if(!document.getElementById('st_title_'+n))return;QD.stories[n]={title:document.getElementById('st_title_'+n).value,org:document.getElementById('st_org_'+n).value,quote:document.getElementById('st_quote_'+n).value,attr:document.getElementById('st_attr_'+n).value,mediaType:document.getElementById('st_mtype_'+n).value,mediaUrl:document.getElementById('st_murl_'+n).value,tags:document.getElementById('st_tags_'+n).value.split(',').map(function(t){return t.trim();}).filter(Boolean)};});
+  // Targets
+  var tgtKeys=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','revenue','seRevenue','grantRevenue','otherRevenue','sePct','grantPct'];
+  tgtKeys.forEach(function(k){YEARS.forEach(function(y,yi_){var el=document.getElementById('tgt_'+k+'_'+yi_);if(el&&el.value!==''){T[k].v[yi_]=parseFloat(el.value);}});});
+  // Risks
+  RISKS.forEach(function(r,ri){if(!document.getElementById('risk_status_'+ri))return;r.status=document.getElementById('risk_status_'+ri).value;r.likelihood=document.getElementById('risk_likelihood_'+ri).value;r.impact=document.getElementById('risk_impact_'+ri).value;r.owner=document.getElementById('risk_owner_'+ri).value;r.reviewed=document.getElementById('risk_reviewed_'+ri).value;r.mitigation=document.getElementById('risk_mitigation_'+ri).value;});
+  // Qualitative
   try{QD.mediaStats=JSON.parse(document.getElementById('qd_mediaStats').value);}catch(e){}
-  QD.politicalItems=document.getElementById('qd_politicalItems').value.split('\n').filter(Boolean);
-  QD.partners=document.getElementById('qd_partners').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
-  QD.fundraisingItems=document.getElementById('qd_fundraisingItems').value.split('\n').filter(Boolean);
+  if(document.getElementById('qd_politicalItems'))QD.politicalItems=document.getElementById('qd_politicalItems').value.split('\n').filter(Boolean);
+  if(document.getElementById('qd_partners'))QD.partners=document.getElementById('qd_partners').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  if(document.getElementById('qd_fundraisingItems'))QD.fundraisingItems=document.getElementById('qd_fundraisingItems').value.split('\n').filter(Boolean);
   try{QD.socialStats=JSON.parse(document.getElementById('qd_socialStats').value);}catch(e){}
-  ['pie1','pie2','pie3'].forEach(function(pid){QD[pid].data=QD[pid].labels.map(function(_,li){return parseInt(document.getElementById(pid+'_'+li).value)||0;});});
+  ['pie1','pie2','pie3'].forEach(function(pid){if(!document.getElementById(pid+'_0'))return;QD[pid].data=QD[pid].labels.map(function(_,li){return parseInt(document.getElementById(pid+'_'+li).value)||0;});});
   document.getElementById('save-msg').style.display='block';
   setTimeout(function(){document.getElementById('save-msg').style.display='none';},2500);
   renderAll();
