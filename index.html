@@ -588,9 +588,58 @@ var A={
 };
 var QQ={};
 function populateQQ(){
-  [{k:'educators',v:26000},{k:'eduSupported',v:2725},{k:'youngPeople',v:380000},{k:'youthBadges',v:1620},{k:'seRevenue',v:0.20},{k:'eduCredentials',v:800},{k:'platformUsers',v:2400}].forEach(function(m){QQ_LABELS.forEach(function(q,qi){QQ[m.k+'_2024_'+q]=parseFloat((m.v*(qi+1)/4).toFixed(m.k==='seRevenue'?2:0));});});
-  [{k:'educators',v:28325},{k:'eduSupported',v:2325},{k:'youngPeople',v:401821},{k:'youthBadges',v:2500},{k:'seRevenue',v:0.35},{k:'eduCredentials',v:950},{k:'platformUsers',v:3500}].forEach(function(m){QQ_LABELS.forEach(function(q,qi){QQ[m.k+'_2025_'+q]=parseFloat((m.v*(qi+1)/4).toFixed(m.k==='seRevenue'?2:0));});});
-  QQ['educators_2026_Q1']=29125;QQ['eduSupported_2026_Q1']=740;QQ['youngPeople_2026_Q1']=408000;QQ['youthBadges_2026_Q1']=2500;QQ['seRevenue_2026_Q1']=0.10;QQ['eduCredentials_2026_Q1']=850;QQ['platformUsers_2026_Q1']=4200;
+  // Annual net-new figures for incremental KPIs
+  // 2024: first year so annual = cumulative
+  // 2025: annual = cumulative 2025 minus cumulative 2024
+  // 2026 Q1: net-new in Q1 only = cumulative Q1 2026 minus cumulative end 2025
+
+  var annual2024={
+    educators:26000,       // first year — same as cumulative
+    eduSupported:2725,
+    youngPeople:380000,
+    youthBadges:1620,
+    seRevenue:0.20,        // revenue is already annual, not cumulative
+    eduCredentials:800,
+    platformUsers:2400
+  };
+  var annual2025={
+    educators:28325-26000,         // 2325 net-new educators in 2025
+    eduSupported:2325-2725,        // negative — use 0 floor; supported may differ
+    youngPeople:401821-380000,     // 21821 net-new young people in 2025
+    youthBadges:2500-1620,         // 880 net-new badges in 2025
+    seRevenue:0.35,                // revenue is annual not cumulative
+    eduCredentials:950-800,        // 150 net-new credentials in 2025
+    platformUsers:3500-2400        // 1100 net-new platform users in 2025
+  };
+  // 2026 Q1 net-new only (cumulative at end Q1 minus cumulative end 2025)
+  var q1netNew2026={
+    educators:29125-28325,         // 800 net-new educators in Q1 2026
+    eduSupported:740,              // standalone figure — no prior 2026 base
+    youngPeople:408000-401821,     // 6179 net-new young people in Q1 2026
+    youthBadges:2500-2500,         // 0 net-new badges Q1 (same as 2025 end)
+    seRevenue:0.10,                // revenue is annual/period figure
+    eduCredentials:850-950,        // negative — use 0; fewer than 2025 end unlikely, treat as 0
+    platformUsers:4200-3500        // 700 net-new platform users in Q1 2026
+  };
+
+  // Spread 2024 annual evenly across Q1–Q4 (cumulative within year)
+  Object.keys(annual2024).forEach(function(k){
+    var v=Math.max(0,annual2024[k]);
+    QQ_LABELS.forEach(function(q,qi){
+      QQ[k+'_2024_'+q]=parseFloat((v*(qi+1)/4).toFixed(k==='seRevenue'?2:0));
+    });
+  });
+  // Spread 2025 annual net-new evenly across Q1–Q4 (cumulative within year)
+  Object.keys(annual2025).forEach(function(k){
+    var v=Math.max(0,annual2025[k]);
+    QQ_LABELS.forEach(function(q,qi){
+      QQ[k+'_2025_'+q]=parseFloat((v*(qi+1)/4).toFixed(k==='seRevenue'?2:0));
+    });
+  });
+  // 2026 Q1 only — net-new this year so far
+  Object.keys(q1netNew2026).forEach(function(k){
+    QQ[k+'_2026_Q1']=Math.max(0,parseFloat(q1netNew2026[k].toFixed(k==='seRevenue'?2:0)));
+  });
 }
 populateQQ();
 
