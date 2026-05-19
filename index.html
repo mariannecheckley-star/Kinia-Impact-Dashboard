@@ -861,12 +861,12 @@ function buildQCompareCharts(){
 function renderSmartInsights(){
   var i=yi(selYear);
   var cards=[
-    {icon:'👥',label:'Cost per young person',val:'€'+(tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2),sub:'Target efficiency '+selYear,cls:'si-ocean'},
-    {icon:'🎓',label:'Credential conversion',val:Math.round(tgt('eduCredentials',i)/tgt('platformUsers',i)*100)+'%',sub:'Platform users earning credential',cls:'si-green'},
+    {icon:'👥',label:'Cost per young person',val:'€'+(tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2),sub:'Target cost efficiency '+selYear,cls:'si-ocean'},
+    {icon:'🧑‍🏫',label:'Cost per educator',val:'€'+(tgt('revenue',i)*1e6/tgt('educators',i)).toFixed(2),sub:'Target cost efficiency '+selYear,cls:'si-ocean'},
     {icon:'📈',label:'SE revenue growth',val:'+'+(i>0?Math.round((tgt('seRevenue',i)-tgt('seRevenue',i-1))/tgt('seRevenue',i-1)*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-orange'},
     {icon:'⭐',label:'Youth badge growth',val:'+'+(i>0?Math.round((tgt('youthBadges',i)-tgt('youthBadges',i-1))/tgt('youthBadges',i-1)*100):0)+'%',sub:selYear>=2027?'PBL Tool step-change':'Pre-PBL growth',cls:'si-ocean'},
     {icon:'🔓',label:'Grant dep. reduction',val:'-'+(tgt('grantPct',0)-tgt('grantPct',i))+'pp',sub:'From '+tgt('grantPct',0)+'% (2024) to '+tgt('grantPct',i)+'%',cls:(tgt('grantPct',0)-tgt('grantPct',i))>=10?'si-green':'si-amber'},
-    {icon:'🇮🇪',label:'Irish-medium schools',val:''+tgt('irishMedSchools',i),sub:'Target for '+selYear,cls:'si-ocean'}
+    {icon:'📊',label:'Educator credentials growth',val:'+'+(i>0?Math.round((tgt('eduCredentials',i)-tgt('eduCredentials',i-1))/tgt('eduCredentials',i-1)*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-green'}
   ];
   document.getElementById('si-cards').innerHTML=cards.map(function(c){return'<div class="si-card '+c.cls+'"><div class="si-icon">'+c.icon+'</div><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';}).join('');
 }
@@ -923,6 +923,17 @@ function buildCharts(){
   mkChart('si-cred-chart','bar',L,[{data:YEARS.map(function(y,i){return parseFloat((tgt('eduCredentials',i)/tgt('platformUsers',i)*100).toFixed(1));}),backgroundColor:YEARS.map(function(y){return y<2026?'#9dceef':'#262262';}),borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
   mkChart('si-badge-chart','line',L,[{data:tBadge,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
   mkChart('si-fin-chart','line',L,[{data:tGP,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:tSEP,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false},{data:YEARS.map(function(){return 23;}),borderColor:'#b9f24c',backgroundColor:'transparent',fill:false,borderDash:[6,3],pointRadius:0}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+
+  // Insights page pie charts
+  ['si-pie1','si-pie2','si-pie3'].forEach(function(id){
+    if(charts[id]){charts[id].destroy();delete charts[id];}
+    var srcId=id.replace('si-','');
+    var d=QD[srcId];
+    var el=document.getElementById(id);if(!el)return;
+    charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});
+    var legEl=document.getElementById(id+'-leg');
+    if(legEl)legEl.innerHTML=d.labels.map(function(l,i){return'<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');
+  });
 }
 
 function buildPieCharts(){
