@@ -861,8 +861,8 @@ function buildQCompareCharts(){
 function renderSmartInsights(){
   var i=yi(selYear);
   var cards=[
-    {icon:'👥',label:'Cost per young person',val:'€'+(tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2),sub:'Target cost efficiency '+selYear,cls:'si-ocean'},
-    {icon:'🧑‍🏫',label:'Cost per educator',val:'€'+(tgt('revenue',i)*1e6/tgt('educators',i)).toFixed(2),sub:'Target cost efficiency '+selYear,cls:'si-ocean'},
+    {icon:'👥',label:'Cost per young person',val:'€'+(annTgt('revenue',i)*1e6/annTgt('youngPeople',i)).toFixed(2),sub:'Annual net-new cost efficiency '+selYear,cls:'si-ocean'},
+    {icon:'🧑‍🏫',label:'Cost per educator',val:'€'+(annTgt('revenue',i)*1e6/tgt('eduSupported',i)).toFixed(2),sub:'Educators supported target '+selYear,cls:'si-ocean'},
     {icon:'📈',label:'SE revenue growth',val:'+'+(i>0?Math.round((tgt('seRevenue',i)-tgt('seRevenue',i-1))/tgt('seRevenue',i-1)*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-orange'},
     {icon:'⭐',label:'Youth badge growth',val:'+'+(i>0?Math.round((tgt('youthBadges',i)-tgt('youthBadges',i-1))/tgt('youthBadges',i-1)*100):0)+'%',sub:selYear>=2027?'PBL Tool step-change':'Pre-PBL growth',cls:'si-ocean'},
     {icon:'🔓',label:'Grant dep. reduction',val:'-'+(tgt('grantPct',0)-tgt('grantPct',i))+'pp',sub:'From '+tgt('grantPct',0)+'% (2024) to '+tgt('grantPct',i)+'%',cls:(tgt('grantPct',0)-tgt('grantPct',i))>=10?'si-green':'si-amber'},
@@ -918,7 +918,7 @@ function buildCharts(){
   mkChart('p3Chart','bar',L,[{data:tSE,backgroundColor:'rgba(248,160,106,0.45)',borderRadius:3},{data:actSE,backgroundColor:'#2e7d32',borderRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2)+'M';})}});
 
   var base={rev:tgt('revenue',0),yp:tgt('youngPeople',0),edu:tgt('educators',0)};
-  mkChart('si-cpy-chart','line',L,[{data:YEARS.map(function(y,i){return parseFloat((tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2));}),borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2);})}});
+  mkChart('si-cpy-chart','line',L,[{data:YEARS.map(function(y,i){var annR=annTgt('revenue',i);var annYP=annTgt('youngPeople',i);return(annR!==null&&annYP)?parseFloat((annR*1e6/annYP).toFixed(2)):null;}),borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3,spanGaps:false}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2);})}});
   mkChart('si-index-chart','line',L,[{data:tRev.map(function(v){return Math.round(v/base.rev*100);}),borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},{data:tYP.map(function(v){return Math.round(v/base.yp*100);}),borderColor:'#262262',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#262262',pointRadius:3},{data:tEdu.map(function(v){return Math.round(v/base.edu*100);}),borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[3,2],pointBackgroundColor:'#9dceef',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v;})}});
   mkChart('si-cred-chart','bar',L,[{data:YEARS.map(function(y,i){return parseFloat((tgt('eduCredentials',i)/tgt('platformUsers',i)*100).toFixed(1));}),backgroundColor:YEARS.map(function(y){return y<2026?'#9dceef':'#262262';}),borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
   mkChart('si-badge-chart','line',L,[{data:tBadge,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
