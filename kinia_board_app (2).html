@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinia — Board Impact Dashboard 2026–2030</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ocean:#262262;--ocean-light:#3d3899;--orange:#f37021;--orange-pale:#fde8d8;
+  --sky:#9dceef;--sky-dark:#1a7ab5;--zest:#b9f24c;--forest:#005129;
+  --lemon:#f7efca;--lemon-dark:#b89a00;--candy:#ef4d41;
+  --text:#1a1a2e;--muted:#5a5a7a;--border:#e2e0f0;--bg:#f8f7fc;--white:#fff;
+  --closed-bg:#f0f4f0;--current-bg:#fff8f0;--future-bg:#f5f5fc;
+  --tgt-bg:#e8eaf6;--tgt-col:#3949ab;
+  --act-bg:#e8f5e9;--act-col:#2e7d32;
+  --ann-bg:#fff3e0;--ann-col:#e65100;
+  --card-g-bg:#f0faf4;--card-g-border:#a8d5b5;
+  --card-a-bg:#fffbf0;--card-a-border:#f5d78e;
+  --card-r-bg:#fdf0f0;--card-r-border:#f5c0c0;
+}
+html{font-family:'Roboto',sans-serif;font-size:14px;color:var(--text);background:var(--bg)}
+h1{font-size:24px;font-weight:300;letter-spacing:-0.3px}
+h2{font-size:18px;font-weight:500}
+h3{font-size:13px;font-weight:500}
+
+#viewer-gate{position:fixed;inset:0;background:var(--ocean);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.gate-box{background:white;border-radius:16px;padding:40px;max-width:400px;width:100%;text-align:center}
+nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+.nav-brand{display:flex;align-items:center;gap:10px;padding:12px 0;margin-right:16px}
+.kinia-k{width:32px;height:32px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:white}
+.nav-brand span{color:white;font-size:16px;font-weight:300;letter-spacing:1px}
+.nav-tabs{display:flex;flex:1;flex-wrap:wrap}
+.nav-tab{padding:15px 10px;color:rgba(255,255,255,0.65);font-size:11px;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.2s;font-family:'Roboto',sans-serif;white-space:nowrap}
+.nav-tab:hover{color:white}.nav-tab.active{color:white;border-bottom-color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:4px;padding:8px 0;flex-wrap:wrap}
+.year-pill{padding:3px 8px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.75);font-size:10px;cursor:pointer;background:none;font-family:'Roboto',sans-serif}
+.year-pill.active{background:var(--orange);border-color:var(--orange);color:white;font-weight:500}
+.year-pill.closed{border-color:rgba(185,242,76,0.6);color:rgba(185,242,76,0.9)}
+.year-pill.current{border-color:var(--orange);color:var(--orange)}
+
+.page{display:none;padding:18px;max-width:1200px;margin:0 auto}.page.active{display:block}
+.page-header{background:var(--ocean);border-radius:12px;padding:20px 24px;margin-bottom:18px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.page-header h1{color:white}.page-header p{color:rgba(255,255,255,0.7);font-size:12px;margin-top:3px}
+.header-badge{background:var(--orange);color:white;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500}
+.ys-badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500}
+.ys-closed{background:rgba(185,242,76,0.2);color:var(--zest);border:1px solid rgba(185,242,76,0.4)}
+.ys-current{background:rgba(243,112,33,0.2);color:var(--orange);border:1px solid rgba(243,112,33,0.4)}
+.ys-future{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.2)}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px}
+.card-title{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:10px}
+.yr-banner{border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:12px;display:flex;align-items:center;gap:8px}
+.yr-banner.closed{background:var(--closed-bg);border:1px solid #c5d9c5;color:var(--forest)}
+.yr-banner.current{background:var(--current-bg);border:1px solid #f8c89a;color:#854f0b}
+.yr-banner.future{background:var(--future-bg);border:1px solid var(--border);color:var(--muted)}
+
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.mcard{border-radius:10px;padding:13px;border:1px solid var(--border);background:var(--white)}
+.mcard.status-g{background:var(--card-g-bg);border-color:var(--card-g-border)}
+.mcard.status-a{background:var(--card-a-bg);border-color:var(--card-a-border)}
+.mcard.status-r{background:var(--card-r-bg);border-color:var(--card-r-border)}
+.mcard.status-n{background:var(--future-bg);border-color:var(--border)}
+.mcard.annual-card{border-top:3px solid var(--ann-col)}
+.mcard .mlabel{font-size:9px;color:var(--muted);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
+.mcard .mval{font-size:20px;font-weight:300;color:var(--ocean)}
+.pill{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:1px}
+.pill-tgt{background:var(--tgt-bg);color:var(--tgt-col)}
+.pill-act{background:var(--act-bg);color:var(--act-col)}
+.pill-ann{background:var(--ann-bg);color:var(--ann-col)}
+.rag-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:600}
+.rag-badge.g{background:var(--card-g-bg);color:#155724;border:1px solid var(--card-g-border)}
+.rag-badge.a{background:var(--card-a-bg);color:#856404;border:1px solid var(--card-a-border)}
+.rag-badge.r{background:var(--card-r-bg);color:#721c24;border:1px solid var(--card-r-border)}
+.rag-badge.n{background:var(--border);color:var(--muted)}
+.rag-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rag-dot.g{background:#155724}.rag-dot.a{background:#856404}.rag-dot.r{background:#721c24}.rag-dot.n{background:var(--muted)}
+.rag{font-size:9px;padding:1px 6px;border-radius:10px;font-weight:600;min-width:36px;text-align:center;display:inline-block}
+.rag-g{background:var(--card-g-bg);color:#155724}.rag-a{background:var(--card-a-bg);color:#856404}.rag-r{background:var(--card-r-bg);color:#721c24}.rag-n{background:var(--border);color:var(--muted)}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.stories-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+
+.insight-box{border-left:4px solid var(--border);background:var(--bg);border-radius:0 8px 8px 0;padding:11px 13px;margin-bottom:14px}
+.insight-box.live{border-left-color:var(--orange);background:var(--orange-pale)}
+.insight-box .ititle{font-size:9px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px}
+.insight-box.live .ititle{color:var(--orange)}
+.insight-box p{font-size:12px;color:var(--muted);font-style:italic;line-height:1.6}
+.insight-box.live p{color:var(--text);font-style:normal}
+
+.dash-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:8px 12px;background:var(--white);border:1px solid var(--border);border-radius:8px;font-size:10px;align-items:center}
+.dl-item{display:flex;align-items:center;gap:4px;color:var(--muted)}
+.dl-sw{width:11px;height:11px;border-radius:2px;flex-shrink:0}
+
+.rag-key{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.rag-key-card{border-radius:10px;padding:14px 16px;border:1px solid}
+.rag-key-card.g{background:var(--card-g-bg);border-color:var(--card-g-border)}
+.rag-key-card.a{background:var(--card-a-bg);border-color:var(--card-a-border)}
+.rag-key-card.r{background:var(--card-r-bg);border-color:var(--card-r-border)}
+.rag-key-card .rk-title{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.rag-key-card.g .rk-title{color:#155724}.rag-key-card.a .rk-title{color:#856404}.rag-key-card.r .rk-title{color:#721c24}
+.rag-key-card p{font-size:11px;color:var(--muted);line-height:1.6}
+
+.kpi-row{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.kpi-label{width:148px;color:var(--muted);flex-shrink:0;font-size:10px}
+.kpi-bar-wrap{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;position:relative}
+.kpi-bar-tgt{position:absolute;left:0;top:0;height:100%;background:#c5cae9;width:100%;border-radius:4px}
+.kpi-bar-act{position:absolute;left:0;top:0;height:100%;border-radius:4px}
+.kpi-vals{min-width:100px;text-align:right;font-size:10px}
+
+.trend-table{width:100%;border-collapse:collapse;font-size:10px}
+.trend-table th{text-align:left;padding:5px 7px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:0.05em}
+.trend-table td{padding:6px 7px;border-bottom:0.5px solid var(--border);vertical-align:top}
+.trend-table tr:last-child td{border-bottom:none}
+.th-closed{background:var(--closed-bg)}.th-current{background:var(--current-bg)}.th-future{background:var(--future-bg)}
+
+.smart-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.si-card{border-radius:10px;padding:13px;border:1px solid var(--border);background:var(--white)}
+.si-card .si-icon{font-size:18px;margin-bottom:5px}
+.si-card .si-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:3px}
+.si-card .si-val{font-size:17px;font-weight:500;color:var(--ocean);margin-bottom:2px}
+.si-card .si-sub{font-size:10px;color:var(--muted);line-height:1.5}
+.si-green{background:#f0faf4;border-color:#a8d5b5}.si-green .si-val{color:var(--forest)}
+.si-amber{background:#fffbf0;border-color:#f5d78e}.si-amber .si-val{color:#854f0b}
+.si-ocean{background:#eef0fc;border-color:#b0aee8}.si-ocean .si-val{color:var(--ocean)}
+.si-orange{background:var(--orange-pale);border-color:#f8a06a}.si-orange .si-val{color:var(--orange)}
+
+.pie-legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.pie-leg-item{display:flex;align-items:center;gap:3px;font-size:9px;color:var(--muted)}
+.pie-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+.story-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;border-top:4px solid var(--ocean)}
+.story-media{width:100%;height:180px;object-fit:cover;display:block}
+.story-media-ph{width:100%;height:120px;background:var(--ocean);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.story-media-ph span{color:rgba(255,255,255,0.4);font-size:10px}
+.story-body{padding:14px}
+.story-org{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--orange);margin-bottom:3px}
+.story-title{font-size:13px;font-weight:500;color:var(--ocean);margin-bottom:6px;line-height:1.4}
+.story-quote{font-size:12px;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:7px}
+.story-attr{font-size:10px;color:var(--muted)}
+.story-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.story-tag{background:var(--lemon);color:var(--ocean);font-size:9px;padding:2px 7px;border-radius:10px;font-weight:500}
+.story-video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden}
+.story-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+
+.partner-chip{background:var(--lemon);border:1px solid var(--lemon-dark);border-radius:20px;padding:3px 10px;font-size:10px;color:var(--ocean);font-weight:500;display:inline-block;margin:2px}
+.pol-item{background:var(--bg);border-radius:6px;padding:8px 11px;font-size:11px;color:var(--text);margin-bottom:6px;border-left:3px solid var(--sky-dark)}
+.fund-item{background:var(--bg);border-radius:6px;padding:8px 11px;font-size:11px;color:var(--text);margin-bottom:6px;border-left:3px solid var(--forest)}
+
+.btn-orange{background:var(--orange);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+.btn-ocean{background:var(--ocean);color:white;border:none;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+.dl-btn{display:inline-flex;align-items:center;gap:4px;background:var(--forest);color:white;border:none;border-radius:8px;padding:6px 13px;font-size:11px;cursor:pointer;font-family:'Roboto',sans-serif}
+.sec-div{display:flex;align-items:center;gap:8px;margin:18px 0 12px}
+.sec-div-line{flex:1;height:1px;background:var(--border)}
+.sec-div-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);white-space:nowrap}
+
+.how-section{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.how-section h3{color:var(--ocean);margin-bottom:10px;font-size:14px}
+.how-section p,.how-section li{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:4px}
+.how-section ul{padding-left:18px}
+.how-step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.how-step-num{width:26px;height:26px;border-radius:50%;background:var(--ocean);color:white;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.how-step-body{font-size:12px;color:var(--muted);line-height:1.7}
+.how-step-body strong{color:var(--text)}
+
+.q-compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.q-kpi-block{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:13px}
+
+/* Programme-area sections (Creative Technology / Literacy / Numeracy) */
+.prog-area-header{display:flex;align-items:center;gap:10px;margin:22px 0 12px}
+.prog-area-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 2px 5px rgba(0,0,0,0.12)}
+.prog-area-title{font-size:14px;font-weight:600;color:var(--ocean);line-height:1.3}
+.prog-area-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.prog-ct{background:var(--orange)}
+.prog-lit{background:var(--sky-dark)}
+.prog-num{background:var(--forest)}
+.prog-block{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;background:linear-gradient(180deg,rgba(0,0,0,0.012),transparent 40px)}
+.prog-block.ct{border-top:3px solid var(--orange)}
+.prog-block.lit{border-top:3px solid var(--sky-dark)}
+.prog-block.num{border-top:3px solid var(--forest)}
+.prog-row-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin:2px 0 6px 2px}
+
+/* Distinct cumulative vs "this year" card treatment */
+.mcard{position:relative;overflow:visible}
+.mcard.mcard-cum{border-left:4px solid var(--tgt-col)}
+.mcard.mcard-ann{border-left:4px solid var(--ann-col)}
+.mcard-ribbon{position:absolute;top:-9px;left:10px;font-size:8px;font-weight:700;letter-spacing:0.06em;padding:2px 8px;border-radius:5px;color:white;box-shadow:0 1px 3px rgba(0,0,0,0.18)}
+.mcard-ribbon.cum{background:var(--tgt-col)}
+.mcard-ribbon.ann{background:var(--ann-col)}
+.mcard-progress-track{height:5px;border-radius:3px;background:rgba(0,0,0,0.07);margin-top:8px;overflow:hidden}
+.mcard-progress-fill{height:100%;border-radius:3px;transition:width 0.3s}
+
+/* Chart target/actual axis labels */
+.chart-axis-label{display:flex;gap:11px;font-size:9px;color:var(--muted);margin-bottom:7px;font-weight:500;flex-wrap:wrap}
+.chart-axis-label span{display:flex;align-items:center;gap:3px}
+.chart-axis-label .sw{width:9px;height:9px;border-radius:2px;display:inline-block;flex-shrink:0}
+
+/* Quarter filter chips (Reach & Influence / Impact Stories) */
+.q-chip{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--muted);font-size:11px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif}
+.q-chip.active{background:var(--ocean);border-color:var(--ocean);color:white}
+.q-chip.has-data{border-color:var(--orange)}
+.q-chip.has-data.active{background:var(--orange);border-color:var(--orange)}
+.ri-hist-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.ri-hist-card h4{font-size:11px;color:var(--ocean);margin-bottom:5px}
+.ri-hist-card .rh-empty{font-size:10px;color:var(--muted);font-style:italic}
+.insight-history-item{border-left:3px solid var(--border);padding:5px 0 5px 10px;margin-top:8px}
+.insight-history-item .ih-q{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.insight-history-item p{font-size:11px;color:var(--text);margin-top:2px;line-height:1.6}
+.story-period-tag{background:var(--ocean);color:white;font-size:8px;font-weight:600;letter-spacing:0.05em;padding:2px 7px;border-radius:10px;text-transform:uppercase}
+
+/* Board scorecard */
+.scorecard-summary{display:flex;gap:16px;align-items:center;margin-bottom:12px;flex-wrap:wrap;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:11px 18px}
+.scorecard-summary .ss-overall{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ocean)}
+.scorecard-summary .ss-overall-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.scorecard-summary .ss-counts{display:flex;gap:16px;font-size:11px;color:var(--muted);flex-wrap:wrap;margin-left:auto}
+.scorecard-summary .ss-count-item{display:flex;align-items:center;gap:5px}
+.scorecard-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:16px}
+.scorecard-chip{border-radius:10px;padding:10px 12px;border:1px solid var(--border);border-left:4px solid var(--border);background:var(--white);display:flex;flex-direction:row;align-items:center;gap:10px}
+.scorecard-chip.g{background:var(--card-g-bg);border-color:var(--card-g-border);border-left-color:#155724}
+.scorecard-chip.a{background:var(--card-a-bg);border-color:var(--card-a-border);border-left-color:#856404}
+.scorecard-chip.r{background:var(--card-r-bg);border-color:var(--card-r-border);border-left-color:#721c24}
+.scorecard-chip.n{border-left-color:var(--border)}
+.scorecard-chip .sc-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.scorecard-chip .sc-label{font-size:9px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:0.03em}
+.scorecard-chip .sc-vals{font-size:12px;font-weight:500;color:var(--ocean);white-space:nowrap}
+.scorecard-chip .sc-sub{font-size:9px;color:var(--muted)}
+@media(max-width:900px){.scorecard-wrap{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.scorecard-wrap{grid-template-columns:1fr}.scorecard-summary .ss-counts{margin-left:0}}
+
+/* Admin target warning */
+.tgt-warning{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#5d4037}
+
+input[type=password],input[type=number],input[type=text],input[type=url],input[type=date],textarea,select{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Roboto',sans-serif;color:var(--text);background:white}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ocean)}
+.field-group{margin-bottom:10px}
+.field-group label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);display:block;margin-bottom:2px}
+
+footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-top:1px solid var(--border);margin-top:28px}
+@media(max-width:720px){.metric-grid,.g2,.g3,.g4,.smart-insights,.q-compare-grid,.rag-key,.stories-grid{grid-template-columns:1fr}.nav-tabs{overflow-x:auto}}
+</style>
+</head>
+<body>
+
+<!-- VIEWER GATE -->
+<div id="viewer-gate">
+  <div class="gate-box">
+    <div class="kinia-k" style="width:52px;height:52px;font-size:26px;margin:0 auto 14px">k</div>
+    <h2 style="color:var(--ocean);margin-bottom:4px">Kinia Board Dashboard</h2>
+    <p style="color:var(--orange);font-size:11px;font-style:italic;margin-bottom:10px">Learning is Life · Ní thagann saol gan foghalaim</p>
+    <p style="color:var(--muted);font-size:12px;margin-bottom:18px">Strategic Plan 2026–2030<br>Enter your board PIN to continue.</p>
+    <input type="password" id="viewer-pin" placeholder="Board PIN" style="margin-bottom:12px;text-align:center;font-size:18px;letter-spacing:6px;max-width:200px">
+    <br><button class="btn-ocean" onclick="checkViewerPin()" style="margin-top:10px;min-width:170px">Enter dashboard</button>
+    <p id="viewer-err" style="color:#c0392b;font-size:11px;margin-top:8px;display:none">Incorrect PIN — please try again</p>
+  </div>
+</div>
+
+<!-- ADMIN OVERLAY -->
+<div id="admin-overlay" style="display:none;position:fixed;inset:0;background:rgba(38,34,98,0.9);z-index:200;overflow-y:auto;padding:28px 14px">
+  <div id="admin-login" style="background:white;border-radius:14px;padding:28px;max-width:340px;margin:0 auto;text-align:center">
+    <div class="kinia-k" style="margin:0 auto 10px;width:42px;height:42px;font-size:20px">k</div>
+    <h2 style="color:var(--ocean);margin-bottom:4px">Admin access</h2>
+    <p style="color:var(--muted);font-size:11px;margin-bottom:16px">Enter admin PIN</p>
+    <input type="password" id="admin-pin-input" placeholder="PIN" style="margin-bottom:10px;text-align:center;font-size:16px;letter-spacing:6px">
+    <br><br><button class="btn-ocean" onclick="checkAdminPin()">Unlock</button>
+    <button onclick="hideAdmin()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;margin-left:10px">Cancel</button>
+    <p id="admin-pin-err" style="color:#c0392b;font-size:11px;margin-top:7px;display:none">Incorrect PIN</p>
+  </div>
+  <div id="admin-panel" style="display:none;background:white;border-radius:14px;padding:28px;max-width:980px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <h2 style="color:var(--ocean)">Admin panel</h2>
+      <div style="display:flex;gap:7px">
+        <button class="btn-ocean" onclick="saveAll()">Save all</button>
+        <button onclick="hideAdmin()" style="background:none;border:1px solid var(--border);border-radius:7px;padding:6px 13px;cursor:pointer;font-size:11px">Close</button>
+      </div>
+    </div>
+    <!-- Admin tabs -->
+    <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px">
+      <button onclick="showAdminTab('actuals')" id="atab-actuals" style="padding:8px 18px;border:none;background:var(--ocean);color:white;font-family:'Roboto',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border-radius:6px 6px 0 0;margin-right:4px">Actuals &amp; data</button>
+      <button onclick="showAdminTab('targets')" id="atab-targets" style="padding:8px 18px;border:none;background:var(--bg);color:var(--muted);font-family:'Roboto',sans-serif;font-size:12px;cursor:pointer;border-radius:6px 6px 0 0;margin-right:4px">Target management</button>
+      <button onclick="showAdminTab('risks')" id="atab-risks" style="padding:8px 18px;border:none;background:var(--bg);color:var(--muted);font-family:'Roboto',sans-serif;font-size:12px;cursor:pointer;border-radius:6px 6px 0 0">Risk register</button>
+    </div>
+    <div id="admin-actuals"></div>
+    <div id="admin-targets" style="display:none"></div>
+    <div id="admin-risks" style="display:none"></div>
+    <div id="save-msg" style="display:none;background:#d4edda;color:#155724;border-radius:7px;padding:9px;text-align:center;margin-top:12px;font-size:12px">Saved successfully.</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand"><div class="kinia-k">k</div><span>kinia</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('howto',this)">How to use</button>
+    <button class="nav-tab" onclick="showPage('overview',this)">Overview</button>
+    <button class="nav-tab" onclick="showPage('quarterly',this)">Quarterly</button>
+    <button class="nav-tab" onclick="showPage('insights',this)">Insights</button>
+    <button class="nav-tab" onclick="showPage('pillar1',this)">Pillar 1</button>
+    <button class="nav-tab" onclick="showPage('pillar2',this)">Pillar 2</button>
+    <button class="nav-tab" onclick="showPage('pillar3',this)">Pillar 3</button>
+    <button class="nav-tab" onclick="showPage('influence',this)">Reach &amp; Influence</button>
+    <button class="nav-tab" onclick="showPage('stories',this)">Impact Stories</button>
+    <button class="nav-tab" onclick="showPage('risks',this)">Risks</button>
+  </div>
+  <div class="nav-right">
+    <div style="display:flex;gap:3px;flex-wrap:wrap" id="yr-pills-nav"></div>
+    <button class="btn-orange" onclick="showAdmin()" style="font-size:10px;padding:4px 10px;margin-left:5px">Admin</button>
+  </div>
+</nav>
+
+<!-- HOW TO USE -->
+<div id="page-howto" class="page active">
+  <div class="page-header">
+    <div><h1>How to use this dashboard</h1><p>A guide for board members — navigation, data interpretation and status indicators.</p></div>
+    <div style="display:flex;gap:7px;align-items:center">
+      <div class="header-badge">Last updated: <span id="last-updated"></span></div>
+      <button class="dl-btn" onclick="downloadApp()">Download app</button>
+    </div>
+  </div>
+  <div class="how-section">
+    <h3>Welcome to the Kinia Performance &amp; Impact Dashboard</h3>
+    <p>This dashboard tracks Kinia's progress against the 2026–2030 Strategic Plan. Data is presented as <strong>cumulative totals</strong> alongside <strong>annual figures</strong> showing in-year performance only.</p>
+  </div>
+  <div class="how-section">
+    <h3>Navigating the dashboard</h3>
+    <div class="how-step"><div class="how-step-num">1</div><div class="how-step-body"><strong>Tabs across the top</strong> move between sections.</div></div>
+    <div class="how-step"><div class="how-step-num">2</div><div class="how-step-body"><strong>Year pills (top right)</strong> switch between years. Charts always show the full 2024–2030 range.</div></div>
+    <div class="how-step"><div class="how-step-num">3</div><div class="how-step-body"><strong>Quarterly tab</strong> shows flat per-quarter figures (Jan–Mar=Q1, Apr–Jun=Q2, Jul–Sep=Q3, Oct–Dec=Q4) plus cross-year Q1 comparisons.</div></div>
+  </div>
+  <div class="how-section">
+    <h3>Year status</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px">
+      <div style="background:var(--closed-bg);border:1px solid #c5d9c5;border-radius:8px;padding:12px"><div style="font-weight:500;color:var(--forest);margin-bottom:4px">✓ Closed year (2024, 2025)</div><p>Year ended. Actuals are final. RAG vs full annual target.</p></div>
+      <div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px"><div style="font-weight:500;color:#854f0b;margin-bottom:4px">● Current year (2026)</div><p>In progress. RAG vs pro-rata expected figure at the current quarter.</p></div>
+      <div style="background:var(--future-bg);border:1px solid var(--border);border-radius:8px;padding:12px"><div style="font-weight:500;color:var(--muted);margin-bottom:4px">○ Future year (2027–2030)</div><p>Not yet started. Targets shown for planning only.</p></div>
+    </div>
+  </div>
+  <div class="how-section">
+    <h3>RAG status</h3>
+    <div class="rag-key">
+      <div class="rag-key-card g"><div class="rk-title"><span class="rag-dot g"></span>Green — On track</div><p>Actual ≥ <strong>85%</strong> of expected.</p></div>
+      <div class="rag-key-card a"><div class="rk-title"><span class="rag-dot a"></span>Amber — Monitor</div><p>Actual <strong>70–84%</strong> of expected.</p></div>
+      <div class="rag-key-card r"><div class="rk-title"><span class="rag-dot r"></span>Red — Action required</div><p>Actual <strong>&lt;70%</strong> of expected.</p></div>
+    </div>
+    <div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px">
+      <strong style="font-size:12px;color:#854f0b">2026 RAG note</strong>
+      <p style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.7">2026 data reflects Q1 only (January–March). Actuals are compared against <strong>25% of the annual target</strong>. Updates automatically when Q2, Q3 or Q4 data is entered via Admin.</p>
+    </div>
+  </div>
+  <div class="how-section">
+    <h3>Access &amp; download</h3>
+    <ul>
+      <li><strong>Board viewer PIN:</strong> provided separately by the admin team.</li>
+      <li><strong>Admin PIN:</strong> held by designated Kinia staff only.</li>
+      <li>Use <strong>Download app</strong> to save a local copy that works offline in any browser.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div id="page-overview" class="page">
+  <div class="page-header">
+    <div><h1>Performance &amp; impact dashboard</h1><p>Strategic plan 2026–2030 · Board of Directors · <span id="today"></span></p></div>
+    <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+      <span id="ov-status-badge" class="ys-badge"></span>
+      <div class="header-badge">Year: <span id="ov-year">2026</span></div>
+      <button class="dl-btn" onclick="downloadApp()">Download app</button>
+    </div>
+  </div>
+  <div class="dash-legend">
+    <strong style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em">Key:</strong>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span>
+    <span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span>
+    <span class="dl-item"><span class="rag-dot g"></span>On track</span>
+    <span class="dl-item"><span class="rag-dot a"></span>Monitor</span>
+    <span class="dl-item"><span class="rag-dot r"></span>Action required</span>
+    <span class="dl-item" style="border-left:1px solid var(--border);padding-left:10px"><span style="display:inline-block;width:10px;height:3px;background:var(--ann-col);border-radius:2px;margin-right:2px"></span>Orange top border = annual card</span>
+  </div>
+  <div id="ov-yr-banner"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Board scorecard — at a glance</div><div class="sec-div-line"></div></div>
+  <div id="ov-scorecard-summary"></div>
+  <div id="ov-scorecard" class="scorecard-wrap"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Organisational snapshot</div><div class="sec-div-line"></div></div>
+  <div id="ov-metrics"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Impact by programme area</div><div class="sec-div-line"></div></div>
+  <div id="ov-prog-areas"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Mission reach — cumulative targets vs actuals</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Educators upskilled (cumulative)</div>
+      <div class="chart-axis-label"><span><span class="sw" style="background:rgba(38,34,98,0.3);border:1px solid #262262"></span>Target (cumulative)</span><span><span class="sw" style="background:#2e7d32"></span>Actual (cumulative)</span></div>
+      <div style="position:relative;height:190px"><canvas id="ov-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached (cumulative)</div>
+      <div class="chart-axis-label"><span><span class="sw" style="background:rgba(243,112,33,0.3);border:1px solid #f37021"></span>Target (cumulative)</span><span><span class="sw" style="background:#2e7d32"></span>Actual (cumulative)</span></div>
+      <div style="position:relative;height:190px"><canvas id="ov-yp-chart"></canvas></div></div>
+  </div>
+  <div class="g2" style="margin-bottom:16px">
+    <div class="card"><div class="card-title">Educator credentials issued (cumulative)</div>
+      <div class="chart-axis-label"><span><span class="sw" style="background:rgba(61,56,153,0.3);border:1px solid #3d3899"></span>Target (cumulative)</span><span><span class="sw" style="background:#2e7d32"></span>Actual (cumulative)</span></div>
+      <div style="position:relative;height:190px"><canvas id="ov-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badges awarded (cumulative)</div>
+      <div class="chart-axis-label"><span><span class="sw" style="background:rgba(0,81,41,0.3);border:1px solid #005129"></span>Target (cumulative)</span><span><span class="sw" style="background:#2e7d32"></span>Actual (cumulative)</span></div>
+      <div style="position:relative;height:190px"><canvas id="ov-badge-chart"></canvas></div></div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Financial overview</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Revenue mix — targets vs actual</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);display:inline-block;border-radius:2px"></span>Grants (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(243,112,33,0.35);display:inline-block;border-radius:2px"></span>SE (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(157,206,239,0.5);display:inline-block;border-radius:2px"></span>Other (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;display:inline-block;border-radius:2px"></span>Total actual</span>
+      </div>
+      <div style="position:relative;height:190px"><canvas id="revChart"></canvas></div>
+    </div>
+    <div class="card"><div class="card-title">Grant dependency &amp; SE share — target vs actual</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px;font-size:9px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(38,34,98,0.35);display:inline-block;border-radius:2px"></span>Grant (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#1a7ab5;display:inline-block;border-radius:2px"></span>Grant (actual)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:rgba(243,112,33,0.35);display:inline-block;border-radius:2px"></span>SE % (tgt)</span>
+        <span style="display:flex;align-items:center;gap:2px"><span style="width:8px;height:8px;background:#2e7d32;display:inline-block;border-radius:2px"></span>SE % (actual)</span>
+      </div>
+      <div style="position:relative;height:190px"><canvas id="depChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUARTERLY -->
+<div id="page-quarterly" class="page">
+  <div class="page-header"><div><h1>Quarterly tracker</h1><p>Flat per-quarter figures — each Q shows that quarter's activity only. Jan–Mar=Q1, Apr–Jun=Q2, Jul–Sep=Q3, Oct–Dec=Q4.</p></div><div class="header-badge">Select year below</div></div>
+  <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap" id="q-year-row"></div>
+  <div id="q-yr-banner" style="margin-bottom:12px"></div>
+  <div class="dash-legend">
+    <span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Annual target</span>
+    <span class="dl-item"><span class="dl-sw" style="background:#262262"></span>2024</span>
+    <span class="dl-item"><span class="dl-sw" style="background:#f37021"></span>2025</span>
+    <span class="dl-item"><span class="dl-sw" style="background:#005129"></span>2026</span>
+    <span class="dl-item"><span class="rag-dot g"></span>On track (≥85%)</span>
+    <span class="dl-item"><span class="rag-dot a"></span>Monitor (70–84%)</span>
+    <span class="dl-item"><span class="rag-dot r"></span>Action required (&lt;70%)</span>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">KPI progress — selected year (flat per-quarter)</div><div class="sec-div-line"></div></div>
+  <div id="q-kpi-cards" class="q-compare-grid"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Cross-year Q1 comparison</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Educators upskilled — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-yp-chart"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Youth badges — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">SE revenue — Q1 each year</div><div style="position:relative;height:180px"><canvas id="qc-se-chart"></canvas></div></div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">In-year trend — flat quarterly bars vs expected quarterly pace</div><div class="sec-div-line"></div></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Educators upskilled (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-edu-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Young people reached (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-yp-chart"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Youth badges (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-badge-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">SE revenue (per quarter €M)</div><div style="position:relative;height:180px"><canvas id="q-se-chart"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Educator credentials (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Platform users (per quarter)</div><div style="position:relative;height:180px"><canvas id="q-pu-chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Summary — <span id="q-table-year">2026</span></div><div style="overflow-x:auto"><table class="trend-table" id="q-summary-table"></table></div></div>
+</div>
+
+<!-- INSIGHTS -->
+<div id="page-insights" class="page">
+  <div class="page-header"><div><h1>Smart insights</h1><p>Auto-generated analysis — updates as actuals are entered.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Performance at a glance</div><div class="sec-div-line"></div></div>
+  <div class="smart-insights" id="si-cards"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Cost per young person reached (€)</div><div style="position:relative;height:190px"><canvas id="si-cpy-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Revenue vs reach growth (2024=100)</div><div style="position:relative;height:190px"><canvas id="si-index-chart"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Credentials per platform user (%)</div><div style="position:relative;height:190px"><canvas id="si-cred-chart"></canvas></div></div>
+    <div class="card"><div class="card-title">Youth badge trajectory</div><div style="position:relative;height:190px"><canvas id="si-badge-chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Grant dependency vs SE share — target vs actual</div><div style="position:relative;height:200px"><canvas id="si-fin-chart"></canvas></div></div>
+</div>
+
+<!-- PILLAR 1 -->
+<div id="page-pillar1" class="page">
+  <div class="page-header"><div><h1>Pillar 1 — deepening educator expertise</h1></div><div style="display:flex;gap:7px;align-items:center"><span id="p1-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div id="p1-yr-banner"></div>
+  <div id="p1-insight-box" class="insight-box"><div class="ititle">Insight snapshot — <span id="p1-insight-q">Q1</span></div><p id="p1-insight-text">Insight will appear here once data is entered.</p><div id="p1-insight-history"></div></div>
+  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
+  <div id="p1-metrics"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p1-bars"></div></div>
+    <div class="card"><div class="card-title">Trend 2024–2030</div><div style="position:relative;height:200px"><canvas id="p1Chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p1-table"></table></div></div>
+</div>
+
+<!-- PILLAR 2 -->
+<div id="page-pillar2" class="page">
+  <div class="page-header"><div><h1>Pillar 2 — driving system-wide educational change</h1></div><div style="display:flex;gap:7px;align-items:center"><span id="p2-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div id="p2-yr-banner"></div>
+  <div id="p2-insight-box" class="insight-box"><div class="ititle">Insight snapshot — <span id="p2-insight-q">Q1</span></div><p id="p2-insight-text">Insight will appear here once data is entered.</p><div id="p2-insight-history"></div></div>
+  <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span></div>
+  <div id="p2-metrics"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p2-bars"></div></div>
+    <div class="card"><div class="card-title">Trend 2024–2030</div><div style="position:relative;height:200px"><canvas id="p2Chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Community profile</div><div class="sec-div-line"></div></div>
+  <div class="g3">
+    <div class="card"><div class="card-title">Who our educators work with</div><div style="position:relative;height:160px"><canvas id="pie1"></canvas></div><div class="pie-legend" id="pie1-leg"></div></div>
+    <div class="card"><div class="card-title">Formal vs non-formal</div><div style="position:relative;height:160px"><canvas id="pie2"></canvas></div><div class="pie-legend" id="pie2-leg"></div></div>
+    <div class="card"><div class="card-title">Language of delivery</div><div style="position:relative;height:160px"><canvas id="pie3"></canvas></div><div class="pie-legend" id="pie3-leg"></div></div>
+  </div>
+</div>
+
+<!-- PILLAR 3 -->
+<div id="page-pillar3" class="page">
+  <div class="page-header"><div><h1>Pillar 3 — increased financial independence</h1></div><div style="display:flex;gap:7px;align-items:center"><span id="p3-status-badge" class="ys-badge"></span><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div></div>
+  <div id="p3-yr-banner"></div>
+  <div id="p3-insight-box" class="insight-box"><div class="ititle">Insight snapshot — <span id="p3-insight-q">Q1</span></div><p id="p3-insight-text">Insight will appear here once data is entered.</p><div id="p3-insight-history"></div></div>
+  <div class="metric-grid" id="p3-metrics"></div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Revenue streams — target vs actual</div><div style="overflow-x:auto" id="p3-rev-table"></div></div>
+    <div class="card"><div class="card-title">SE revenue — target vs actual</div><div style="position:relative;height:200px"><canvas id="p3Chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p3-table"></table></div></div>
+</div>
+
+<!-- REACH & INFLUENCE -->
+<div id="page-influence" class="page">
+  <div class="page-header"><div><h1>Reach &amp; influence</h1><p>Builds up quarter by quarter — select a quarter to view that period's snapshot.</p></div><div class="header-badge">Year: <span class="yr-badge">2026</span></div></div>
+  <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap" id="ri-q-row"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Media reach — <span id="ri-q-label">Q1</span></div><div class="sec-div-line"></div></div>
+  <div class="g3" id="media-stats"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Political influence &amp; government engagement</div><div class="sec-div-line"></div></div>
+  <div class="card" style="margin-bottom:16px"><div id="political-items"></div></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Fundraising &amp; strategic partnerships</div><div class="sec-div-line"></div></div>
+  <div class="card" style="margin-bottom:16px">
+    <p style="font-size:10px;color:var(--muted);margin-bottom:10px">Strategic partners &amp; funders (ongoing)</p>
+    <div id="partner-chips" style="margin-bottom:16px"></div>
+    <div class="card-title">Highlights this quarter</div><div id="fundraising-items"></div>
+  </div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Social media reach</div><div class="sec-div-line"></div></div>
+  <div class="g4" id="social-stats"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Quarterly history — <span id="ri-hist-year">2026</span></div><div class="sec-div-line"></div></div>
+  <div id="ri-history" style="margin-bottom:16px"></div>
+</div>
+
+<!-- IMPACT STORIES -->
+<div id="page-stories" class="page">
+  <div class="page-header"><div><h1>Impact stories</h1><p>Voices from our network — builds up quarter by quarter.</p></div></div>
+  <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap" id="stories-filter-row"></div>
+  <div class="stories-grid" id="stories-grid"></div>
+</div>
+
+<!-- RISKS -->
+<div id="page-risks" class="page">
+  <div class="page-header"><div><h1>Risk register</h1><p>Live status, likelihood, impact and mitigation.</p></div></div>
+  <div class="dash-legend">
+    <strong style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em">Risk status:</strong>
+    <span class="dl-item"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#e3f2fd;border:1px solid #90caf9"></span>Monitoring</span>
+    <span class="dl-item"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--card-a-bg);border:1px solid var(--card-a-border)"></span>Action underway</span>
+    <span class="dl-item"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--card-r-bg);border:1px solid var(--card-r-border)"></span>Escalated</span>
+    <span class="dl-item"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--card-g-bg);border:1px solid var(--card-g-border)"></span>Resolved</span>
+  </div>
+  <div class="card" style="padding:0 0 4px"><div style="overflow-x:auto"><table class="trend-table" style="width:100%;min-width:800px" id="risk-table"></table></div></div>
+</div>
+
+<footer>Kinia &nbsp;·&nbsp; Learning is Life &nbsp;·&nbsp; Ní thagann saol gan foghalaim &nbsp;·&nbsp; Strategic Plan 2026–2030 &nbsp;·&nbsp; Board Confidential</footer>
+
+<script>
+var VP="board2026",AP="kinia2026",CY=2026;
+var LATEST_Q_2026='Q1';
+var Q_PACE={'Q1':0.25,'Q2':0.50,'Q3':0.75,'Q4':1.00};
+var YEARS=[2024,2025,2026,2027,2028,2029,2030];
+var QQ_LABELS=['Q1','Q2','Q3','Q4'];
+var YR_COLORS={2024:'#262262',2025:'#f37021',2026:'#005129',2027:'#9dceef',2028:'#b9f24c',2029:'#660066',2030:'#ffcf01'};
+
+// ── TARGETS — fully editable via admin ──
+// INCR = true means cumulative (annual target = this year minus last year)
+// INCR = false means the target IS the annual figure already
+var T={
+  educators:      {v:[27000,29500,32000,35000,39000,44000,50000], incr:true},
+  eduSupported:   {v:[2000,2500,3000,3000,4000,5000,6000],        incr:false}, // annual standalone
+  youngPeople:    {v:[380000,430000,490000,560000,650000,730000,800000], incr:true},
+  orgsEngaged:    {v:[200,350,400,450,500,600,800],                incr:false}, // annual standalone
+  revenue:        {v:[2.00,2.50,2.50,2.50,2.60,2.80,3.00],        incr:false},
+  seRevenue:      {v:[0.40,0.70,0.50,0.50,0.50,0.60,0.65],        incr:false},
+  grantRevenue:   {v:[1.00,1.10,1.30,1.30,1.40,1.50,1.60],        incr:false},
+  otherRevenue:   {v:[0.60,0.40,0.70,0.70,0.70,0.70,0.75],        incr:false},
+  grantPct:       {v:[92,90,85,82,80,79,76],                       incr:false},
+  sePct:          {v:[11,13,16,17,19,21,23],                       incr:false},
+  eduCredentials: {v:[800,1000,1500,2000,2500,3000,3500],          incr:true},
+  youthBadges:    {v:[1000,2000,3000,4000,6000,8000,10000],        incr:true},
+  platformUsers:  {v:[1800,2400,4000,5500,7000,8500,10000],        incr:true},
+  irishMedSchools:{v:[200,200,200,200,200,200,200],                 incr:false},
+  // New programme-area KPIs (standalone annual figures) — set targets via Admin > Target management
+  courseCompleted:{v:[0,0,0,0,0,0,0],                               incr:false}, // Creative Technology
+  volunteers:     {v:[0,0,0,0,0,0,0],                               incr:false}, // Literacy
+  readingBuddies: {v:[0,0,0,0,0,0,0],                               incr:false}, // Literacy
+  mathsWhizzes:   {v:[0,0,0,0,0,0,0],                               incr:false}, // Numeracy
+  numeracySchools:{v:[0,0,0,0,0,0,0],                               incr:false}  // Numeracy
+};
+
+// Helper: get target value for key at year index
+function tgt(k,i){return T[k]?T[k].v[i]:null;}
+// Helper: get annual target (net-new for cumulative, direct for annual)
+function annTgt(k,i){
+  var t=T[k]; if(!t||t.v[i]===null)return null;
+  if(!t.incr)return t.v[i]; // already annual
+  if(i===0)return t.v[0];
+  return t.v[i]-t.v[i-1];
+}
+
+// Actuals — keyed as k_year
+var A={
+  'educators_2024':26000,'eduSupported_2024':2725,'youngPeople_2024':380000,
+  'orgsEngaged_2024':436,'eduCredentials_2024':800,'youthBadges_2024':1620,
+  'platformUsers_2024':2400,'irishMedSchools_2024':200,
+  'revenue_2024':2.00,'seRevenue_2024':0.20,'grantRevenue_2024':0.90,'sePct_2024':10,'grantPct_2024':90,
+  'educators_2025':28325,'eduSupported_2025':2325,'youngPeople_2025':401821,
+  'orgsEngaged_2025':414,'eduCredentials_2025':950,'youthBadges_2025':2500,
+  'platformUsers_2025':3500,'irishMedSchools_2025':200,
+  'revenue_2025':1.90,'seRevenue_2025':0.35,'grantRevenue_2025':1.10,'sePct_2025':16,'grantPct_2025':84,
+  'educators_2026':29125,'eduSupported_2026':740,'youngPeople_2026':408000,
+  'orgsEngaged_2026':75,'eduCredentials_2026':850,'youthBadges_2026':2500,
+  'platformUsers_2026':4200,'irishMedSchools_2026':200,
+  'revenue_2026':0.60,'seRevenue_2026':0.10,'grantRevenue_2026':0.40,'sePct_2026':16,'grantPct_2026':84
+};
+
+// Quarterly actuals — FLAT per quarter (each Q = that quarter's activity only)
+var QQ={};
+function populateQQ(){
+  // 2024 flat per quarter (annual/4)
+  var ann2024={educators:26000,eduSupported:2725,youngPeople:380000,youthBadges:1620,seRevenue:0.20,eduCredentials:469,platformUsers:2400};
+  Object.keys(ann2024).forEach(function(k){var perQ=parseFloat((ann2024[k]/4).toFixed(k==='seRevenue'?2:0));QQ_LABELS.forEach(function(q){QQ[k+'_2024_'+q]=perQ;});});
+  // 2025 flat per quarter (net-new annual/4)
+  var netNew2025={
+    educators:28325-26000,eduSupported:Math.max(0,2325-2725),youngPeople:401821-380000,
+    youthBadges:Math.max(0,2500-1620),seRevenue:0.35,eduCredentials:Math.max(0,950-469),platformUsers:3500-1800
+  };
+  Object.keys(netNew2025).forEach(function(k){var v=Math.max(0,netNew2025[k]);var perQ=parseFloat((v/4).toFixed(k==='seRevenue'?2:0));QQ_LABELS.forEach(function(q){QQ[k+'_2025_'+q]=perQ;});});
+  // 2026 Q1 flat figures from screenshots
+  QQ['educators_2026_Q1']=640;
+  QQ['youngPeople_2026_Q1']=7200;
+  QQ['youthBadges_2026_Q1']=901;
+  QQ['seRevenue_2026_Q1']=0.10;
+  QQ['eduCredentials_2026_Q1']=53;
+  QQ['platformUsers_2026_Q1']=440;
+}
+populateQQ();
+
+// Annual actual (net-new for cumulative metrics, direct for annual metrics)
+// eduCredentials and others that are standalone: use direct actual value for annual card
+function annAct(k,y){
+  var i=yi(y);
+  var act=getA(k,y); if(act==='')return'';
+  var t=T[k]; if(!t)return act;
+  if(!t.incr)return act; // already annual figure
+  // cumulative metric: net-new = this year minus last year
+  if(i===0)return act;
+  var prev=getA(k,YEARS[i-1]); if(prev==='')return'';
+  var diff=parseFloat(act)-parseFloat(prev);
+  return diff.toFixed(0);
+}
+
+var RISKS=[
+  {name:'Credential uptake remains low',likelihood:'Amber',impact:'High',status:'Monitoring',owner:'Head of Education',reviewed:'2026-03-31',mitigation:'3rd-level partnerships; AI tool; monthly tracking'},
+  {name:'AI PBL Tool development delays',likelihood:'Amber',impact:'High',status:'Monitoring',owner:'Head of Operations | CEO',reviewed:'2026-03-31',mitigation:'Phased rollout; NTT Data & AWS support;'},
+  {name:'Social enterprise doesn\'t scale',likelihood:'Amber',impact:'High',status:'Action underway',owner:'Head of Operations',reviewed:'2026-03-31',mitigation:'Quarterly targets; Growth Lead; retail partnerships'},
+  {name:'Key person dependency',likelihood:'Amber',impact:'High',status:'Monitoring',owner:'Leadership Team',reviewed:'2026-03-31',mitigation:'CPD pathways; succession planning; documentation'},
+  {name:'Corporate funding decreases',likelihood:'Amber',impact:'Amber',status:'Monitoring',owner:'CEO',reviewed:'2026-03-31',mitigation:'Diversify via SE; deepen statutory partnerships'},
+  {name:'Competition increases',likelihood:'Green',impact:'Amber',status:'Monitoring',owner:'CEO',reviewed:'2026-03-31',mitigation:'Leverage bilingual USP; innovation-led content, collaboration'}
+];
+
+var QD={
+  insights:{p1:{},p2:{},p3:{}}, // keyed 'p1'/'p2'/'p3' -> 'YYYY_Qn' -> text
+  reach:{
+    '2026_Q1':{
+      mediaStats:[{val:"2.5M",label:"Total media reach"},{val:"59",label:"Press mentions"},{val:"4",label:"Broadcast appearances"}],
+      politicalItems:[
+        "Deputy Jen Cummins attended TechFest",
+        "Meeting scheduled with Malcolm Byrne FF Chair of the Oireachtas Committee on Artificial Intelligence"
+      ],
+      fundraisingItems:[
+        "Working with Salesforce on a multi-annual grant",
+        "Working with Department of Gaeltacht on multi-annual grant to 2030",
+        "New Solutions Fund progressed to 2nd round interview",
+        "Youth Climate Justice Funding (€45K)",
+        "Basicpoint multiannual funding for MathsWhizz secured (total €120K)"
+      ],
+      socialStats:[{val:"2.4K",label:"LinkedIn followers"},{val:"14K",label:"Facebook"},{val:"1.7K",label:"Instagram"},{val:"19K",label:"Webshop Visits"}]
+    }
+  }, // keyed 'YYYY_Qn' -> {mediaStats,politicalItems,fundraisingItems,socialStats}
+  partners:["Dept of Youth","Dept. of Gaeltacht","Dept of Transport","Research Ireland","Rethink Ireland","George and Angela Moore Trust","Fidelity Foundation","NTT Data","Sonalake","Google","HundrED","Raspberry Pi Foundation"],
+  stories:[
+    {title:"Bee Hive Dome project",org:"Maine Valley Family Resource Centre, Kerry",quote:"Inspired by a previous visit to Creative Tech Fest, ten young people spent five days exploring the design principles behind geodesic domes and traditional beehive huts. Through hands-on experiments, they discovered how networks of triangles, hexagons, and pentagons can create structures that are both lightweight and incredibly strong.",attr:"Family Resource Community Support Worker",mediaType:"image",mediaUrl:"https://www.linkedin.com/feed/update/urn:li:activity:7459922668415401984",tags:["Pillar 1","Rural","Community and Youth Work"],period:"2026_Q1"},
+    {title:"Leading a Green Energy Future",org:"Youth Services and Schools, Dublin",quote:"Winners Cherry Orchard Youth Service: Youth worker Brendan Cummins, reflecting on what unfolded at the National Basketball Arena in Tallaght, said: \"The perception of youth work is usually that we just play games but really, we're engaging them in lots of different ways. Projects like this help build future engineers, teach them about working as a team and problem solving. We're making them more employable.\"",attr:"Youth worker, community organisation",mediaType:"video",mediaUrl:"https://www.youtube.com/watch?v=u3R3DfKu2u4",tags:["Pillar 2","Youth","Community","Hydrogen","Renewable Energy"],period:"2026_Q1"},
+    {title:"Empowering Teachers First",org:"Loreto College, Mullingar",quote:"Sinéad Drumm from Loreto College, who was recognised as Educator of the Year 2026. She reflected on Kinia's approach of empowering teachers first, enabling them to bring new knowledge and digital skills directly to their students. She also shared how this has gone a step further in her school, where students in the Digital Ambassador group are now training their peers in the wider school community.",attr:"Sinéad Uí Dhroma Teacher",mediaType:"image",mediaUrl:"https://www.con-telegraph.ie/2026/05/05/mayo-school-wins-award-as-young-innovators-celebrate-creative-",tags:["Pillar 1","Schools","Teacher","Girls in STEM"],period:"2026_Q1"},
+    {title:"AI and Machine Learning",org:"Family Impact + Coláiste an Eachréidh, Athenry, Co. Galway.",quote:"When your 14 year old nephew wins his project category Kinia today for AI & Machine Learning. 🎉 He work so hard on this alone & was shocked that he won, but he's so passionate, disciplined and dedicated that we weren't surprised. He was also in this years magazine and so delighted.",attr:"Young person's Auntie",mediaType:"image",mediaUrl:"https://www.linkedin.com/feed/update/urn:li:activity:7454149517035204608",tags:["Pillar 2","Schools","Family","Community","AI"],period:"2026_Q1"}
+  ],
+  pie1:{labels:["Socio-econ. disadvantage","Rural communities","Girls in STEM","Irish language","Traveller / ethnic minority"],data:[38,24,18,12,8],colors:["#262262","#f37021","#9dceef","#b9f24c","#fad4d6"]},
+  pie2:{labels:["Formal (schools)","Non-formal (youth work)"],data:[62,38],colors:["#262262","#f37021"]},
+  pie3:{labels:["English medium","Irish medium"],data:[78,22],colors:["#262262","#b9f24c"]}
+};
+function reachBucket(y,q){var k=y+'_'+q;return QD.reach[k]||{mediaStats:[],politicalItems:[],fundraisingItems:[],socialStats:[]};}
+function reachHasData(y,q){var b=QD.reach[y+'_'+q];return!!(b&&((b.mediaStats&&b.mediaStats.length)||(b.politicalItems&&b.politicalItems.length)||(b.fundraisingItems&&b.fundraisingItems.length)||(b.socialStats&&b.socialStats.length)));}
+var selQ=LATEST_Q_2026;
+
+var charts={},selYear=CY,selQYear=CY;
+
+function yi(y){return YEARS.indexOf(y);}
+function getA(k,y){var v=A[k+'_'+y];return(v!==undefined&&v!==null)?v:'';}
+function getQA(k,y,q){var v=QQ[k+'_'+y+'_'+q];return(v!==undefined&&v!==null)?v:'';}
+function yrStat(y){return y<CY?'closed':y===CY?'current':'future';}
+function yrLabel(y){return y<CY?'✓ Closed year':y===CY?'● Year in progress':'○ Future year';}
+function bannerHtml(y){
+  var s=yrStat(y);
+  var m={closed:'Closed year — actuals are final.',
+    current:'Year in progress — Q'+LATEST_Q_2026.slice(1)+' data entered. RAG vs '+Math.round(Q_PACE[LATEST_Q_2026]*100)+'% of annual target.',
+    future:'Future year — targets only shown.'};
+  return'<div class="yr-banner '+s+'"><span>'+(s==='closed'?'✓':s==='current'?'●':'○')+'</span><span>'+m[s]+'</span></div>';
+}
+
+function ragC(actual,target,year){
+  if(actual===''||actual===null||target===null||target===undefined)return'n';
+  var a=parseFloat(actual),t=parseFloat(target);
+  if(isNaN(a)||isNaN(t)||t===0)return'n';
+  var compareTo=t;
+  if(year===CY){var pace=Q_PACE[LATEST_Q_2026]||0.25;compareTo=t*pace;}
+  var r=a/compareTo;
+  return r>=0.85?'g':r>=0.70?'a':'r';
+}
+function ragLabel(rc){return rc==='g'?'On track':rc==='a'?'Monitor':rc==='r'?'Action required':'—';}
+function fmtN(v,dec){
+  if(v===null||v===undefined||v==='')return'—';
+  var n=parseFloat(v);if(isNaN(n))return'—';
+  if(dec)return'€'+n.toFixed(2)+'M';
+  if(n>=1000000)return(n/1e6).toFixed(1)+'M';
+  if(n>=1000)return Math.round(n/1000)+'K';
+  return n.toLocaleString();
+}
+function fmtT(t,dec){return(t===null||t===undefined)?'—':fmtN(t,dec);}
+
+function checkViewerPin(){if(document.getElementById('viewer-pin').value===VP){document.getElementById('viewer-gate').style.display='none';}else{document.getElementById('viewer-err').style.display='block';}}
+document.getElementById('viewer-pin').addEventListener('keydown',function(e){if(e.key==='Enter')checkViewerPin();});
+
+function buildYrPills(){document.getElementById('yr-pills-nav').innerHTML=YEARS.map(function(y){var s=yrStat(y);return'<button class="year-pill'+(y===selYear?' active':'')+(s==='closed'?' closed':s==='current'?' current':'')+'" onclick="setYear('+y+')">'+y+'</button>';}).join('');}
+function buildQYrPills(){document.getElementById('q-year-row').innerHTML=YEARS.map(function(y){var s=yrStat(y);return'<button class="year-pill'+(y===selQYear?' active':'')+(s==='closed'?' closed':s==='current'?' current':'')+'" onclick="setQYear('+y+')">'+y+'</button>';}).join('');}
+function setYear(y){selYear=y;buildYrPills();document.querySelectorAll('.yr-badge').forEach(function(e){e.textContent=y;});document.getElementById('ov-year').textContent=y;renderAll();}
+function setQYear(y){selQYear=y;buildQYrPills();document.getElementById('q-table-year').textContent=y;document.getElementById('q-yr-banner').innerHTML=bannerHtml(y);renderQuarterly();}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});document.getElementById('page-'+id).classList.add('active');if(btn)btn.classList.add('active');}
+
+// ── PROGRAMME AREA SECTIONS ──
+function progHeader(cls,icon,title,sub){
+  return '<div class="prog-area-header"><div class="prog-area-icon '+cls+'">'+icon+'</div><div><div class="prog-area-title">'+title+'</div>'+(sub?'<div class="prog-area-sub">'+sub+'</div>':'')+'</div></div>';
+}
+
+// ── BOARD SCORECARD — one-glance RAG summary across all programme areas ──
+var SCORECARD_KPIS=[
+  {k:'educators',l:'Educators upskilled',icon:'🧑‍🏫',dec:false},
+  {k:'youngPeople',l:'Young people reached',icon:'🧒',dec:false},
+  {k:'volunteers',l:'Volunteers',icon:'🙋',dec:false},
+  {k:'readingBuddies',l:'Reading Buddies',icon:'📚',dec:false},
+  {k:'mathsWhizzes',l:'MathsWhizzes',icon:'🧮',dec:false},
+  {k:'numeracySchools',l:'Numeracy schools',icon:'🏫',dec:false},
+  {k:'revenue',l:'Total revenue',icon:'💶',dec:true},
+  {k:'seRevenue',l:'SE revenue',icon:'🌱',dec:true}
+];
+function ragHex(rc){return rc==='g'?'#2e7d32':rc==='a'?'#e65100':rc==='r'?'#c0392b':'#c5cae9';}
+function ringGauge(pct,rc,size){
+  size=size||50;
+  var sw=5,r=(size/2)-sw,c=2*Math.PI*r,capped=Math.max(0,Math.min(100,pct));
+  var offset=c*(1-capped/100);
+  var color=ragHex(rc);
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" style="flex-shrink:0;transform:rotate(0deg)">'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="'+sw+'"></circle>'+
+    (rc!=='n'?'<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+offset.toFixed(1)+'" transform="rotate(-90 '+size/2+' '+size/2+')"></circle>':'')+
+    '<text x="'+size/2+'" y="'+(size/2+4)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+(rc==='n'?'var(--muted)':color)+'" font-family="Roboto,sans-serif">'+(rc==='n'?'—':Math.round(capped)+'%')+'</text>'+
+  '</svg>';
+}
+function buildScorecard(){
+  var i=yi(selYear),s=yrStat(selYear);
+  var counts={g:0,a:0,r:0,n:0};
+  var chips=SCORECARD_KPIS.map(function(m){
+    var at=annTgt(m.k,i);
+    var annA=annAct(m.k,selYear);
+    var rc=(s==='future'||annA==='')?'n':ragC(annA,at,selYear);
+    counts[rc]++;
+    var valStr=(s!=='future'&&annA!=='')?(m.dec?'€'+parseFloat(annA).toFixed(2)+'M':fmtN(annA,false)):'—';
+    var tgtStr=at!==null?(m.dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false)):'—';
+    var pct=(rc!=='n'&&at)?(parseFloat(annA)/at*100):0;
+    return'<div class="scorecard-chip '+rc+'">'+ringGauge(pct,rc,50)+
+      '<div class="sc-body"><div class="sc-label">'+m.icon+' '+m.l+'</div>'+
+      '<div class="sc-vals">'+valStr+' <span style="font-size:9px;color:var(--muted);font-weight:400">/ '+tgtStr+'</span></div>'+
+      '<div class="sc-sub">'+(s==='future'?'Future year':(annA===''?'No actual entered yet':ragLabel(rc)))+'</div></div></div>';
+  }).join('');
+  document.getElementById('ov-scorecard').innerHTML=chips;
+
+  var overallRc=counts.r>0?'r':counts.a>0?'a':counts.g>0?'g':'n';
+  var overallLabel=overallRc==='n'?'No data entered yet':overallRc==='g'?'Organisation on track':overallRc==='a'?'Organisation — monitor':'Organisation — action required';
+  var overallPct=(counts.g+counts.a+counts.r)?Math.round((counts.g*100+counts.a*70+counts.r*30)/(counts.g+counts.a+counts.r)):0;
+  document.getElementById('ov-scorecard-summary').innerHTML=
+    '<div class="scorecard-summary">'+
+      ringGauge(overallPct,overallRc,58)+
+      '<div class="ss-overall">'+overallLabel+'</div>'+
+      '<div class="ss-counts">'+
+        '<span class="ss-count-item"><span class="rag-dot g"></span>'+counts.g+' on track</span>'+
+        '<span class="ss-count-item"><span class="rag-dot a"></span>'+counts.a+' monitor</span>'+
+        '<span class="ss-count-item"><span class="rag-dot r"></span>'+counts.r+' action required</span>'+
+        (counts.n?'<span class="ss-count-item"><span class="rag-dot n"></span>'+counts.n+' no data</span>':'')+
+      '</div>'+
+    '</div>';
+}
+
+// ── METRIC CARDS ──
+function mkCumCard(label,key,dec,suffix){
+  var i=yi(selYear),at=annTgt(key,i),act=getA(key,selYear),sf=suffix||'',s=yrStat(selYear);
+  var cumTgtVal=tgt(key,i);
+  var rc=ragC(act,at,selYear);
+  var cumTD=cumTgtVal===null?'TBD':(dec?'€'+cumTgtVal+'M':fmtN(cumTgtVal,false))+sf;
+  var annTD=at!==null?(dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false))+sf:null;
+  var actD=act!==''?(dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:null;
+  var annA=annAct(key,selYear);
+  var annActD=annA!==''?fmtN(annA,dec)+sf:null;
+  var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
+  var expNow=at!==null&&s==='current'?parseFloat((at*pace).toFixed(dec?2:0)):null;
+  var expD=expNow!==null?(dec?'€'+expNow.toFixed(2)+'M':fmtN(expNow,false))+sf:null;
+  var cardClass='mcard mcard-cum '+(s==='future'?'status-n':(actD?'status-'+rc:'status-n'));
+  var progPct=(actD&&cumTgtVal)?Math.min(100,Math.round(parseFloat(act)/cumTgtVal*100)):0;
+  var progColor=rc==='g'?'var(--act-col)':rc==='a'?'#e65100':rc==='r'?'var(--candy)':'var(--tgt-col)';
+  return'<div class="'+cardClass+'"><div class="mcard-ribbon cum">'+(T[key]&&T[key].incr?'CUMULATIVE':'ANNUAL')+'</div>'+
+    '<div class="mlabel" style="margin-top:5px">'+label+'</div>'+
+    '<div style="margin-bottom:3px"><span class="pill pill-tgt">Target</span><div class="mval">'+cumTD+'</div></div>'+
+    (annTD&&T[key]&&T[key].incr?'<div style="margin-bottom:3px"><span class="pill pill-ann">Annual</span><div style="font-size:12px;font-weight:500;color:var(--ann-col)">+'+annTD+'</div></div>':'')+
+    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year</div>':
+      actD?'<div><span class="pill pill-act">Actual</span><div style="font-size:12px;font-weight:500;color:var(--act-col)">'+actD+'</div>'+
+        (expD?'<div style="font-size:9px;color:var(--muted);margin-top:1px">Expected at '+LATEST_Q_2026+': '+expD+'</div>':'')+
+        '<div style="margin-top:4px"><span class="rag-badge '+rc+'"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div>'+
+        '<div class="mcard-progress-track"><div class="mcard-progress-fill" style="width:'+progPct+'%;background:'+progColor+'"></div></div>'+
+        '<div style="font-size:8px;color:var(--muted);margin-top:2px">'+progPct+'% of cumulative target</div></div>':
+      '<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">'+(s==='closed'?'No actual recorded':'No actual entered yet')+'</div>')+
+    '</div>';
+}
+
+function mkAnnCard(label,key,dec,suffix){
+  var i=yi(selYear),at=annTgt(key,i),s=yrStat(selYear),sf=suffix||'';
+  var annA=annAct(key,selYear);
+  var rc=ragC(annA,at,selYear);
+  var annTD=at!==null?(dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false))+sf:'TBD';
+  var annActD=annA!==''?fmtN(annA,dec)+sf:null;
+  var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
+  var expNow=at!==null&&s==='current'?parseFloat((at*pace).toFixed(dec?2:0)):null;
+  var expD=expNow!==null?(dec?'€'+expNow.toFixed(2)+'M':fmtN(expNow,false))+sf:null;
+  var cardClass='mcard mcard-ann annual-card '+(s==='future'?'status-n':(annActD?'status-'+rc:'status-n'));
+  var atNum=(at!==null&&!isNaN(parseFloat(at)))?parseFloat(at):null;
+  var progPct=(annActD&&atNum)?Math.min(100,Math.round(parseFloat(annA)/atNum*100)):0;
+  var progColor=rc==='g'?'var(--act-col)':rc==='a'?'#e65100':rc==='r'?'var(--candy)':'var(--ann-col)';
+  return'<div class="'+cardClass+'"><div class="mcard-ribbon ann">THIS YEAR</div>'+
+    '<div class="mlabel" style="margin-top:5px">'+label+'</div>'+
+    '<div style="margin-bottom:3px"><span class="pill pill-ann">Annual target</span><div class="mval" style="color:var(--ann-col)">'+annTD+'</div></div>'+
+    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year</div>':
+      annActD?'<div><span class="pill pill-act">Actual</span><div style="font-size:12px;font-weight:500;color:var(--act-col)">'+annActD+'</div>'+
+        (expD?'<div style="font-size:9px;color:var(--muted);margin-top:1px">Expected at '+LATEST_Q_2026+': '+expD+'</div>':'')+
+        '<div style="margin-top:4px"><span class="rag-badge '+rc+'"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div>'+
+        '<div class="mcard-progress-track"><div class="mcard-progress-fill" style="width:'+progPct+'%;background:'+progColor+'"></div></div>'+
+        '<div style="font-size:8px;color:var(--muted);margin-top:2px">'+progPct+'% of this year\'s target</div></div>':
+      '<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">'+(s==='closed'?'No actual recorded':'No actual entered yet')+'</div>')+
+    '</div>';
+}
+
+function renderBars(keys,color){
+  var i=yi(selYear),s=yrStat(selYear);
+  return keys.map(function(m){
+    var at=annTgt(m.k,i);
+    var annA=annAct(m.k,selYear);
+    var barAct=annA!==''?parseFloat(annA):null;
+    var pace=s==='current'?(Q_PACE[LATEST_Q_2026]||0.25):1;
+    var expNow=at!==null?at*pace:null;
+    var bp=expNow&&barAct!==null?Math.min(100,Math.round(barAct/expNow*100)):0;
+    var rc=ragC(barAct,at,selYear);
+    var barColor=rc==='g'?'var(--act-col)':rc==='a'?'#e65100':'var(--candy)';
+    return'<div class="kpi-row"><span class="kpi-label">'+m.l+'</span>'+
+      '<div class="kpi-bar-wrap"><div class="kpi-bar-tgt"></div>'+(barAct!==null&&s!=='future'?'<div class="kpi-bar-act" style="width:'+bp+'%;background:'+barColor+'"></div>':'')+
+      '</div><span class="kpi-vals">'+(barAct!==null&&s!=='future'?'<span style="color:var(--act-col);font-weight:500">'+fmtN(barAct,m.dec)+'</span> / ':'')+
+      '<span style="color:var(--tgt-col)">'+fmtT(at,m.dec)+'</span></span>'+
+      '<span class="rag-badge '+rc+'" style="font-size:9px;padding:2px 6px">'+(rc!=='n'?'<span class="rag-dot '+rc+'"></span>':'')+ragLabel(rc)+'</span></div>';
+  }).join('');
+}
+
+function renderTrendTable(id,rows){
+  var el=document.getElementById(id);
+  var hdrs=YEARS.map(function(y){var s=yrStat(y);return'<th class="th-'+s+'">'+y+'<br><span style="font-size:8px;font-weight:400">'+(s==='closed'?'✓':s==='current'?'●':'○')+' '+s+'</span></th>';}).join('');
+  var html='<thead><tr><th>Metric</th>'+hdrs+'</tr></thead><tbody>';
+  rows.forEach(function(r){
+    html+='<tr><td style="font-weight:500;white-space:nowrap">'+r.l+'</td>';
+    YEARS.forEach(function(y,i){
+      var cumTgtVal=tgt(r.k,i),at=annTgt(r.k,i),act=getA(r.k,y),s=yrStat(y),sf=r.suffix||'';
+      var cumTD=cumTgtVal===null?'—':(r.dec?'€'+cumTgtVal+'M':fmtN(cumTgtVal,false))+sf;
+      var annTD=at!==null&&T[r.k]&&T[r.k].incr?(r.dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false))+sf:null;
+      var actD=act!==''?(r.dec?'€'+parseFloat(act).toFixed(2)+'M':fmtN(act,false))+sf:'';
+      var rc=ragC(act,at,y);
+      html+='<td class="th-'+s+'"><div><span class="pill pill-tgt">T</span> '+cumTD+'</div>'+
+        (annTD?'<div><span class="pill pill-ann">+</span> '+annTD+'</div>':'')+
+        (s!=='future'?(actD?'<div><span class="pill pill-act">A</span> <strong style="color:var(--act-col)">'+actD+'</strong> <span class="rag-badge '+rc+'" style="font-size:8px;padding:1px 5px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div>':'<div style="color:var(--muted);font-style:italic;font-size:9px">No actual</div>'):'<div style="color:var(--muted);font-style:italic;font-size:9px">Future</div>')+'</td>';
+    });
+    html+='</tr>';
+  });
+  el.innerHTML=html+'</tbody>';
+}
+
+// ── QUARTERLY — flat per quarter ──
+function renderQuarterly(){
+  var i=yi(selQYear),s=yrStat(selQYear);
+  var html='';
+  Q_KEYS.forEach(function(m){
+    var at=annTgt(m.k,i);
+    var perQTgt=at!==null?parseFloat((at/4).toFixed(m.dec?2:0)):null; // expected per quarter
+    var qVals=QQ_LABELS.map(function(q){return getQA(m.k,selQYear,q);});
+    var latest=null;qVals.forEach(function(v,qi){if(v!=='')latest={val:parseFloat(v),q:QQ_LABELS[qi]};});
+    // RAG: each quarter vs expected per-quarter figure
+    var latestRc='n';
+    if(latest&&perQTgt){
+      var r=latest.val/perQTgt;
+      latestRc=r>=0.85?'g':r>=0.70?'a':'r';
+    }
+    html+='<div class="q-kpi-block" style="background:'+(latest?(latestRc==='g'?'var(--card-g-bg)':latestRc==='a'?'var(--card-a-bg)':'var(--card-r-bg)'):'var(--white)')+';border-color:'+(latest?(latestRc==='g'?'var(--card-g-border)':latestRc==='a'?'var(--card-a-border)':'var(--card-r-border)'):'var(--border)')+'">';
+    html+='<div style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:8px">'+m.l+'</div>';
+    html+='<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">';
+    html+='<div style="font-size:18px;font-weight:300;color:var(--ocean)">'+(latest?fmtN(latest.val,m.dec):'—')+'</div>';
+    if(latest)html+='<span class="rag-badge '+latestRc+'" style="font-size:9px"><span class="rag-dot '+latestRc+'"></span>'+ragLabel(latestRc)+'</span>';
+    html+='</div>';
+    html+='<div style="font-size:9px;margin-bottom:6px;display:flex;gap:5px;flex-wrap:wrap">';
+    html+='<span><span class="pill pill-ann">Ann. target</span> '+fmtT(at,m.dec)+'</span>';
+    if(perQTgt!==null)html+='<span style="color:var(--muted)">Expected per Q: '+fmtN(perQTgt,m.dec)+'</span>';
+    html+='</div>';
+    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">';
+    QQ_LABELS.forEach(function(q){
+      var v=getQA(m.k,selQYear,q);
+      var qrc='n';
+      if(v!==''&&perQTgt){var r=parseFloat(v)/perQTgt;qrc=r>=0.85?'g':r>=0.70?'a':'r';}
+      html+='<div style="background:'+(v!==''?(qrc==='g'?'rgba(46,125,50,0.1)':qrc==='a'?'rgba(230,81,0,0.1)':'rgba(192,57,43,0.1)'):'var(--bg)')+';border-radius:5px;padding:5px 4px;text-align:center">'+
+        '<div style="font-size:8px;color:var(--muted);font-weight:600">'+q+'</div>'+
+        '<div style="font-size:11px;font-weight:500;color:var(--ocean)">'+(v!==''&&s!=='future'?fmtN(v,m.dec):'—')+'</div>'+
+        (perQTgt?'<div style="font-size:7px;color:var(--muted)">exp.'+fmtN(perQTgt,m.dec)+'</div>':'')+
+        (v!==''?'<div><span class="rag-dot '+qrc+'" style="margin:2px auto;display:block"></span></div>':'')+
+        '</div>';
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('q-kpi-cards').innerHTML=html;
+
+  // Summary table
+  var tbl='<thead><tr><th>KPI</th><th>Ann. target</th><th>Per Q expected</th>'+QQ_LABELS.map(function(q){return'<th>'+q+'</th><th>RAG</th>';}).join('')+'</tr></thead><tbody>';
+  Q_KEYS.forEach(function(m){
+    var at=annTgt(m.k,i);
+    var perQTgt=at!==null?parseFloat((at/4).toFixed(m.dec?2:0)):null;
+    tbl+='<tr><td style="font-weight:500;white-space:nowrap">'+m.l+'</td>'+
+      '<td>'+(at!==null?'<span class="pill pill-ann">'+fmtN(at,m.dec)+'</span>':'—')+'</td>'+
+      '<td style="color:var(--muted)">'+(perQTgt!==null?fmtN(perQTgt,m.dec):'—')+'</td>';
+    QQ_LABELS.forEach(function(q){
+      var v=getQA(m.k,selQYear,q);
+      var qrc='n';
+      if(v!==''&&perQTgt){var r=parseFloat(v)/perQTgt;qrc=r>=0.85?'g':r>=0.70?'a':'r';}
+      tbl+='<td>'+(v!==''&&s!=='future'?'<span style="color:var(--act-col);font-weight:500">'+fmtN(v,m.dec)+'</span>':'<span style="color:var(--muted)">—</span>')+'</td>';
+      tbl+='<td>'+(v!==''&&s!=='future'?'<span class="rag-badge '+qrc+'" style="font-size:9px;padding:1px 5px"><span class="rag-dot '+qrc+'"></span>'+ragLabel(qrc)+'</span>':'—')+'</td>';
+    });
+    tbl+='</tr>';
+  });
+  document.getElementById('q-summary-table').innerHTML=tbl+'</tbody>';
+  buildQCharts();buildQCompareCharts();
+}
+
+var Q_KEYS=[
+  {k:'educators',l:'Educators upskilled',dec:false,color:'#262262'},
+  {k:'youngPeople',l:'Young people reached',dec:false,color:'#f37021'},
+  {k:'youthBadges',l:'Youth badges',dec:false,color:'#005129'},
+  {k:'seRevenue',l:'SE revenue (€M)',dec:true,color:'#9dceef'},
+  {k:'eduCredentials',l:'Educator credentials',dec:false,color:'#3d3899'},
+  {k:'platformUsers',l:'Platform users',dec:false,color:'#1a7ab5'}
+];
+
+function buildQCharts(){
+  var i=yi(selQYear),s=yrStat(selQYear);
+  var defs=[{id:'q-edu-chart',k:'educators',dec:false},{id:'q-yp-chart',k:'youngPeople',dec:false},{id:'q-badge-chart',k:'youthBadges',dec:false},{id:'q-se-chart',k:'seRevenue',dec:true},{id:'q-cred-chart',k:'eduCredentials',dec:false},{id:'q-pu-chart',k:'platformUsers',dec:false}];
+  defs.forEach(function(cd){
+    if(charts[cd.id]){charts[cd.id].destroy();delete charts[cd.id];}
+    var el=document.getElementById(cd.id);if(!el)return;
+    var at=annTgt(cd.k,i);
+    var perQTgt=at!==null?parseFloat((at/4).toFixed(cd.dec?2:0)):null;
+    var actData=QQ_LABELS.map(function(q){var v=getQA(cd.k,selQYear,q);return v!==''?parseFloat(v):null;});
+    // flat target line = same value per quarter
+    var tgtLine=QQ_LABELS.map(function(){return perQTgt;});
+    var barColors=actData.map(function(v){
+      if(v===null)return'rgba(0,0,0,0.04)';
+      if(!perQTgt)return'#9dceef';
+      var r=v/perQTgt;
+      return r>=0.85?'rgba(46,125,50,0.7)':r>=0.70?'rgba(230,81,0,0.7)':'rgba(192,57,43,0.7)';
+    });
+    charts[cd.id]=new Chart(el,{type:'bar',data:{labels:QQ_LABELS,datasets:[
+      {label:'Expected per Q',data:tgtLine,type:'line',borderColor:'#aaa',backgroundColor:'transparent',borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#aaa',tension:0,order:1},
+      {label:'Actual',data:actData,backgroundColor:barColors,borderRadius:3,order:2}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:9},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.04)'}}}}});
+  });
+}
+
+function buildQCompareCharts(){
+  var compareQ='Q1';
+  [{id:'qc-edu-chart',k:'educators',dec:false},{id:'qc-yp-chart',k:'youngPeople',dec:false},{id:'qc-badge-chart',k:'youthBadges',dec:false},{id:'qc-se-chart',k:'seRevenue',dec:true}].forEach(function(cd){
+    if(charts[cd.id]){charts[cd.id].destroy();delete charts[cd.id];}
+    var el=document.getElementById(cd.id);if(!el)return;
+    var vals=YEARS.map(function(y){var v=getQA(cd.k,y,compareQ);return v!==''?parseFloat(v):null;});
+    charts[cd.id]=new Chart(el,{type:'bar',data:{labels:YEARS.map(String),datasets:[{data:vals,backgroundColor:YEARS.map(function(y){return YR_COLORS[y]||'#ccc';}),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#888',font:{size:9},callback:function(v){return cd.dec?'€'+v.toFixed(2)+'M':(v>=1000?Math.round(v/1000)+'K':v);}},grid:{color:'rgba(0,0,0,0.04)'}}}}});
+  });
+}
+
+function renderSmartInsights(){
+  var i=yi(selYear);
+  var cards=[
+    {icon:'👥',label:'Cost per young person',val:'€'+(tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2),sub:'Target cost efficiency '+selYear,cls:'si-ocean'},
+    {icon:'🧑‍🏫',label:'Cost per educator',val:'€'+(tgt('revenue',i)*1e6/tgt('educators',i)).toFixed(2),sub:'Target cost efficiency '+selYear,cls:'si-ocean'},
+    {icon:'📈',label:'SE revenue growth',val:'+'+(i>0?Math.round((tgt('seRevenue',i)-tgt('seRevenue',i-1))/tgt('seRevenue',i-1)*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-orange'},
+    {icon:'⭐',label:'Youth badge growth',val:'+'+(i>0?Math.round((tgt('youthBadges',i)-tgt('youthBadges',i-1))/tgt('youthBadges',i-1)*100):0)+'%',sub:selYear>=2027?'PBL Tool step-change':'Pre-PBL growth',cls:'si-ocean'},
+    {icon:'🔓',label:'Grant dep. reduction',val:'-'+(tgt('grantPct',0)-tgt('grantPct',i))+'pp',sub:'From '+tgt('grantPct',0)+'% (2024) to '+tgt('grantPct',i)+'%',cls:(tgt('grantPct',0)-tgt('grantPct',i))>=10?'si-green':'si-amber'},
+    {icon:'📊',label:'Educator credentials growth',val:'+'+(i>0?Math.round((tgt('eduCredentials',i)-tgt('eduCredentials',i-1))/tgt('eduCredentials',i-1)*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-green'}
+  ];
+  document.getElementById('si-cards').innerHTML=cards.map(function(c){return'<div class="si-card '+c.cls+'"><div class="si-icon">'+c.icon+'</div><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';}).join('');
+}
+
+function mkChart(id,type,labels,datasets,opts){
+  if(charts[id]){charts[id].destroy();delete charts[id];}
+  var el=document.getElementById(id);if(!el)return;
+  charts[id]=new Chart(el,{type:type,data:{labels:labels,datasets:datasets},options:Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}},opts||{})});
+}
+
+function buildCharts(){
+  var L=YEARS.map(String);
+  var gx={ticks:{color:'#888',font:{size:9}},grid:{display:false}};
+  var gy=function(cb){return{ticks:{color:'#888',font:{size:9},callback:cb},grid:{color:'rgba(0,0,0,0.04)'}};};
+  var actEdu=YEARS.map(function(y){var v=getA('educators',y);return v!==''?parseFloat(v):null;});
+  var actYP=YEARS.map(function(y){var v=getA('youngPeople',y);return v!==''?parseFloat(v):null;});
+  var actCred=YEARS.map(function(y){var v=getA('eduCredentials',y);return v!==''?parseFloat(v):null;});
+  var actBadge=YEARS.map(function(y){var v=getA('youthBadges',y);return v!==''?parseFloat(v):null;});
+  var actRev=YEARS.map(function(y){var v=getA('revenue',y);return v!==''?parseFloat(v):null;});
+  var actSE=YEARS.map(function(y){var v=getA('seRevenue',y);return v!==''?parseFloat(v):null;});
+  var actGP=YEARS.map(function(y){var v=getA('grantPct',y);return v!==''?parseFloat(v):null;});
+  var actSEP=YEARS.map(function(y){var v=getA('sePct',y);return v!==''?parseFloat(v):null;});
+  var tEdu=YEARS.map(function(y,i){return tgt('educators',i);});
+  var tYP=YEARS.map(function(y,i){return tgt('youngPeople',i);});
+  var tCred=YEARS.map(function(y,i){return tgt('eduCredentials',i);});
+  var tBadge=YEARS.map(function(y,i){return tgt('youthBadges',i);});
+  var tRev=YEARS.map(function(y,i){return tgt('revenue',i);});
+  var tSE=YEARS.map(function(y,i){return tgt('seRevenue',i);});
+  var tOther=YEARS.map(function(y,i){return tgt('otherRevenue',i);});
+  var tGrant=YEARS.map(function(y,i){return tgt('grantRevenue',i);});
+  var tGP=YEARS.map(function(y,i){return tgt('grantPct',i);});
+  var tSEP=YEARS.map(function(y,i){return tgt('sePct',i);});
+
+  function rcChart(id,tData,aData,color){
+    mkChart(id,'bar',L,[
+      {data:tData,backgroundColor:tData.map(function(){return'rgba('+parseInt(color.slice(1,3),16)+','+parseInt(color.slice(3,5),16)+','+parseInt(color.slice(5,7),16)+',0.2)';}),borderColor:color,borderWidth:1,borderRadius:3},
+      {data:aData,backgroundColor:'#2e7d32',borderRadius:3}
+    ],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  }
+  rcChart('ov-edu-chart',tEdu,actEdu,'#262262');
+  rcChart('ov-yp-chart',tYP,actYP,'#f37021');
+  rcChart('ov-cred-chart',tCred,actCred,'#3d3899');
+  rcChart('ov-badge-chart',tBadge,actBadge,'#005129');
+
+  mkChart('revChart','bar',L,[{data:tGrant,backgroundColor:'rgba(38,34,98,0.3)',stack:'tgt'},{data:tSE,backgroundColor:'rgba(243,112,33,0.3)',stack:'tgt'},{data:tOther,backgroundColor:'rgba(157,206,239,0.4)',stack:'tgt'},{data:actRev,backgroundColor:'#2e7d32',stack:'act',borderRadius:3}],{scales:{x:{stacked:true,ticks:{color:'#888',font:{size:9}},grid:{display:false}},y:{stacked:false,ticks:{color:'#888',font:{size:9},callback:function(v){return'€'+v.toFixed(1)+'M';}},grid:{color:'rgba(0,0,0,0.04)'}}}});
+  mkChart('depChart','line',L,[{data:tGP,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:tSEP,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+  mkChart('p1Chart','line',L,[{data:tEdu,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actEdu,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false},{data:YEARS.map(function(y,i){return tgt('platformUsers',i);}),borderColor:'rgba(157,206,239,0.7)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[4,3],pointRadius:2}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('p2Chart','line',L,[{data:tCred,borderColor:'rgba(38,34,98,0.3)',backgroundColor:'rgba(38,34,98,0.04)',fill:true,tension:0.4,borderDash:[5,3],pointRadius:2},{data:tBadge,borderColor:'rgba(243,112,33,0.4)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actCred,borderColor:'#2e7d32',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:5,spanGaps:false}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('p3Chart','bar',L,[{data:tSE,backgroundColor:'rgba(248,160,106,0.45)',borderRadius:3},{data:actSE,backgroundColor:'#2e7d32',borderRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2)+'M';})}});
+
+  var base={rev:tgt('revenue',0),yp:tgt('youngPeople',0),edu:tgt('educators',0)};
+  mkChart('si-cpy-chart','line',L,[{data:YEARS.map(function(y,i){return parseFloat((tgt('revenue',i)*1e6/tgt('youngPeople',i)).toFixed(2));}),borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return'€'+v.toFixed(2);})}});
+  mkChart('si-index-chart','line',L,[{data:tRev.map(function(v){return Math.round(v/base.rev*100);}),borderColor:'#f37021',backgroundColor:'transparent',fill:false,tension:0.4,pointBackgroundColor:'#f37021',pointRadius:3},{data:tYP.map(function(v){return Math.round(v/base.yp*100);}),borderColor:'#262262',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointBackgroundColor:'#262262',pointRadius:3},{data:tEdu.map(function(v){return Math.round(v/base.edu*100);}),borderColor:'#9dceef',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[3,2],pointBackgroundColor:'#9dceef',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v;})}});
+  mkChart('si-cred-chart','bar',L,[{data:YEARS.map(function(y,i){return parseFloat((tgt('eduCredentials',i)/tgt('platformUsers',i)*100).toFixed(1));}),backgroundColor:YEARS.map(function(y){return y<2026?'#9dceef':'#262262';}),borderRadius:3}],{scales:{x:gx,y:gy(function(v){return v+'%';})}});
+  mkChart('si-badge-chart','line',L,[{data:tBadge,borderColor:'#262262',backgroundColor:'rgba(38,34,98,0.05)',fill:true,tension:0.4,pointBackgroundColor:'#262262',pointRadius:3}],{scales:{x:gx,y:gy(function(v){return v>=1000?Math.round(v/1000)+'K':v;})}});
+  mkChart('si-fin-chart','line',L,[{data:tGP,borderColor:'rgba(38,34,98,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actGP,borderColor:'#1a7ab5',backgroundColor:'rgba(26,122,181,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#1a7ab5',pointRadius:4,spanGaps:false},{data:tSEP,borderColor:'rgba(243,112,33,0.35)',backgroundColor:'transparent',fill:false,tension:0.4,borderDash:[5,3],pointRadius:2},{data:actSEP,borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.06)',fill:true,tension:0.4,pointBackgroundColor:'#2e7d32',pointRadius:4,spanGaps:false},{data:YEARS.map(function(){return 23;}),borderColor:'#b9f24c',backgroundColor:'transparent',fill:false,borderDash:[6,3],pointRadius:0}],{scales:{x:gx,y:Object.assign({min:0,max:100},gy(function(v){return v+'%';}))}});
+
+  // Insights page pie charts
+  ['si-pie1','si-pie2','si-pie3'].forEach(function(id){
+    if(charts[id]){charts[id].destroy();delete charts[id];}
+    var srcId=id.replace('si-','');
+    var d=QD[srcId];
+    var el=document.getElementById(id);if(!el)return;
+    charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});
+    var legEl=document.getElementById(id+'-leg');
+    if(legEl)legEl.innerHTML=d.labels.map(function(l,i){return'<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');
+  });
+}
+
+function buildPieCharts(){
+  ['pie1','pie2','pie3'].forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}var d=QD[id],el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});document.getElementById(id+'-leg').innerHTML=d.labels.map(function(l,i){return'<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');});
+}
+
+var selStoryPeriod='all';
+
+function buildRIQRow(){
+  var el=document.getElementById('ri-q-row');if(!el)return;
+  el.innerHTML=QQ_LABELS.map(function(q){return'<button class="q-chip'+(q===selQ?' active':'')+(reachHasData(selYear,q)?' has-data':'')+'" onclick="setSelQ(\''+q+'\')">'+q+(reachHasData(selYear,q)?' ●':'')+'</button>';}).join('');
+}
+function setSelQ(q){selQ=q;renderAll();}
+
+function renderInfluence(){
+  buildRIQRow();
+  var b=reachBucket(selYear,selQ);
+  document.getElementById('ri-q-label').textContent=selYear+' '+selQ;
+  document.getElementById('media-stats').innerHTML=b.mediaStats.length?b.mediaStats.map(function(s){return'<div class="card" style="text-align:center"><div style="font-size:28px;font-weight:300;color:var(--ocean)">'+s.val+'</div><div style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:4px">'+s.label+'</div></div>';}).join(''):'<div class="card" style="text-align:center;grid-column:1/-1"><span style="font-size:11px;color:var(--muted);font-style:italic">No media stats entered for '+selYear+' '+selQ+' yet</span></div>';
+  document.getElementById('political-items').innerHTML=b.politicalItems.length?b.politicalItems.map(function(p){return'<div class="pol-item">'+p+'</div>';}).join(''):'<span style="font-size:11px;color:var(--muted);font-style:italic">No items entered for '+selYear+' '+selQ+' yet</span>';
+  document.getElementById('partner-chips').innerHTML=QD.partners.map(function(p){return'<span class="partner-chip">'+p+'</span>';}).join('');
+  document.getElementById('fundraising-items').innerHTML=b.fundraisingItems.length?b.fundraisingItems.map(function(f){return'<div class="fund-item">'+f+'</div>';}).join(''):'<span style="font-size:11px;color:var(--muted);font-style:italic">No highlights entered for '+selYear+' '+selQ+' yet</span>';
+  document.getElementById('social-stats').innerHTML=b.socialStats.length?b.socialStats.map(function(s){return'<div class="mcard" style="text-align:center"><div style="font-size:20px;font-weight:300;color:var(--ocean)">'+s.val+'</div><div style="font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:3px">'+s.label+'</div></div>';}).join(''):'<div class="mcard" style="text-align:center;grid-column:1/-1"><span style="font-size:11px;color:var(--muted);font-style:italic">No social stats for '+selYear+' '+selQ+' yet</span></div>';
+
+  // Quarterly history — every quarter of selYear that has data, oldest first
+  document.getElementById('ri-hist-year').textContent=selYear;
+  var histHtml='';
+  QQ_LABELS.forEach(function(q){
+    if(!reachHasData(selYear,q))return;
+    var hb=reachBucket(selYear,q);
+    histHtml+='<div class="ri-hist-card"><h4>'+selYear+' '+q+'</h4>'+
+      '<div style="font-size:10px;color:var(--muted);line-height:1.8">'+
+      (hb.mediaStats.length?'<strong>Media:</strong> '+hb.mediaStats.map(function(s){return s.val+' '+s.label;}).join(' · ')+'<br>':'')+
+      (hb.politicalItems.length?'<strong>Political:</strong> '+hb.politicalItems.join(' · ')+'<br>':'')+
+      (hb.fundraisingItems.length?'<strong>Fundraising:</strong> '+hb.fundraisingItems.join(' · ')+'<br>':'')+
+      (hb.socialStats.length?'<strong>Social:</strong> '+hb.socialStats.map(function(s){return s.val+' '+s.label;}).join(' · '):'')+
+      '</div></div>';
+  });
+  document.getElementById('ri-history').innerHTML=histHtml||'<div class="ri-hist-card"><span class="rh-empty">No quarters entered yet for '+selYear+'.</span></div>';
+}
+
+function buildStoriesFilterRow(){
+  var el=document.getElementById('stories-filter-row');if(!el)return;
+  var periods=[];
+  QD.stories.forEach(function(s){if(s.period&&periods.indexOf(s.period)===-1)periods.push(s.period);});
+  periods.sort();
+  var chips='<button class="q-chip'+(selStoryPeriod==='all'?' active':'')+'" onclick="setStoryPeriod(\'all\')">All quarters</button>';
+  chips+=periods.map(function(p){var parts=p.split('_');var label=parts[0]+' '+parts[1];return'<button class="q-chip'+(selStoryPeriod===p?' active':'')+'" onclick="setStoryPeriod(\''+p+'\')">'+label+'</button>';}).join('');
+  el.innerHTML=chips;
+}
+function setStoryPeriod(p){selStoryPeriod=p;renderStories();}
+
+function renderStories(){
+  buildStoriesFilterRow();
+  document.getElementById('stories-grid').innerHTML=QD.stories.filter(function(s){return(s.title||s.quote)&&(selStoryPeriod==='all'||s.period===selStoryPeriod);}).map(function(s){
+    var mh='';
+    if(s.mediaType==='image'&&s.mediaUrl)mh='<img src="'+s.mediaUrl+'" class="story-media" onerror="this.style.display=\'none\'">';
+    else if(s.mediaType==='video'&&s.mediaUrl){if(s.mediaUrl.includes('youtube.com')||s.mediaUrl.includes('youtu.be')){var vid=s.mediaUrl.includes('youtu.be')?s.mediaUrl.split('/').pop():'';try{if(!vid)vid=new URL(s.mediaUrl).searchParams.get('v');}catch(e){}mh='<div class="story-video-wrap"><iframe src="https://www.youtube.com/embed/'+vid+'" frameborder="0" allowfullscreen></iframe></div>';}else if(s.mediaUrl.includes('vimeo.com')){mh='<div class="story-video-wrap"><iframe src="https://player.vimeo.com/video/'+s.mediaUrl.split('/').pop()+'" frameborder="0" allowfullscreen></iframe></div>';}else mh='<video src="'+s.mediaUrl+'" controls class="story-media"></video>';}
+    else mh='<div class="story-media-ph"><div class="kinia-k" style="width:34px;height:34px;font-size:16px;opacity:0.35">k</div><span>No media added yet</span></div>';
+    var tags=(s.tags||[]).map(function(t){return'<span class="story-tag">'+t+'</span>';}).join('');
+    var periodLabel=s.period?s.period.split('_').join(' '):'';
+    return'<div class="story-card">'+mh+'<div class="story-body">'+(periodLabel?'<span class="story-period-tag">'+periodLabel+'</span> ':'')+'<div class="story-org">'+s.org+'</div><div class="story-title">'+(s.title||'')+'</div><div class="story-quote">"'+s.quote+'"</div><div class="story-attr">— '+s.attr+'</div>'+(tags?'<div class="story-tags">'+tags+'</div>':'')+'</div></div>';
+  }).join('');
+}
+
+function renderRisks(){
+  var tbl='<thead><tr><th style="padding-left:14px">Risk</th><th>Status</th><th>Likelihood</th><th>Impact</th><th>Owner</th><th>Last reviewed</th><th style="padding-right:14px">Mitigation</th></tr></thead><tbody>';
+  RISKS.forEach(function(r){
+    var stStyle=r.status==='Escalated'?'background:var(--card-r-bg);color:#721c24;border:1px solid var(--card-r-border)':r.status==='Action underway'?'background:var(--card-a-bg);color:#856404;border:1px solid var(--card-a-border)':r.status==='Resolved'?'background:var(--card-g-bg);color:#155724;border:1px solid var(--card-g-border)':'background:#e3f2fd;color:#1565c0;border:1px solid #90caf9';
+    var likeClass=r.likelihood==='Red'?'rag-r':r.likelihood==='Amber'?'rag-a':'rag-g';
+    var impClass=r.impact==='High'?'rag-r':r.impact==='Low'?'rag-g':'rag-a';
+    tbl+='<tr><td style="padding-left:14px;font-weight:500">'+r.name+'</td>'+
+      '<td><span class="rag-badge" style="font-size:9px;padding:2px 7px;border-radius:6px;'+stStyle+'">'+r.status+'</span></td>'+
+      '<td><span class="rag '+likeClass+'">'+r.likelihood+'</span></td>'+
+      '<td><span class="rag '+impClass+'">'+r.impact+'</span></td>'+
+      '<td style="font-size:11px;color:var(--muted)">'+r.owner+'</td>'+
+      '<td style="font-size:11px;color:var(--muted)">'+r.reviewed+'</td>'+
+      '<td style="padding-right:14px;font-size:10px;color:var(--muted)">'+r.mitigation+'</td></tr>';
+  });
+  document.getElementById('risk-table').innerHTML=tbl+'</tbody>';
+}
+
+function renderAll(){
+  var s=yrStat(selYear),sc='ys-'+s,sl=yrLabel(selYear),bh=bannerHtml(selYear);
+  ['ov','p1','p2','p3'].forEach(function(p){var b=document.getElementById(p+'-yr-banner');if(b)b.innerHTML=bh;var sb=document.getElementById(p+'-status-badge');if(sb){sb.textContent=sl;sb.className='ys-badge '+sc;}});
+  document.getElementById('ov-status-badge').textContent=sl;document.getElementById('ov-status-badge').className='ys-badge '+sc;
+
+  // Overview — organisational snapshot (this year, then cumulative)
+  var i=yi(selYear);
+  buildScorecard();
+  document.getElementById('ov-metrics').innerHTML=
+    '<div class="metric-grid">'+
+      mkAnnCard('Total revenue','revenue',true,'')+
+      mkAnnCard('SE revenue','seRevenue',true,'')+
+    '</div>'+
+    '<div class="metric-grid">'+
+      mkCumCard('Total revenue','revenue',true,'')+
+      mkCumCard('SE revenue','seRevenue',true,'')+
+    '</div>';
+
+  // Overview — impact grouped by programme area
+  document.getElementById('ov-prog-areas').innerHTML=
+    '<div class="prog-block ct">'+progHeader('prog-ct','🎨','Creative Technology','Educators upskilled &amp; young people reached')+
+      '<div class="prog-row-label">This year</div><div class="metric-grid">'+
+        mkAnnCard('Educators upskilled (Trained + Supported)','educators',false,'')+
+        mkAnnCard('Young people reached','youngPeople',false,'')+
+      '</div>'+
+      '<div class="prog-row-label">Cumulative</div><div class="metric-grid">'+
+        mkCumCard('Educators upskilled (Trained + Supported)','educators',false,'')+
+        mkCumCard('Young people reached','youngPeople',false,'')+
+      '</div>'+
+    '</div>'+
+    '<div class="prog-block lit">'+progHeader('prog-lit','📖','Literacy','Volunteers &amp; reading buddies — target vs actual')+
+      '<div class="metric-grid">'+
+        mkAnnCard('Volunteers','volunteers',false,'')+
+        mkAnnCard('Reading Buddies','readingBuddies',false,'')+
+      '</div>'+
+    '</div>'+
+    '<div class="prog-block num">'+progHeader('prog-num','🔢','Numeracy','MathsWhizzes &amp; schools — target vs actual')+
+      '<div class="metric-grid">'+
+        mkAnnCard('MathsWhizzes','mathsWhizzes',false,'')+
+        mkAnnCard('Number of Schools','numeracySchools',false,'')+
+      '</div>'+
+    '</div>';
+
+  renderSmartInsights();
+  ['p1','p2','p3'].forEach(function(p){
+    var key=selYear+'_'+selQ;
+    var txt=QD.insights[p][key]||'';
+    var box=document.getElementById(p+'-insight-box');var el=document.getElementById(p+'-insight-text');var qEl=document.getElementById(p+'-insight-q');
+    if(qEl)qEl.textContent=selYear+' '+selQ;
+    if(txt.trim()){box.classList.add('live');el.textContent=txt;}else{box.classList.remove('live');el.textContent='Insight will appear here once data is entered.';}
+    // History — earlier quarters of selYear (excluding the currently shown quarter), most recent first
+    var histEl=document.getElementById(p+'-insight-history');
+    if(histEl){
+      var hist='';
+      QQ_LABELS.slice().reverse().forEach(function(q){
+        if(q===selQ)return;
+        var t=QD.insights[p][selYear+'_'+q];
+        if(t&&t.trim())hist+='<div class="insight-history-item"><div class="ih-q">'+selYear+' '+q+'</div><p>'+t+'</p></div>';
+      });
+      histEl.innerHTML=hist;
+    }
+  });
+
+  // Pillar 1 — grouped by programme area (this year, then cumulative)
+  document.getElementById('p1-metrics').innerHTML=
+    '<div class="prog-block ct">'+progHeader('prog-ct','🎨','Creative Technology','Educator expertise &amp; platform engagement')+
+      '<div class="prog-row-label">This year</div><div class="metric-grid">'+
+        mkAnnCard('Educators upskilled (Trained + Supported)','educators',false,'')+
+        mkAnnCard('Credentials issued','eduCredentials',false,'')+
+        mkAnnCard('Course completions','courseCompleted',false,'')+
+      '</div>'+
+      '<div class="prog-row-label">Cumulative</div><div class="metric-grid">'+
+        mkCumCard('Educators upskilled (Trained + Supported)','educators',false,'')+
+        mkCumCard('Educators supported','eduSupported',false,'')+
+        mkCumCard('Platform users','platformUsers',false,'')+
+        mkCumCard('Credentials issued','eduCredentials',false,'')+
+      '</div>'+
+    '</div>'+
+    '<div class="prog-block lit">'+progHeader('prog-lit','📖','Literacy','Volunteers &amp; reading buddies — target vs actual')+
+      '<div class="metric-grid">'+
+        mkAnnCard('Volunteers','volunteers',false,'')+
+        mkAnnCard('Reading Buddies','readingBuddies',false,'')+
+      '</div>'+
+    '</div>'+
+    '<div class="prog-block num">'+progHeader('prog-num','🔢','Numeracy','MathsWhizzes &amp; schools — target vs actual')+
+      '<div class="metric-grid">'+
+        mkAnnCard('MathsWhizzes','mathsWhizzes',false,'')+
+        mkAnnCard('Number of Schools','numeracySchools',false,'')+
+      '</div>'+
+    '</div>';
+  document.getElementById('p1-bars').innerHTML=renderBars([{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'eduCredentials',l:'Credentials issued',dec:false},{k:'courseCompleted',l:'Course completions',dec:false},{k:'volunteers',l:'Volunteers',dec:false},{k:'readingBuddies',l:'Reading Buddies',dec:false},{k:'mathsWhizzes',l:'MathsWhizzes',dec:false},{k:'numeracySchools',l:'Schools (Numeracy)',dec:false}],'#2e7d32');
+  renderTrendTable('p1-table',[{k:'educators',l:'Educators upskilled',dec:false,suffix:''},{k:'eduSupported',l:'Educators supported',dec:false,suffix:''},{k:'platformUsers',l:'Platform users',dec:false,suffix:''},{k:'eduCredentials',l:'Credentials issued',dec:false,suffix:''},{k:'courseCompleted',l:'Course completions',dec:false,suffix:''},{k:'volunteers',l:'Volunteers',dec:false,suffix:''},{k:'readingBuddies',l:'Reading Buddies',dec:false,suffix:''},{k:'mathsWhizzes',l:'MathsWhizzes',dec:false,suffix:''},{k:'numeracySchools',l:'Schools (Numeracy)',dec:false,suffix:''}]);
+
+  // Pillar 2
+  document.getElementById('p2-metrics').innerHTML=
+    '<div class="metric-grid">'+
+      mkCumCard('Youth badges','youthBadges',false,'')+
+      mkCumCard('Irish-med. schools','irishMedSchools',false,'')+
+      mkCumCard('Young people reached','youngPeople',false,'')+
+      mkCumCard('Organisations engaged','orgsEngaged',false,'')+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px">'+
+      mkAnnCard('Youth badges','youthBadges',false,'')+
+      mkAnnCard('Young people reached','youngPeople',false,'')+
+    '</div>';
+  document.getElementById('p2-bars').innerHTML=renderBars([{k:'youthBadges',l:'Youth badges',dec:false},{k:'irishMedSchools',l:'Irish-med. schools',dec:false},{k:'youngPeople',l:'Young people',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false}],'#2e7d32');
+  renderTrendTable('p2-table',[{k:'youthBadges',l:'Youth badges',dec:false,suffix:''},{k:'irishMedSchools',l:'Irish-med. schools',dec:false,suffix:''},{k:'youngPeople',l:'Young people reached',dec:false,suffix:''},{k:'orgsEngaged',l:'Organisations engaged',dec:false,suffix:''}]);
+
+  // Pillar 3
+  document.getElementById('p3-metrics').innerHTML='<div class="metric-grid">'+
+    [['Total revenue','revenue',true,''],['SE revenue','seRevenue',true,''],['Grant revenue','grantRevenue',true,''],['SE share %','sePct',false,'%']].map(function(m){return mkCumCard(m[0],m[1],m[2],m[3]);}).join('')+'</div>';
+  var sv=yrStat(selYear);
+  var rh='<table class="trend-table" style="width:100%"><thead><tr><th>Stream</th><th><span class="pill pill-tgt">Target</span></th><th><span class="pill pill-act">Actual</span></th><th>Variance</th><th>Status</th></tr></thead><tbody>';
+  [{l:'Statutory grants',k:'grantRevenue'},{l:'Social enterprise',k:'seRevenue'},{l:'Corporate & other',k:'otherRevenue'},{l:'Total',k:'revenue'}].forEach(function(r){
+    var tv=tgt(r.k,i),act=getA(r.k,selYear),rc=ragC(act,tv,selYear);
+    var v=act!==''&&!isNaN(parseFloat(act))?(parseFloat(act)-tv).toFixed(2):null;
+    rh+='<tr><td style="font-weight:500">'+r.l+'</td><td><span style="color:var(--tgt-col)">€'+tv+'M</span></td>'+
+      '<td>'+(sv!=='future'&&act!==''?'<span style="color:var(--act-col);font-weight:500">€'+parseFloat(act).toFixed(2)+'M</span>':'<span style="color:var(--muted);font-style:italic">'+(sv==='future'?'Future':'No actual')+'</span>')+'</td>'+
+      '<td style="color:'+(v?parseFloat(v)>=0?'var(--forest)':'var(--candy)':'var(--muted)')+'">'+( v?(parseFloat(v)>=0?'+':'')+'€'+v+'M':'—')+'</td>'+
+      '<td>'+(act!==''&&sv!=='future'?'<span class="rag-badge '+rc+'" style="font-size:9px"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span>':'—')+'</td></tr>';
+  });
+  document.getElementById('p3-rev-table').innerHTML=rh+'</tbody></table>';
+  renderTrendTable('p3-table',[{k:'revenue',l:'Total revenue',dec:true,suffix:''},{k:'seRevenue',l:'SE revenue',dec:true,suffix:''},{k:'grantRevenue',l:'Grant revenue',dec:true,suffix:''},{k:'sePct',l:'SE share %',dec:false,suffix:'%'}]);
+
+  renderInfluence();renderStories();renderQuarterly();renderRisks();buildCharts();buildPieCharts();
+}
+
+// ── ADMIN ──
+function showAdmin(){document.getElementById('admin-overlay').style.display='block';document.getElementById('admin-pin-input').value='';document.getElementById('admin-pin-err').style.display='none';document.getElementById('admin-login').style.display='block';document.getElementById('admin-panel').style.display='none';}
+function hideAdmin(){document.getElementById('admin-overlay').style.display='none';}
+function checkAdminPin(){if(document.getElementById('admin-pin-input').value===AP){document.getElementById('admin-login').style.display='none';document.getElementById('admin-panel').style.display='block';buildAdminActuals();buildAdminTargets();buildAdminRisks();}else{document.getElementById('admin-pin-err').style.display='block';}}
+
+function showAdminTab(tab){
+  ['actuals','targets','risks'].forEach(function(t){
+    document.getElementById('admin-'+t).style.display=t===tab?'block':'none';
+    var btn=document.getElementById('atab-'+t);
+    btn.style.background=t===tab?'var(--ocean)':'var(--bg)';
+    btn.style.color=t===tab?'white':'var(--muted)';
+    btn.style.fontWeight=t===tab?'500':'400';
+  });
+}
+
+function buildAdminActuals(){
+  var numF=[{k:'educators',l:'Educators upskilled (Trained + Supported)'},{k:'eduSupported',l:'Educators supported'},{k:'youngPeople',l:'Young people reached'},{k:'orgsEngaged',l:'Organisations engaged'},{k:'eduCredentials',l:'Educator credentials'},{k:'youthBadges',l:'Youth badges'},{k:'platformUsers',l:'Platform users'},{k:'irishMedSchools',l:'Irish-medium schools'},{k:'courseCompleted',l:'Course completions (Creative Technology)'},{k:'volunteers',l:'Volunteers (Literacy)'},{k:'readingBuddies',l:'Reading Buddies (Literacy)'},{k:'mathsWhizzes',l:'MathsWhizzes (Numeracy)'},{k:'numeracySchools',l:'Number of Schools (Numeracy)'},{k:'revenue',l:'Total revenue (€M)',dec:true},{k:'seRevenue',l:'SE revenue (€M)',dec:true},{k:'grantRevenue',l:'Statutory grants (€M)',dec:true},{k:'sePct',l:'SE share (%)'},{k:'grantPct',l:'Grant dep. (%)'}];
+  var h='';
+
+  // Quarter selector
+  h+='<div style="background:var(--current-bg);border:1px solid #f8c89a;border-radius:8px;padding:12px;margin-bottom:16px"><strong style="font-size:12px;color:#854f0b">Current quarter (2026)</strong><p style="font-size:11px;color:var(--muted);margin-top:4px;margin-bottom:8px">Controls the pro-rata RAG benchmark for 2026.</p><div style="display:flex;gap:8px;flex-wrap:wrap">';
+  ['Q1','Q2','Q3','Q4'].forEach(function(q){h+='<label style="display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer"><input type="radio" name="latest_q" value="'+q+'"'+(LATEST_Q_2026===q?' checked':'')+' onchange="LATEST_Q_2026=this.value;renderAll()"> '+q+' ('+{Q1:'Jan–Mar',Q2:'Apr–Jun',Q3:'Jul–Sep',Q4:'Oct–Dec'}[q]+')</label>';});
+  h+='</div></div>';
+
+  // Pillar insights
+  h+='<h3 style="color:var(--ocean);margin-bottom:7px">Pillar insight snapshots</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">One snapshot per pillar, per quarter. Earlier quarters remain visible as a history trail on each Pillar page as the year progresses.</p>';
+  YEARS.forEach(function(y){h+='<details'+(y===CY?' open':'')+' style="margin-bottom:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg);padding:9px"><summary style="font-size:10px;font-weight:500;color:var(--ocean);cursor:pointer">'+y+' ('+yrStat(y)+')</summary>';
+    QQ_LABELS.forEach(function(q){h+='<div style="margin-top:9px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06)"><div style="font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:5px">'+q+'</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">';
+      ['p1','p2','p3'].forEach(function(p,pi){h+='<div class="field-group"><label>Pillar '+(pi+1)+'</label><textarea id="ins_'+p+'_'+y+'_'+q+'" rows="2">'+(QD.insights[p][y+'_'+q]||'')+'</textarea></div>';});
+      h+='</div></div>';
+    });
+    h+='</details>';
+  });
+
+  // Annual actuals
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:7px"><h3 style="color:var(--ocean);margin-bottom:7px">Annual actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">Enter the actual figure for the year. For cumulative metrics (educators, young people, badges, credentials, platform users) enter the cumulative total — the dashboard calculates net-new automatically.</p>';
+  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">';numF.forEach(function(f){var at=annTgt(f.k,yi_);var cumTv=tgt(f.k,yi_);var isIncr=T[f.k]&&T[f.k].incr;
+var tgtLabel=isIncr?'Cumul. target: '+fmtT(cumTv,f.dec)+(at!==null?' · Ann net-new: +'+fmtN(at,f.dec):''):'Annual target: '+fmtT(cumTv,f.dec);
+h+='<div class="field-group"><label>'+f.l+'</label><div style="font-size:9px;color:var(--muted);margin-bottom:2px">'+tgtLabel+'</div><input type="number" id="inp_'+f.k+'_'+y+'" value="'+(A[f.k+'_'+y]||'')+'" step="'+(f.dec?'0.01':'1')+'" placeholder="—"'+(yrStat(y)==='future'?' style="opacity:0.5"':'')+'></div>';});h+='</div></div>';});
+  h+='</div>';
+
+  // Quarterly actuals
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px"><h3 style="color:var(--ocean);margin-bottom:7px">Quarterly actuals</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">Enter flat per-quarter figures — the activity in that quarter only. Q1=Jan–Mar, Q2=Apr–Jun, Q3=Jul–Sep, Q4=Oct–Dec.</p>';
+  YEARS.forEach(function(y,yi_){h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg)"><div style="font-weight:500;color:var(--ocean);font-size:12px;margin-bottom:7px">'+y+' ('+yrStat(y)+')</div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr><th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px;min-width:140px">KPI</th>';QQ_LABELS.forEach(function(q){h+='<th style="text-align:left;padding:3px 7px;color:var(--muted);font-size:9px">'+q+' (this Q only)</th>';});h+='</tr></thead><tbody>';Q_KEYS.forEach(function(m){var at=annTgt(m.k,yi_);var perQ=at!==null?parseFloat((at/4).toFixed(m.dec?2:0)):null;h+='<tr><td style="padding:4px 7px;white-space:nowrap">'+m.l+'<div style="font-size:9px;color:var(--muted)">Ann. target: '+fmtN(at,m.dec)+' · Per Q expected: '+fmtN(perQ,m.dec)+'</div></td>';QQ_LABELS.forEach(function(q){h+='<td style="padding:3px 5px"><input type="number" id="qinp_'+m.k+'_'+y+'_'+q+'" value="'+(QQ[m.k+'_'+y+'_'+q]||'')+'" placeholder="—" step="'+(m.dec?'0.01':'1')+'" style="width:90px;font-size:11px'+(yrStat(y)==='future'?';opacity:0.5':'')+'"'+(yrStat(y)==='future'?' disabled':'')+'/></td>';});h+='</tr>';});h+='</tbody></table></div></div>';});
+  h+='</div>';
+
+  // Stories
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Impact stories</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">Tag each story with the quarter it relates to — stories build up over time and can be filtered by quarter on the Impact Stories page.</p>';
+  function periodOpts(sel){var h2='<option value=""'+(!sel?' selected':'')+'>No quarter (general)</option>';YEARS.forEach(function(y){QQ_LABELS.forEach(function(q){var v=y+'_'+q;h2+='<option value="'+v+'"'+(sel===v?' selected':'')+'>'+y+' '+q+'</option>';});});return h2;}
+  [0,1,2,3,4,5,6,7].forEach(function(n){var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[],period:''};h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:10px;font-weight:500;color:var(--ocean)">Story '+(n+1)+'</div><div class="field-group" style="margin-bottom:0;width:180px"><select id="st_period_'+n+'">'+periodOpts(s.period)+'</select></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="field-group"><label>Title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'"></div><div class="field-group"><label>Organisation</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'"></div></div><div class="field-group"><label>Quote</label><textarea id="st_quote_'+n+'" rows="3">'+(s.quote||'')+'</textarea></div><div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'"></div><div style="display:grid;grid-template-columns:1fr 2fr;gap:8px"><div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image URL</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video</option></select></div><div class="field-group"><label>Media URL</label><input type="url" id="st_murl_'+n+'" value="'+(s.mediaUrl||'')+'" placeholder="https://…"></div></div><div class="field-group"><label>Tags (comma separated)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div></div>';});
+  h+='</div>';
+
+  // Qualitative
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Reach &amp; influence — strategic partners (ongoing list)</h3><div class="field-group"><label>Partners (comma separated)</label><textarea id="qd_partners" rows="2">'+QD.partners.join(', ')+'</textarea></div></div>';
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Reach &amp; influence — quarterly data</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">Enter this quarter\'s snapshot. Earlier quarters remain visible in the "Quarterly history" section on the Reach &amp; Influence page.</p>';
+  YEARS.forEach(function(y){h+='<details'+(y===CY?' open':'')+' style="margin-bottom:10px;border-radius:7px;background:var(--'+yrStat(y)+'-bg);padding:9px"><summary style="font-size:10px;font-weight:500;color:var(--ocean);cursor:pointer">'+y+' ('+yrStat(y)+')</summary>';
+    QQ_LABELS.forEach(function(q){
+      var b=QD.reach[y+'_'+q]||{mediaStats:[],politicalItems:[],fundraisingItems:[],socialStats:[]};
+      h+='<div style="margin-top:9px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06)"><div style="font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:5px">'+q+'</div>'+
+        '<div class="field-group"><label>Media stats (JSON [{val,label}])</label><textarea id="qd_mediaStats_'+y+'_'+q+'" rows="2">'+JSON.stringify(b.mediaStats)+'</textarea></div>'+
+        '<div class="field-group"><label>Political items (one per line)</label><textarea id="qd_politicalItems_'+y+'_'+q+'" rows="3">'+b.politicalItems.join('\n')+'</textarea></div>'+
+        '<div class="field-group"><label>Fundraising highlights (one per line)</label><textarea id="qd_fundraisingItems_'+y+'_'+q+'" rows="3">'+b.fundraisingItems.join('\n')+'</textarea></div>'+
+        '<div class="field-group"><label>Social stats (JSON [{val,label}])</label><textarea id="qd_socialStats_'+y+'_'+q+'" rows="2">'+JSON.stringify(b.socialStats)+'</textarea></div>'+
+      '</div>';
+    });
+    h+='</details>';
+  });
+  h+='</div>';
+
+  // Pie charts
+  h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Pie chart percentages</h3>';
+  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(function(p){h+='<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:7px">';QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});h+='</div></div>';});
+  h+='</div>';
+  document.getElementById('admin-actuals').innerHTML=h;
+}
+
+function buildAdminTargets(){
+  var keys=[
+    {k:'educators',l:'Educators upskilled',dec:false,note:'Cumulative — each year is total since plan began'},
+    {k:'eduSupported',l:'Educators supported',dec:false,note:'Annual standalone figure per year'},
+    {k:'youngPeople',l:'Young people reached',dec:false,note:'Cumulative'},
+    {k:'orgsEngaged',l:'Organisations engaged',dec:false,note:'Annual standalone figure per year'},
+    {k:'eduCredentials',l:'Educator credentials',dec:false,note:'Cumulative'},
+    {k:'youthBadges',l:'Youth badges',dec:false,note:'Cumulative'},
+    {k:'platformUsers',l:'Platform users',dec:false,note:'Cumulative'},
+    {k:'irishMedSchools',l:'Irish-medium schools',dec:false,note:'Annual standalone figure per year'},
+    {k:'courseCompleted',l:'Course completions — Creative Technology',dec:false,note:'Annual standalone figure per year'},
+    {k:'volunteers',l:'Volunteers — Literacy',dec:false,note:'Annual standalone figure per year'},
+    {k:'readingBuddies',l:'Reading Buddies — Literacy',dec:false,note:'Annual standalone figure per year'},
+    {k:'mathsWhizzes',l:'MathsWhizzes — Numeracy',dec:false,note:'Annual standalone figure per year'},
+    {k:'numeracySchools',l:'Number of Schools — Numeracy',dec:false,note:'Annual standalone figure per year'},
+    {k:'revenue',l:'Total revenue (€M)',dec:true,note:'Annual figure'},
+    {k:'seRevenue',l:'SE revenue (€M)',dec:true,note:'Annual figure'},
+    {k:'grantRevenue',l:'Statutory grants (€M)',dec:true,note:'Annual figure'},
+    {k:'otherRevenue',l:'Other revenue (€M)',dec:true,note:'Annual figure'},
+    {k:'sePct',l:'SE share (%)',dec:false,note:'Annual figure'},
+    {k:'grantPct',l:'Grant dependency (%)',dec:false,note:'Annual figure'}
+  ];
+  var h='<div class="tgt-warning">⚠️ <strong>Target management</strong> — changes here update the strategic plan targets in the dashboard. Only amend with board awareness. All figures should align with the 2026–2030 Strategic Plan document.</div>';
+  keys.forEach(function(f){
+    h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;background:var(--bg);border-left:3px solid var(--ocean)">'+
+      '<div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:2px">'+f.l+'</div>'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:8px">'+f.note+'</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">';
+    YEARS.forEach(function(y,yi_){
+      h+='<div class="field-group"><label>'+y+'</label><input type="number" id="tgt_'+f.k+'_'+yi_+'" value="'+T[f.k].v[yi_]+'" step="'+(f.dec?'0.01':'1')+'"></div>';
+    });
+    h+='</div></div>';
+  });
+  document.getElementById('admin-targets').innerHTML=h;
+}
+
+function buildAdminRisks(){
+  var h='<p style="font-size:11px;color:var(--muted);margin-bottom:14px">Update live status, owner and last reviewed date for each risk.</p>';
+  RISKS.forEach(function(r,ri){
+    h+='<div style="margin-bottom:12px;padding:10px;border-radius:7px;background:var(--bg);border-left:3px solid '+(r.status==='Escalated'?'var(--candy)':r.status==='Action underway'?'var(--ann-col)':r.status==='Resolved'?'var(--act-col)':'var(--sky-dark)')+'">'+
+      '<div style="font-size:11px;font-weight:500;color:var(--ocean);margin-bottom:8px">'+r.name+'</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">'+
+        '<div class="field-group"><label>Status</label><select id="risk_status_'+ri+'"><option value="Monitoring"'+(r.status==='Monitoring'?' selected':'')+'>Monitoring</option><option value="Action underway"'+(r.status==='Action underway'?' selected':'')+'>Action underway</option><option value="Escalated"'+(r.status==='Escalated'?' selected':'')+'>Escalated</option><option value="Resolved"'+(r.status==='Resolved'?' selected':'')+'>Resolved</option></select></div>'+
+        '<div class="field-group"><label>Likelihood</label><select id="risk_likelihood_'+ri+'"><option value="Green"'+(r.likelihood==='Green'?' selected':'')+'>Green — Low</option><option value="Amber"'+(r.likelihood==='Amber'?' selected':'')+'>Amber — Medium</option><option value="Red"'+(r.likelihood==='Red'?' selected':'')+'>Red — High</option></select></div>'+
+        '<div class="field-group"><label>Impact</label><select id="risk_impact_'+ri+'"><option value="Low"'+(r.impact==='Low'?' selected':'')+'>Low</option><option value="Amber"'+(r.impact==='Amber'?' selected':'')+'>Amber — Medium</option><option value="High"'+(r.impact==='High'?' selected':'')+'>High</option></select></div>'+
+        '<div class="field-group"><label>Owner</label><input type="text" id="risk_owner_'+ri+'" value="'+r.owner+'"></div>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 3fr;gap:8px">'+
+        '<div class="field-group"><label>Last reviewed</label><input type="date" id="risk_reviewed_'+ri+'" value="'+r.reviewed+'"></div>'+
+        '<div class="field-group"><label>Mitigation</label><input type="text" id="risk_mitigation_'+ri+'" value="'+r.mitigation+'"></div>'+
+      '</div></div>';
+  });
+  document.getElementById('admin-risks').innerHTML=h;
+}
+
+function safeGet(id){try{return document.getElementById(id);}catch(e){return null;}}
+function safeVal(id,fallback){var el=safeGet(id);return el?el.value:(fallback||'');}
+
+function saveAll(){
+  try{
+    // Insights (quarterly)
+    YEARS.forEach(function(y){
+      QQ_LABELS.forEach(function(q){
+        ['p1','p2','p3'].forEach(function(p){
+          try{var el=safeGet('ins_'+p+'_'+y+'_'+q);if(el)QD.insights[p][y+'_'+q]=el.value.trim();}catch(e){}
+        });
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Annual actuals
+    var aKeys=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','courseCompleted','volunteers','readingBuddies','mathsWhizzes','numeracySchools','revenue','seRevenue','grantRevenue','sePct','grantPct'];
+    YEARS.forEach(function(y){
+      aKeys.forEach(function(k){
+        try{var el=safeGet('inp_'+k+'_'+y);if(el)A[k+'_'+y]=el.value;}catch(e){}
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Quarterly actuals
+    YEARS.forEach(function(y){
+      Q_KEYS.forEach(function(m){
+        QQ_LABELS.forEach(function(q){
+          try{var el=safeGet('qinp_'+m.k+'_'+y+'_'+q);if(el)QQ[m.k+'_'+y+'_'+q]=el.value;}catch(e){}
+        });
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Stories
+    [0,1,2,3,4,5,6,7].forEach(function(n){
+      try{
+        if(!safeGet('st_title_'+n))return;
+        QD.stories[n]={
+          title:safeVal('st_title_'+n),
+          org:safeVal('st_org_'+n),
+          quote:safeVal('st_quote_'+n),
+          attr:safeVal('st_attr_'+n),
+          mediaType:safeVal('st_mtype_'+n,'none'),
+          mediaUrl:safeVal('st_murl_'+n),
+          tags:safeVal('st_tags_'+n).split(',').map(function(t){return t.trim();}).filter(Boolean),
+          period:safeVal('st_period_'+n,'')
+        };
+      }catch(e){}
+    });
+  }catch(e){}
+
+  try{
+    // Targets
+    var tgtKeys=['educators','eduSupported','youngPeople','orgsEngaged','eduCredentials','youthBadges','platformUsers','irishMedSchools','courseCompleted','volunteers','readingBuddies','mathsWhizzes','numeracySchools','revenue','seRevenue','grantRevenue','otherRevenue','sePct','grantPct'];
+    tgtKeys.forEach(function(k){
+      YEARS.forEach(function(y,yi_){
+        try{var el=safeGet('tgt_'+k+'_'+yi_);if(el&&el.value!=='')T[k].v[yi_]=parseFloat(el.value);}catch(e){}
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Risks
+    RISKS.forEach(function(r,ri){
+      try{
+        if(!safeGet('risk_status_'+ri))return;
+        r.status=safeVal('risk_status_'+ri,'Monitoring');
+        r.likelihood=safeVal('risk_likelihood_'+ri,'Amber');
+        r.impact=safeVal('risk_impact_'+ri,'Amber');
+        r.owner=safeVal('risk_owner_'+ri);
+        r.reviewed=safeVal('risk_reviewed_'+ri);
+        r.mitigation=safeVal('risk_mitigation_'+ri);
+      }catch(e){}
+    });
+  }catch(e){}
+
+  try{
+    // Qualitative — partners (ongoing, not quarterly)
+    var pa=safeGet('qd_partners');
+    if(pa)QD.partners=pa.value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  }catch(e){}
+
+  try{
+    // Qualitative — Reach & Influence quarterly buckets
+    YEARS.forEach(function(y){
+      QQ_LABELS.forEach(function(q){
+        var key=y+'_'+q;
+        var ms=safeGet('qd_mediaStats_'+key);
+        var pi=safeGet('qd_politicalItems_'+key);
+        var fi=safeGet('qd_fundraisingItems_'+key);
+        var ss=safeGet('qd_socialStats_'+key);
+        if(!ms&&!pi&&!fi&&!ss)return;
+        var bucket=QD.reach[key]||{mediaStats:[],politicalItems:[],fundraisingItems:[],socialStats:[]};
+        if(ms)try{bucket.mediaStats=JSON.parse(ms.value);}catch(e){}
+        if(pi)bucket.politicalItems=pi.value.split('\n').filter(Boolean);
+        if(fi)bucket.fundraisingItems=fi.value.split('\n').filter(Boolean);
+        if(ss)try{bucket.socialStats=JSON.parse(ss.value);}catch(e){}
+        QD.reach[key]=bucket;
+      });
+    });
+  }catch(e){}
+
+  try{
+    // Pie charts
+    ['pie1','pie2','pie3'].forEach(function(pid){
+      try{
+        if(!safeGet(pid+'_0'))return;
+        QD[pid].data=QD[pid].labels.map(function(_,li){
+          return parseInt(safeVal(pid+'_'+li,'0'))||0;
+        });
+      }catch(e){}
+    });
+  }catch(e){}
+
+  // Always show success and re-render regardless of any individual field errors
+  var msg=document.getElementById('save-msg');
+  if(msg){msg.style.display='block';setTimeout(function(){msg.style.display='none';},2500);}
+  try{renderAll();}catch(e){}
+}
+
+function downloadApp(){
+  // Serialise current in-memory state into the HTML before downloading
+  var html=document.documentElement.outerHTML;
+  // Inject current data state as a script block that pre-populates on load
+  var stateScript='<script id="saved-state">'+
+    'var _SAVED_A='+JSON.stringify(A)+';'+
+    'var _SAVED_QQ='+JSON.stringify(QQ)+';'+
+    'var _SAVED_QD='+JSON.stringify(QD)+';'+
+    'var _SAVED_RISKS='+JSON.stringify(RISKS)+';'+
+    'var _SAVED_T={};'+
+    'Object.keys('+JSON.stringify(Object.keys(T))+').forEach(function(k){});'+
+    'var _SAVED_TV={};'+
+    Object.keys(T).map(function(k){return '_SAVED_TV["'+k+'"]='+JSON.stringify(T[k].v)+';';}).join('')+
+    'var _SAVED_LQ="'+LATEST_Q_2026+'";'+
+  '<\/script>';
+  // Insert state script just before closing body
+  html=html.replace('</body>',stateScript+'</body>');
+  // Add loader that restores state on page load
+  var loaderScript='<script id="state-loader">'+
+    'window.addEventListener("DOMContentLoaded",function(){'+
+      'if(typeof _SAVED_A!=="undefined"){'+
+        'Object.keys(_SAVED_A).forEach(function(k){A[k]=_SAVED_A[k];});'+
+      '}'+
+      'if(typeof _SAVED_QQ!=="undefined"){'+
+        'Object.keys(_SAVED_QQ).forEach(function(k){QQ[k]=_SAVED_QQ[k];});'+
+      '}'+
+      'if(typeof _SAVED_QD!=="undefined"){'+
+        'if(_SAVED_QD.insights)QD.insights=_SAVED_QD.insights;'+
+        'if(_SAVED_QD.mediaStats)QD.mediaStats=_SAVED_QD.mediaStats;'+
+        'if(_SAVED_QD.politicalItems)QD.politicalItems=_SAVED_QD.politicalItems;'+
+        'if(_SAVED_QD.partners)QD.partners=_SAVED_QD.partners;'+
+        'if(_SAVED_QD.fundraisingItems)QD.fundraisingItems=_SAVED_QD.fundraisingItems;'+
+        'if(_SAVED_QD.socialStats)QD.socialStats=_SAVED_QD.socialStats;'+
+        'if(_SAVED_QD.stories)QD.stories=_SAVED_QD.stories;'+
+        'if(_SAVED_QD.pie1)QD.pie1=_SAVED_QD.pie1;'+
+        'if(_SAVED_QD.pie2)QD.pie2=_SAVED_QD.pie2;'+
+        'if(_SAVED_QD.pie3)QD.pie3=_SAVED_QD.pie3;'+
+      '}'+
+      'if(typeof _SAVED_RISKS!=="undefined")RISKS=_SAVED_RISKS;'+
+      'if(typeof _SAVED_TV!=="undefined"){'+
+        'Object.keys(_SAVED_TV).forEach(function(k){if(T[k])T[k].v=_SAVED_TV[k];});'+
+      '}'+
+      'if(typeof _SAVED_LQ!=="undefined")LATEST_Q_2026=_SAVED_LQ;'+
+      'renderAll();'+
+    '});'+
+  '<\/script>';
+  html=html.replace('</head>',loaderScript+'</head>');
+  var blob=new Blob([html],{type:'text/html'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='kinia-board-dashboard.html';
+  a.click();
+}
+
+var now=new Date();
+document.getElementById('today').textContent=now.toLocaleDateString('en-IE',{year:'numeric',month:'long',day:'numeric'});
+document.getElementById('last-updated').textContent=now.toLocaleDateString('en-IE',{year:'numeric',month:'long',day:'numeric'});
+buildYrPills();buildQYrPills();
+document.getElementById('q-yr-banner').innerHTML=bannerHtml(selQYear);
+document.getElementById('q-table-year').textContent=selQYear;
+renderAll();
+</script>
+</body>
+</html>
