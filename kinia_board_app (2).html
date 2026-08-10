@@ -64,6 +64,11 @@ nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;posit
 .mcard.status-r{background:var(--card-r-bg);border-color:var(--card-r-border)}
 .mcard.status-n{background:var(--future-bg);border-color:var(--border)}
 .mcard.annual-card{border-top:3px solid var(--ann-col)}
+#page-pillar3 .metric-grid .mcard{padding:20px;font-size:1.08em}
+#page-pillar3 .metric-grid .mcard .mval{font-size:26px}
+#page-pillar3 .metric-grid .mcard .mlabel{font-size:13px}
+#page-pillar3 .metric-grid{grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){#page-pillar3 .metric-grid{grid-template-columns:repeat(2,1fr)}}
 .mcard .mlabel{font-size:9px;color:var(--muted);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
 .mcard .mval{font-size:20px;font-weight:300;color:var(--ocean)}
 .pill{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:1px}
@@ -157,6 +162,7 @@ nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;posit
 .sec-div{display:flex;align-items:center;gap:8px;margin:18px 0 12px}
 .sec-div-line{flex:1;height:1px;background:var(--border)}
 .sec-div-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);white-space:nowrap}
+#page-overview .sec-div-label{font-size:15px;font-weight:600;letter-spacing:0.01em;text-transform:none;color:var(--ocean)}
 
 .how-section{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
 .how-section h3{color:var(--ocean);margin-bottom:10px;font-size:14px}
@@ -172,12 +178,8 @@ nav{background:var(--ocean);padding:0 16px;display:flex;align-items:center;posit
 
 /* Programme-area sections (Creative Technology / Literacy / Numeracy) */
 .prog-area-header{display:flex;align-items:center;gap:10px;margin:22px 0 12px}
-.prog-area-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 2px 5px rgba(0,0,0,0.12)}
 .prog-area-title{font-size:14px;font-weight:600;color:var(--ocean);line-height:1.3}
 .prog-area-sub{font-size:10px;color:var(--muted);margin-top:1px}
-.prog-ct{background:var(--orange)}
-.prog-lit{background:var(--sky-dark)}
-.prog-num{background:var(--forest)}
 .prog-block{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px;background:linear-gradient(180deg,rgba(0,0,0,0.012),transparent 40px)}
 .prog-block.ct{border-top:3px solid var(--orange)}
 .prog-block.lit{border-top:3px solid var(--sky-dark)}
@@ -492,6 +494,8 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
   <div id="p1-insight-box" class="insight-box"><div class="ititle">Insight snapshot — <span id="p1-insight-q">Q1</span></div><p id="p1-insight-text">Insight will appear here once data is entered.</p><div id="p1-insight-history"></div></div>
   <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span><span class="dl-item"><span class="rag-dot g"></span>On track</span><span class="dl-item"><span class="rag-dot a"></span>Monitor</span><span class="dl-item"><span class="rag-dot r"></span>Action required</span></div>
   <div id="p1-metrics"></div>
+  <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">STEM courses delivered</div><div class="sec-div-line"></div></div>
+  <div class="card" style="margin-bottom:16px;max-width:480px"><div class="card-title">Course mix by category</div><div style="position:relative;height:220px"><canvas id="pieStem"></canvas></div><div class="pie-legend" id="pieStem-leg"></div></div>
   <div class="g2">
     <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p1-bars"></div></div>
     <div class="card"><div class="card-title">Trend 2024–2030</div><div style="position:relative;height:200px"><canvas id="p1Chart"></canvas></div></div>
@@ -506,17 +510,18 @@ footer{text-align:center;padding:18px;color:var(--muted);font-size:10px;border-t
   <div id="p2-insight-box" class="insight-box"><div class="ititle">Insight snapshot — <span id="p2-insight-q">Q1</span></div><p id="p2-insight-text">Insight will appear here once data is entered.</p><div id="p2-insight-history"></div></div>
   <div class="dash-legend"><span class="dl-item"><span class="dl-sw" style="background:var(--tgt-bg);border:1px solid var(--tgt-col)"></span>Cumulative target</span><span class="dl-item"><span class="dl-sw" style="background:var(--ann-bg);border:1px solid var(--ann-col)"></span>Annual target</span><span class="dl-item"><span class="dl-sw" style="background:var(--act-bg);border:1px solid var(--act-col)"></span>Actual</span></div>
   <div id="p2-metrics"></div>
-  <div class="g2">
-    <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p2-bars"></div></div>
-    <div class="card"><div class="card-title">Trend 2024–2030</div><div style="position:relative;height:200px"><canvas id="p2Chart"></canvas></div></div>
-  </div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
+  <div id="p2-prog-areas"></div>
   <div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-label">Community profile</div><div class="sec-div-line"></div></div>
   <div class="g3">
     <div class="card"><div class="card-title">Who our educators work with</div><div style="position:relative;height:160px"><canvas id="pie1"></canvas></div><div class="pie-legend" id="pie1-leg"></div></div>
     <div class="card"><div class="card-title">Formal vs non-formal</div><div style="position:relative;height:160px"><canvas id="pie2"></canvas></div><div class="pie-legend" id="pie2-leg"></div></div>
     <div class="card"><div class="card-title">Language of delivery</div><div style="position:relative;height:160px"><canvas id="pie3"></canvas></div><div class="pie-legend" id="pie3-leg"></div></div>
   </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">KPI progress vs annual target pace</div><div id="p2-bars"></div></div>
+    <div class="card"><div class="card-title">Trend 2024–2030</div><div style="position:relative;height:200px"><canvas id="p2Chart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title">Full trend table</div><div style="overflow-x:auto"><table class="trend-table" id="p2-table"></table></div></div>
 </div>
 
 <!-- PILLAR 3 -->
@@ -676,7 +681,8 @@ var RISKS=[
   {name:'Social enterprise doesn\'t scale',likelihood:'Amber',impact:'High',status:'Action underway',owner:'Head of Operations',reviewed:'2026-03-31',mitigation:'Quarterly targets; Growth Lead; retail partnerships'},
   {name:'Key person dependency',likelihood:'Amber',impact:'High',status:'Monitoring',owner:'Leadership Team',reviewed:'2026-03-31',mitigation:'CPD pathways; succession planning; documentation'},
   {name:'Corporate funding decreases',likelihood:'Amber',impact:'Amber',status:'Monitoring',owner:'CEO',reviewed:'2026-03-31',mitigation:'Diversify via SE; deepen statutory partnerships'},
-  {name:'Competition increases',likelihood:'Green',impact:'Amber',status:'Monitoring',owner:'CEO',reviewed:'2026-03-31',mitigation:'Leverage bilingual USP; innovation-led content, collaboration'}
+  {name:'Competition increases',likelihood:'Green',impact:'Amber',status:'Monitoring',owner:'CEO',reviewed:'2026-03-31',mitigation:'Leverage bilingual USP; innovation-led content, collaboration'},
+  {name:'Statutory grant reduction',likelihood:'Amber',impact:'High',status:'Monitoring',owner:'CEO',reviewed:'2026-03-31',mitigation:'Diversify funding base via SE growth; multi-annual statutory agreements; broaden philanthropic & corporate pipeline'}
 ];
 
 var QD={
@@ -707,7 +713,8 @@ var QD={
   ],
   pie1:{labels:["Socio-econ. disadvantage","Rural communities","Girls in STEM","Irish language","Traveller / ethnic minority"],data:[38,24,18,12,8],colors:["#262262","#f37021","#9dceef","#b9f24c","#fad4d6"]},
   pie2:{labels:["Formal (schools)","Non-formal (youth work)"],data:[62,38],colors:["#262262","#f37021"]},
-  pie3:{labels:["English medium","Irish medium"],data:[78,22],colors:["#262262","#b9f24c"]}
+  pie3:{labels:["English medium","Irish medium"],data:[78,22],colors:["#262262","#b9f24c"]},
+  pieStem:{labels:["Podcasting","Mobile FilmMaking","Green Tech","Smart Energy","Robotics","Machine Learning","AI"],data:[18,16,15,14,13,12,12],colors:["#ef4d41","#262262","#ffcf01","#fad4d6","#9dceef","#39b54a","#6a3d9a"]}
 };
 function reachBucket(y,q){var k=y+'_'+q;return QD.reach[k]||{mediaStats:[],politicalItems:[],fundraisingItems:[],socialStats:[]};}
 function reachHasData(y,q){var b=QD.reach[y+'_'+q];return!!(b&&((b.mediaStats&&b.mediaStats.length)||(b.politicalItems&&b.politicalItems.length)||(b.fundraisingItems&&b.fundraisingItems.length)||(b.socialStats&&b.socialStats.length)));}
@@ -758,31 +765,32 @@ function setQYear(y){selQYear=y;buildQYrPills();document.getElementById('q-table
 function showPage(id,btn){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});document.getElementById('page-'+id).classList.add('active');if(btn)btn.classList.add('active');}
 
 // ── PROGRAMME AREA SECTIONS ──
-function progHeader(cls,icon,title,sub){
-  return '<div class="prog-area-header"><div class="prog-area-icon '+cls+'">'+icon+'</div><div><div class="prog-area-title">'+title+'</div>'+(sub?'<div class="prog-area-sub">'+sub+'</div>':'')+'</div></div>';
+function progHeader(title,sub){
+  return '<div class="prog-area-header"><div><div class="prog-area-title">'+title+'</div>'+(sub?'<div class="prog-area-sub">'+sub+'</div>':'')+'</div></div>';
 }
 
 // ── BOARD SCORECARD — one-glance RAG summary across all programme areas ──
 var SCORECARD_KPIS=[
-  {k:'educators',l:'Educators upskilled',icon:'🧑‍🏫',dec:false},
-  {k:'youngPeople',l:'Young people reached',icon:'🧒',dec:false},
-  {k:'volunteers',l:'Volunteers',icon:'🙋',dec:false},
-  {k:'readingBuddies',l:'Reading Buddies',icon:'📚',dec:false},
-  {k:'mathsWhizzes',l:'MathsWhizzes',icon:'🧮',dec:false},
-  {k:'numeracySchools',l:'Numeracy schools',icon:'🏫',dec:false},
-  {k:'revenue',l:'Total revenue',icon:'💶',dec:true},
-  {k:'seRevenue',l:'SE revenue',icon:'🌱',dec:true}
+  {k:'educators',l:'Educators Upskilled (Trained + Supported)',dec:false},
+  {k:'youngPeople',l:'Young people reached',dec:false},
+  {k:'volunteers',l:'Volunteers',dec:false},
+  {k:'readingBuddies',l:'Reading Buddies',dec:false},
+  {k:'mathsWhizzes',l:'MathsWhizzes',dec:false},
+  {k:'numeracySchools',l:'Numeracy schools',dec:false},
+  {k:'revenue',l:'Total revenue',dec:true},
+  {k:'seRevenue',l:'SE revenue',dec:true}
 ];
 function ragHex(rc){return rc==='g'?'#2e7d32':rc==='a'?'#e65100':rc==='r'?'#c0392b':'#c5cae9';}
 function ringGauge(pct,rc,size){
   size=size||50;
-  var sw=5,r=(size/2)-sw,c=2*Math.PI*r,capped=Math.max(0,Math.min(100,pct));
+  var sw=Math.max(5,Math.round(size*0.09)),r=(size/2)-sw,c=2*Math.PI*r,capped=Math.max(0,Math.min(100,pct));
   var offset=c*(1-capped/100);
   var color=ragHex(rc);
+  var fs=Math.round(size*0.24);
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" style="flex-shrink:0;transform:rotate(0deg)">'+
     '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="'+sw+'"></circle>'+
     (rc!=='n'?'<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+offset.toFixed(1)+'" transform="rotate(-90 '+size/2+' '+size/2+')"></circle>':'')+
-    '<text x="'+size/2+'" y="'+(size/2+4)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+(rc==='n'?'var(--muted)':color)+'" font-family="Roboto,sans-serif">'+(rc==='n'?'—':Math.round(capped)+'%')+'</text>'+
+    '<text x="'+size/2+'" y="'+(size/2+fs*0.35)+'" text-anchor="middle" font-size="'+fs+'" font-weight="700" fill="'+(rc==='n'?'var(--muted)':color)+'" font-family="Roboto,sans-serif">'+(rc==='n'?'—':Math.round(capped)+'%')+'</text>'+
   '</svg>';
 }
 function buildScorecard(){
@@ -796,8 +804,8 @@ function buildScorecard(){
     var valStr=(s!=='future'&&annA!=='')?(m.dec?'€'+parseFloat(annA).toFixed(2)+'M':fmtN(annA,false)):'—';
     var tgtStr=at!==null?(m.dec?'€'+parseFloat(at).toFixed(2)+'M':fmtN(at,false)):'—';
     var pct=(rc!=='n'&&at)?(parseFloat(annA)/at*100):0;
-    return'<div class="scorecard-chip '+rc+'">'+ringGauge(pct,rc,50)+
-      '<div class="sc-body"><div class="sc-label">'+m.icon+' '+m.l+'</div>'+
+    return'<div class="scorecard-chip '+rc+'">'+ringGauge(pct,rc,72)+
+      '<div class="sc-body"><div class="sc-label">'+m.l+'</div>'+
       '<div class="sc-vals">'+valStr+' <span style="font-size:9px;color:var(--muted);font-weight:400">/ '+tgtStr+'</span></div>'+
       '<div class="sc-sub">'+(s==='future'?'Future year':(annA===''?'No actual entered yet':ragLabel(rc)))+'</div></div></div>';
   }).join('');
@@ -808,7 +816,7 @@ function buildScorecard(){
   var overallPct=(counts.g+counts.a+counts.r)?Math.round((counts.g*100+counts.a*70+counts.r*30)/(counts.g+counts.a+counts.r)):0;
   document.getElementById('ov-scorecard-summary').innerHTML=
     '<div class="scorecard-summary">'+
-      ringGauge(overallPct,overallRc,58)+
+      ringGauge(overallPct,overallRc,80)+
       '<div class="ss-overall">'+overallLabel+'</div>'+
       '<div class="ss-counts">'+
         '<span class="ss-count-item"><span class="rag-dot g"></span>'+counts.g+' on track</span>'+
@@ -872,6 +880,31 @@ function mkAnnCard(label,key,dec,suffix){
         '<div class="mcard-progress-track"><div class="mcard-progress-fill" style="width:'+progPct+'%;background:'+progColor+'"></div></div>'+
         '<div style="font-size:8px;color:var(--muted);margin-top:2px">'+progPct+'% of this year\'s target</div></div>':
       '<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">'+(s==='closed'?'No actual recorded':'No actual entered yet')+'</div>')+
+    '</div>';
+}
+
+// Running-total cumulative card for metrics stored as annual-standalone figures (e.g. Organisations Engaged)
+function mkSumCumCard(label,key,dec,suffix){
+  var i=yi(selYear),s=yrStat(selYear),sf=suffix||'';
+  var cumTgt=0;for(var idx=0;idx<=i;idx++){var v=T[key].v[idx];cumTgt+=(v===null||isNaN(parseFloat(v)))?0:parseFloat(v);}
+  var cumAct=0,anyAct=false;
+  for(var idx2=0;idx2<=i;idx2++){var y2=YEARS[idx2],a2=getA(key,y2);if(a2!==''&&!isNaN(parseFloat(a2))){cumAct+=parseFloat(a2);anyAct=true;}}
+  var actD=anyAct?fmtN(cumAct,dec)+sf:null;
+  var cumTD=fmtN(cumTgt,dec)+sf;
+  var ratio=cumTgt>0?cumAct/cumTgt:null;
+  var rc=(s==='future'||!anyAct)?'n':(ratio>=0.85?'g':ratio>=0.70?'a':'r');
+  var cardClass='mcard mcard-cum '+(s==='future'?'status-n':(actD?'status-'+rc:'status-n'));
+  var progPct=(actD&&cumTgt)?Math.min(100,Math.round(cumAct/cumTgt*100)):0;
+  var progColor=rc==='g'?'var(--act-col)':rc==='a'?'#e65100':rc==='r'?'var(--candy)':'var(--tgt-col)';
+  return'<div class="'+cardClass+'"><div class="mcard-ribbon cum">CUMULATIVE</div>'+
+    '<div class="mlabel" style="margin-top:5px">'+label+'</div>'+
+    '<div style="margin-bottom:3px"><span class="pill pill-tgt">Target (2024–'+selYear+')</span><div class="mval">'+cumTD+'</div></div>'+
+    (s==='future'?'<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">Future year</div>':
+      actD?'<div><span class="pill pill-act">Actual (2024–'+selYear+')</span><div style="font-size:12px;font-weight:500;color:var(--act-col)">'+actD+'</div>'+
+        '<div style="margin-top:4px"><span class="rag-badge '+rc+'"><span class="rag-dot '+rc+'"></span>'+ragLabel(rc)+'</span></div>'+
+        '<div class="mcard-progress-track"><div class="mcard-progress-fill" style="width:'+progPct+'%;background:'+progColor+'"></div></div>'+
+        '<div style="font-size:8px;color:var(--muted);margin-top:2px">'+progPct+'% of cumulative target</div></div>':
+      '<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px">No actual entered yet</div>')+
     '</div>';
 }
 
@@ -978,7 +1011,7 @@ function renderQuarterly(){
 }
 
 var Q_KEYS=[
-  {k:'educators',l:'Educators upskilled',dec:false,color:'#262262'},
+  {k:'educators',l:'Educators Upskilled (Trained + Supported)',dec:false,color:'#262262'},
   {k:'youngPeople',l:'Young people reached',dec:false,color:'#f37021'},
   {k:'youthBadges',l:'Youth badges',dec:false,color:'#005129'},
   {k:'seRevenue',l:'SE revenue (€M)',dec:true,color:'#9dceef'},
@@ -1030,7 +1063,7 @@ function renderSmartInsights(){
     {icon:'🔓',label:'Grant dep. reduction',val:'-'+(tgt('grantPct',0)-tgt('grantPct',i))+'pp',sub:'From '+tgt('grantPct',0)+'% (2024) to '+tgt('grantPct',i)+'%',cls:(tgt('grantPct',0)-tgt('grantPct',i))>=10?'si-green':'si-amber'},
     {icon:'📊',label:'Educator credentials growth',val:'+'+(i>0?Math.round((tgt('eduCredentials',i)-tgt('eduCredentials',i-1))/tgt('eduCredentials',i-1)*100):0)+'%',sub:'YoY target for '+selYear,cls:'si-green'}
   ];
-  document.getElementById('si-cards').innerHTML=cards.map(function(c){return'<div class="si-card '+c.cls+'"><div class="si-icon">'+c.icon+'</div><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';}).join('');
+  document.getElementById('si-cards').innerHTML=cards.map(function(c){return'<div class="si-card '+c.cls+'"><div class="si-label">'+c.label+'</div><div class="si-val">'+c.val+'</div><div class="si-sub">'+c.sub+'</div></div>';}).join('');
 }
 
 function mkChart(id,type,labels,datasets,opts){
@@ -1099,7 +1132,7 @@ function buildCharts(){
 }
 
 function buildPieCharts(){
-  ['pie1','pie2','pie3'].forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}var d=QD[id],el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});document.getElementById(id+'-leg').innerHTML=d.labels.map(function(l,i){return'<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');});
+  ['pie1','pie2','pie3','pieStem'].forEach(function(id){if(charts[id]){charts[id].destroy();delete charts[id];}var d=QD[id],el=document.getElementById(id);if(!el)return;charts[id]=new Chart(el,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:d.colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'}});document.getElementById(id+'-leg').innerHTML=d.labels.map(function(l,i){return'<span class="pie-leg-item"><span class="pie-dot" style="background:'+d.colors[i]+'"></span>'+l+' '+d.data[i]+'%</span>';}).join('');});
 }
 
 var selStoryPeriod='all';
@@ -1198,23 +1231,23 @@ function renderAll(){
 
   // Overview — impact grouped by programme area
   document.getElementById('ov-prog-areas').innerHTML=
-    '<div class="prog-block ct">'+progHeader('prog-ct','🎨','Creative Technology','Educators upskilled &amp; young people reached')+
+    '<div class="prog-block ct">'+progHeader('Creative Technology','Educators Upskilled (Trained + Supported) &amp; young people reached')+
       '<div class="prog-row-label">This year</div><div class="metric-grid">'+
-        mkAnnCard('Educators upskilled (Trained + Supported)','educators',false,'')+
+        mkAnnCard('Educators Upskilled (Trained + Supported)','educators',false,'')+
         mkAnnCard('Young people reached','youngPeople',false,'')+
       '</div>'+
       '<div class="prog-row-label">Cumulative</div><div class="metric-grid">'+
-        mkCumCard('Educators upskilled (Trained + Supported)','educators',false,'')+
+        mkCumCard('Educators Upskilled (Trained + Supported)','educators',false,'')+
         mkCumCard('Young people reached','youngPeople',false,'')+
       '</div>'+
     '</div>'+
-    '<div class="prog-block lit">'+progHeader('prog-lit','📖','Literacy','Volunteers &amp; reading buddies — target vs actual')+
+    '<div class="prog-block lit">'+progHeader('Literacy','Volunteers &amp; reading buddies — target vs actual')+
       '<div class="metric-grid">'+
         mkAnnCard('Volunteers','volunteers',false,'')+
         mkAnnCard('Reading Buddies','readingBuddies',false,'')+
       '</div>'+
     '</div>'+
-    '<div class="prog-block num">'+progHeader('prog-num','🔢','Numeracy','MathsWhizzes &amp; schools — target vs actual')+
+    '<div class="prog-block num">'+progHeader('Numeracy','MathsWhizzes &amp; schools — target vs actual')+
       '<div class="metric-grid">'+
         mkAnnCard('MathsWhizzes','mathsWhizzes',false,'')+
         mkAnnCard('Number of Schools','numeracySchools',false,'')+
@@ -1241,50 +1274,51 @@ function renderAll(){
     }
   });
 
-  // Pillar 1 — grouped by programme area (this year, then cumulative)
+  // Pillar 1 — Creative Technology only (Literacy/Numeracy now live on Pillar 2)
   document.getElementById('p1-metrics').innerHTML=
-    '<div class="prog-block ct">'+progHeader('prog-ct','🎨','Creative Technology','Educator expertise &amp; platform engagement')+
+    '<div class="prog-block ct">'+progHeader('Creative Technology','Educator expertise &amp; platform engagement')+
       '<div class="prog-row-label">This year</div><div class="metric-grid">'+
-        mkAnnCard('Educators upskilled (Trained + Supported)','educators',false,'')+
+        mkAnnCard('Educators Upskilled (Trained + Supported)','educators',false,'')+
+        mkAnnCard('Platform users','platformUsers',false,'')+
         mkAnnCard('Credentials issued','eduCredentials',false,'')+
-        mkAnnCard('Course completions','courseCompleted',false,'')+
       '</div>'+
       '<div class="prog-row-label">Cumulative</div><div class="metric-grid">'+
-        mkCumCard('Educators upskilled (Trained + Supported)','educators',false,'')+
-        mkCumCard('Educators supported','eduSupported',false,'')+
+        mkCumCard('Educators Upskilled (Trained + Supported)','educators',false,'')+
         mkCumCard('Platform users','platformUsers',false,'')+
         mkCumCard('Credentials issued','eduCredentials',false,'')+
       '</div>'+
+    '</div>';
+  document.getElementById('p1-bars').innerHTML=renderBars([{k:'educators',l:'Educators Upskilled (Trained + Supported)',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'eduCredentials',l:'Credentials issued',dec:false},{k:'courseCompleted',l:'Course completions',dec:false}],'#2e7d32');
+  renderTrendTable('p1-table',[{k:'educators',l:'Educators Upskilled (Trained + Supported)',dec:false,suffix:''},{k:'platformUsers',l:'Platform users',dec:false,suffix:''},{k:'eduCredentials',l:'Credentials issued',dec:false,suffix:''},{k:'courseCompleted',l:'Course completions',dec:false,suffix:''}]);
+
+  // Pillar 2 — driving system-wide change + Literacy/Numeracy (moved from Pillar 1)
+  document.getElementById('p2-metrics').innerHTML=
+    '<div class="metric-grid">'+
+      mkAnnCard('Youth badges','youthBadges',false,'')+
+      mkAnnCard('Young people reached','youngPeople',false,'')+
+      mkAnnCard('Irish-med. schools','irishMedSchools',false,'')+
+      mkAnnCard('Organisations engaged','orgsEngaged',false,'')+
     '</div>'+
-    '<div class="prog-block lit">'+progHeader('prog-lit','📖','Literacy','Volunteers &amp; reading buddies — target vs actual')+
+    '<div class="metric-grid">'+
+      mkCumCard('Youth badges','youthBadges',false,'')+
+      mkCumCard('Young people reached','youngPeople',false,'')+
+      mkSumCumCard('Organisations engaged','orgsEngaged',false,'')+
+    '</div>';
+  document.getElementById('p2-prog-areas').innerHTML=
+    '<div class="prog-block lit">'+progHeader('Literacy','Volunteers &amp; reading buddies — target vs actual')+
       '<div class="metric-grid">'+
         mkAnnCard('Volunteers','volunteers',false,'')+
         mkAnnCard('Reading Buddies','readingBuddies',false,'')+
       '</div>'+
     '</div>'+
-    '<div class="prog-block num">'+progHeader('prog-num','🔢','Numeracy','MathsWhizzes &amp; schools — target vs actual')+
+    '<div class="prog-block num">'+progHeader('Numeracy','MathsWhizzes &amp; schools — target vs actual')+
       '<div class="metric-grid">'+
         mkAnnCard('MathsWhizzes','mathsWhizzes',false,'')+
         mkAnnCard('Number of Schools','numeracySchools',false,'')+
       '</div>'+
     '</div>';
-  document.getElementById('p1-bars').innerHTML=renderBars([{k:'educators',l:'Educators upskilled',dec:false},{k:'eduSupported',l:'Educators supported',dec:false},{k:'platformUsers',l:'Platform users',dec:false},{k:'eduCredentials',l:'Credentials issued',dec:false},{k:'courseCompleted',l:'Course completions',dec:false},{k:'volunteers',l:'Volunteers',dec:false},{k:'readingBuddies',l:'Reading Buddies',dec:false},{k:'mathsWhizzes',l:'MathsWhizzes',dec:false},{k:'numeracySchools',l:'Schools (Numeracy)',dec:false}],'#2e7d32');
-  renderTrendTable('p1-table',[{k:'educators',l:'Educators upskilled',dec:false,suffix:''},{k:'eduSupported',l:'Educators supported',dec:false,suffix:''},{k:'platformUsers',l:'Platform users',dec:false,suffix:''},{k:'eduCredentials',l:'Credentials issued',dec:false,suffix:''},{k:'courseCompleted',l:'Course completions',dec:false,suffix:''},{k:'volunteers',l:'Volunteers',dec:false,suffix:''},{k:'readingBuddies',l:'Reading Buddies',dec:false,suffix:''},{k:'mathsWhizzes',l:'MathsWhizzes',dec:false,suffix:''},{k:'numeracySchools',l:'Schools (Numeracy)',dec:false,suffix:''}]);
-
-  // Pillar 2
-  document.getElementById('p2-metrics').innerHTML=
-    '<div class="metric-grid">'+
-      mkCumCard('Youth badges','youthBadges',false,'')+
-      mkCumCard('Irish-med. schools','irishMedSchools',false,'')+
-      mkCumCard('Young people reached','youngPeople',false,'')+
-      mkCumCard('Organisations engaged','orgsEngaged',false,'')+
-    '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px">'+
-      mkAnnCard('Youth badges','youthBadges',false,'')+
-      mkAnnCard('Young people reached','youngPeople',false,'')+
-    '</div>';
-  document.getElementById('p2-bars').innerHTML=renderBars([{k:'youthBadges',l:'Youth badges',dec:false},{k:'irishMedSchools',l:'Irish-med. schools',dec:false},{k:'youngPeople',l:'Young people',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false}],'#2e7d32');
-  renderTrendTable('p2-table',[{k:'youthBadges',l:'Youth badges',dec:false,suffix:''},{k:'irishMedSchools',l:'Irish-med. schools',dec:false,suffix:''},{k:'youngPeople',l:'Young people reached',dec:false,suffix:''},{k:'orgsEngaged',l:'Organisations engaged',dec:false,suffix:''}]);
+  document.getElementById('p2-bars').innerHTML=renderBars([{k:'youthBadges',l:'Youth badges',dec:false},{k:'irishMedSchools',l:'Irish-med. schools',dec:false},{k:'youngPeople',l:'Young people',dec:false},{k:'orgsEngaged',l:'Organisations engaged',dec:false},{k:'volunteers',l:'Volunteers',dec:false},{k:'readingBuddies',l:'Reading Buddies',dec:false},{k:'mathsWhizzes',l:'MathsWhizzes',dec:false},{k:'numeracySchools',l:'Schools (Numeracy)',dec:false}],'#2e7d32');
+  renderTrendTable('p2-table',[{k:'youthBadges',l:'Youth badges',dec:false,suffix:''},{k:'irishMedSchools',l:'Irish-med. schools',dec:false,suffix:''},{k:'youngPeople',l:'Young people reached',dec:false,suffix:''},{k:'orgsEngaged',l:'Organisations engaged',dec:false,suffix:''},{k:'volunteers',l:'Volunteers',dec:false,suffix:''},{k:'readingBuddies',l:'Reading Buddies',dec:false,suffix:''},{k:'mathsWhizzes',l:'MathsWhizzes',dec:false,suffix:''},{k:'numeracySchools',l:'Schools (Numeracy)',dec:false,suffix:''}]);
 
   // Pillar 3
   document.getElementById('p3-metrics').innerHTML='<div class="metric-grid">'+
@@ -1354,7 +1388,7 @@ h+='<div class="field-group"><label>'+f.l+'</label><div style="font-size:9px;col
   // Stories
   h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Impact stories</h3><p style="font-size:11px;color:var(--muted);margin-bottom:12px">Tag each story with the quarter it relates to — stories build up over time and can be filtered by quarter on the Impact Stories page.</p>';
   function periodOpts(sel){var h2='<option value=""'+(!sel?' selected':'')+'>No quarter (general)</option>';YEARS.forEach(function(y){QQ_LABELS.forEach(function(q){var v=y+'_'+q;h2+='<option value="'+v+'"'+(sel===v?' selected':'')+'>'+y+' '+q+'</option>';});});return h2;}
-  [0,1,2,3,4,5,6,7].forEach(function(n){var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[],period:''};h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:10px;font-weight:500;color:var(--ocean)">Story '+(n+1)+'</div><div class="field-group" style="margin-bottom:0;width:180px"><select id="st_period_'+n+'">'+periodOpts(s.period)+'</select></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="field-group"><label>Title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'"></div><div class="field-group"><label>Organisation</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'"></div></div><div class="field-group"><label>Quote</label><textarea id="st_quote_'+n+'" rows="3">'+(s.quote||'')+'</textarea></div><div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'"></div><div style="display:grid;grid-template-columns:1fr 2fr;gap:8px"><div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image URL</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video</option></select></div><div class="field-group"><label>Media URL</label><input type="url" id="st_murl_'+n+'" value="'+(s.mediaUrl||'')+'" placeholder="https://…"></div></div><div class="field-group"><label>Tags (comma separated)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div></div>';});
+  [0,1,2,3,4,5,6,7].forEach(function(n){var s=QD.stories[n]||{title:'',org:'',quote:'',attr:'',mediaType:'none',mediaUrl:'',tags:[],period:''};var isDataUri=(s.mediaUrl||'').indexOf('data:')===0;h+='<div style="margin-bottom:14px;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:10px;font-weight:500;color:var(--ocean)">Story '+(n+1)+'</div><div class="field-group" style="margin-bottom:0;width:180px"><select id="st_period_'+n+'">'+periodOpts(s.period)+'</select></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="field-group"><label>Title</label><input type="text" id="st_title_'+n+'" value="'+(s.title||'')+'"></div><div class="field-group"><label>Organisation</label><input type="text" id="st_org_'+n+'" value="'+(s.org||'')+'"></div></div><div class="field-group"><label>Quote</label><textarea id="st_quote_'+n+'" rows="3">'+(s.quote||'')+'</textarea></div><div class="field-group"><label>Attribution</label><input type="text" id="st_attr_'+n+'" value="'+(s.attr||'')+'"></div><div style="display:grid;grid-template-columns:1fr 2fr;gap:8px"><div class="field-group"><label>Media type</label><select id="st_mtype_'+n+'"><option value="none"'+(s.mediaType==='none'?' selected':'')+'>No media</option><option value="image"'+(s.mediaType==='image'?' selected':'')+'>Image</option><option value="video"'+(s.mediaType==='video'?' selected':'')+'>Video</option></select></div><div class="field-group"><label>Video URL (leave blank if uploading an image below)</label><input type="url" id="st_murl_'+n+'" value="'+(isDataUri?'':(s.mediaUrl||''))+'" placeholder="https://…"></div></div><div class="field-group"><label>Upload image</label><input type="hidden" id="st_imgdata_'+n+'" value="'+(isDataUri?s.mediaUrl:'')+'"><input type="file" accept="image/*" id="st_file_'+n+'" onchange="handleStoryImageUpload('+n+',this)"><div style="font-size:9px;color:var(--muted);margin-top:3px">Uploads embed the image directly in the dashboard file — use a compressed / web-sized image (ideally under ~500KB) to keep the file size manageable.</div>'+(isDataUri?'<div style="margin-top:6px"><img src="'+s.mediaUrl+'" style="max-width:120px;max-height:80px;border-radius:6px;display:block" id="st_preview_'+n+'"><button type="button" class="btn-ocean" style="margin-top:5px;padding:4px 10px;font-size:10px;background:var(--candy)" onclick="clearStoryImage('+n+')">Remove image</button></div>':'<div style="margin-top:6px"><img src="" style="max-width:120px;max-height:80px;border-radius:6px;display:none" id="st_preview_'+n+'"></div>')+'</div><div class="field-group"><label>Tags (comma separated)</label><input type="text" id="st_tags_'+n+'" value="'+((s.tags||[]).join(', '))+'"></div></div>';});
   h+='</div>';
 
   // Qualitative
@@ -1376,14 +1410,14 @@ h+='<div class="field-group"><label>'+f.l+'</label><div style="font-size:9px;col
 
   // Pie charts
   h+='<div style="border-top:1px solid var(--border);padding-top:14px"><h3 style="color:var(--ocean);margin-bottom:7px">Pie chart percentages</h3>';
-  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'}].forEach(function(p){h+='<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:7px">';QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});h+='</div></div>';});
+  [{id:'pie1',label:'Who educators work with'},{id:'pie2',label:'Formal vs non-formal'},{id:'pie3',label:'Language of delivery'},{id:'pieStem',label:'STEM course mix (Pillar 1)'}].forEach(function(p){h+='<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px">'+p.label+'</div><div style="display:grid;grid-template-columns:repeat('+QD[p.id].labels.length+',1fr);gap:7px">';QD[p.id].labels.forEach(function(l,li){h+='<div class="field-group"><label>'+l+'</label><input type="number" id="'+p.id+'_'+li+'" value="'+QD[p.id].data[li]+'" min="0" max="100"></div>';});h+='</div></div>';});
   h+='</div>';
   document.getElementById('admin-actuals').innerHTML=h;
 }
 
 function buildAdminTargets(){
   var keys=[
-    {k:'educators',l:'Educators upskilled',dec:false,note:'Cumulative — each year is total since plan began'},
+    {k:'educators',l:'Educators Upskilled (Trained + Supported)',dec:false,note:'Cumulative — each year is total since plan began'},
     {k:'eduSupported',l:'Educators supported',dec:false,note:'Annual standalone figure per year'},
     {k:'youngPeople',l:'Young people reached',dec:false,note:'Cumulative'},
     {k:'orgsEngaged',l:'Organisations engaged',dec:false,note:'Annual standalone figure per year'},
@@ -1439,6 +1473,26 @@ function buildAdminRisks(){
 function safeGet(id){try{return document.getElementById(id);}catch(e){return null;}}
 function safeVal(id,fallback){var el=safeGet(id);return el?el.value:(fallback||'');}
 
+function handleStoryImageUpload(n,input){
+  var file=input.files&&input.files[0];
+  if(!file)return;
+  if(!file.type||file.type.indexOf('image/')!==0){alert('Please choose an image file.');return;}
+  if(file.size>3*1024*1024){alert('That image is quite large ('+Math.round(file.size/1024/1024*10)/10+'MB). For a manageable dashboard file size, please choose an image under ~3MB (ideally under 500KB) — try compressing or resizing it first.');return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var dataUrl=e.target.result;
+    var hidden=document.getElementById('st_imgdata_'+n);if(hidden)hidden.value=dataUrl;
+    var mtype=document.getElementById('st_mtype_'+n);if(mtype)mtype.value='image';
+    var prev=document.getElementById('st_preview_'+n);if(prev){prev.src=dataUrl;prev.style.display='block';}
+  };
+  reader.readAsDataURL(file);
+}
+function clearStoryImage(n){
+  var hidden=document.getElementById('st_imgdata_'+n);if(hidden)hidden.value='';
+  var prev=document.getElementById('st_preview_'+n);if(prev){prev.src='';prev.style.display='none';}
+  var file=document.getElementById('st_file_'+n);if(file)file.value='';
+}
+
 function saveAll(){
   try{
     // Insights (quarterly)
@@ -1477,13 +1531,15 @@ function saveAll(){
     [0,1,2,3,4,5,6,7].forEach(function(n){
       try{
         if(!safeGet('st_title_'+n))return;
+        var imgData=safeVal('st_imgdata_'+n,'');
+        var mType=safeVal('st_mtype_'+n,'none');
         QD.stories[n]={
           title:safeVal('st_title_'+n),
           org:safeVal('st_org_'+n),
           quote:safeVal('st_quote_'+n),
           attr:safeVal('st_attr_'+n),
-          mediaType:safeVal('st_mtype_'+n,'none'),
-          mediaUrl:safeVal('st_murl_'+n),
+          mediaType:imgData?'image':mType,
+          mediaUrl:imgData||safeVal('st_murl_'+n),
           tags:safeVal('st_tags_'+n).split(',').map(function(t){return t.trim();}).filter(Boolean),
           period:safeVal('st_period_'+n,'')
         };
@@ -1544,7 +1600,7 @@ function saveAll(){
 
   try{
     // Pie charts
-    ['pie1','pie2','pie3'].forEach(function(pid){
+    ['pie1','pie2','pie3','pieStem'].forEach(function(pid){
       try{
         if(!safeGet(pid+'_0'))return;
         QD[pid].data=QD[pid].labels.map(function(_,li){
